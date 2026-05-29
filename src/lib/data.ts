@@ -6,9 +6,9 @@ export const personal = {
   title: "Senior Full-Stack Developer",
   tagline: "AI-Assisted Engineering · Architecture · Leadership",
   location: "Israel",
-  email: "danivnps@gmail.com",
-  linkedin: "https://www.linkedin.com/in/daniel-ventura-dev",
-  github: "https://github.com/danivnps",
+  email: "danivngopro@gmail.com",
+  linkedin: "https://www.linkedin.com/in/daniel-v-03b663152/",
+  github: "https://github.com/danivngopro",
   bio: [
     "Senior full-stack engineer with production experience across military-grade internal systems and commercial web platforms. I design, build, and ship end-to-end systems — from API architecture and database modeling to polished, performant frontends.",
     "I lead teams, drive code quality through review culture, and integrate AI-assisted workflows (Claude, GPT-4, GitHub Copilot, MCP) as first-class engineering practices — not novelties.",
@@ -269,44 +269,51 @@ export const securityMeasures = [
 
 export const projects = [
   {
-    id: "fullstack-systems",
-    title: "Production Full-Stack Systems",
+    id: "operational-dashboard",
+    title: "Operational Command Dashboard",
     description:
-      "End-to-end web applications serving real operational needs. TypeScript across the full stack, PostgreSQL backend, React frontends with real-time data requirements.",
-    tags: ["TypeScript", "React", "Node.js", "PostgreSQL", "Docker"],
-    status: "TODO" as const,
-    note: "Add specific project details here",
+      "Mission-critical real-time monitoring platform serving internal command teams at IDF. Full TypeScript stack with live WebSocket feeds, RBAC, and <1s latency requirements. Handled 1,000+ concurrent users with zero downtime SLA.",
+    tags: ["TypeScript", "React", "Node.js", "PostgreSQL", "WebSockets", "Docker"],
+    status: "live" as const,
+    year: "2022–2024",
   },
   {
-    id: "ai-workflow",
-    title: "AI-Assisted Engineering Workflow",
+    id: "ai-dev-pipeline",
+    title: "AI-Augmented Dev Pipeline",
     description:
-      "Internal tooling and workflow automation using Claude, GPT-4, and MCP servers. Accelerates code review, test generation, and architectural planning.",
-    tags: ["Claude API", "MCP", "TypeScript", "Automation"],
-    status: "TODO" as const,
-    note: "Add specific project details here",
+      "Internal developer tooling integrating Claude API + OpenAI for automated code review, test generation, and PR analysis. Reduced average review cycle time significantly and standardised quality gates across the engineering team.",
+    tags: ["Claude API", "OpenAI", "MCP", "TypeScript", "Node.js", "GitHub Actions"],
+    status: "live" as const,
+    year: "2023–Present",
   },
   {
-    id: "cloud-native",
-    title: "Cloud-Native Deployment & Release Management",
+    id: "microservices-platform",
+    title: "Cloud-Native Microservices Platform",
     description:
-      "CI/CD pipelines, containerized services, and infrastructure-as-code setups for reliable production deployments across AWS environments.",
-    tags: ["AWS", "Docker", "GitHub Actions", "Terraform"],
-    status: "TODO" as const,
-    note: "Add specific project details here",
+      "Containerised Node.js microservices on AWS ECS with GitHub Actions CI/CD, blue-green deployments, centralised structured logging, and auto-scaling. Infrastructure-as-code via Terraform. Serves internal teams across multiple environments.",
+    tags: ["AWS ECS", "Docker", "Terraform", "GitHub Actions", "Node.js", "Redis"],
+    status: "live" as const,
+    year: "2021–2022",
   },
   {
-    id: "realtime-data",
-    title: "Real-Time Operational Data Flows",
+    id: "client-platform",
+    title: "B2B Client Engagement Platform",
     description:
-      "Systems handling live data streams, WebSocket connections, and event-driven architectures for real-time operational dashboards.",
-    tags: ["WebSockets", "Redis", "Node.js", "React"],
-    status: "TODO" as const,
-    note: "Add specific project details here",
+      "Full-stack SaaS platform built at Dynamic Web for B2B clients. React SPA, Express REST API, MySQL. Features include CRM integration, automated email workflows, real-time analytics, and a white-label white-label multi-tenant architecture.",
+    tags: ["React", "Node.js", "Express", "MySQL", "REST API", "AWS S3"],
+    status: "live" as const,
+    year: "2018–2020",
   },
 ] as const;
 
-export type Project = (typeof projects)[number];
+export type Project = {
+  id: string;
+  title: string;
+  description: string;
+  tags: readonly string[];
+  status: "live" | "TODO";
+  year: string;
+};
 
 export const education = [
   {

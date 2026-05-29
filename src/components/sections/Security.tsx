@@ -1,18 +1,8 @@
 "use client";
 
-import { motion } from "motion/react";
-import {
-  Shield,
-  Lock,
-  ShieldAlert,
-  Timer,
-  Bot,
-  AlertCircle,
-  FileCode,
-  Package,
-  Brain,
-} from "lucide-react";
-import { SectionWrapper, SectionHeading } from "@/components/ui/SectionWrapper";
+import { useRef } from "react";
+import { motion, useInView } from "motion/react";
+import { Shield, Lock, ShieldAlert, Timer, Bot, AlertCircle, FileCode, Package, Brain } from "lucide-react";
 import { securityMeasures } from "@/lib/data";
 
 type LucideIcon = React.FC<{ className?: string; style?: React.CSSProperties }>;
@@ -29,84 +19,134 @@ const iconMap: Record<string, LucideIcon> = {
   Brain: Brain as LucideIcon,
 };
 
-// Security & AI-Abuse Countermeasures section.
-// Presents only defensive, professional measures — no offensive functionality.
-// Card grid inspired by 21st.dev numbered feature card patterns.
-export function Security() {
+// Animated scanning line
+function ScanLine() {
   return (
-    <SectionWrapper id="security" className="bg-[var(--bg-surface)]">
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeading
-          label="Security & Countermeasures"
-          title="Defense as a default."
-          subtitle="A Cybersecurity background means security is never an afterthought. These are the practical measures built into every system I ship."
-        />
+    <motion.div
+      className="absolute left-0 right-0 h-px pointer-events-none"
+      style={{
+        background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.4), rgba(34,211,238,0.3), transparent)",
+      }}
+      initial={{ top: "0%", opacity: 0 }}
+      animate={{ top: ["0%", "100%"], opacity: [0, 0.8, 0] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
+      aria-hidden
+    />
+  );
+}
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {securityMeasures.map((measure, index) => {
-            const Icon = iconMap[measure.icon] ?? Shield;
+export function Security() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-10%" });
+
+  return (
+    <div id="security" className="slide-section hex-bg" ref={ref}>
+      <ScanLine />
+
+      {/* Dark overlay over hex bg */}
+      <div className="absolute inset-0" style={{ background: "rgba(7,7,15,0.82)" }} aria-hidden />
+
+      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-10 max-w-[1400px] mx-auto w-full">
+
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4 }}
+              className="text-xs font-semibold tracking-[0.3em] uppercase mb-2"
+              style={{ color: "var(--accent-cyan)" }}
+            >
+              Security & Countermeasures
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="font-black tracking-tight"
+              style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", letterSpacing: "-0.03em" }}
+            >
+              <span className="text-gradient-subtle">Defense </span>
+              <span className="text-gradient-indigo">as a default.</span>
+            </motion.h2>
+          </div>
+
+          {/* Shield icon */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
+            animate={inView ? { opacity: 1, scale: 1, rotate: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.4, type: "spring" }}
+            className="shrink-0"
+          >
+            <Shield
+              className="w-14 h-14 sm:w-16 sm:h-16 animate-glow-pulse"
+              style={{ color: "var(--accent-indigo)" }}
+            />
+          </motion.div>
+        </div>
+
+        {/* 3×3 grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 flex-1 my-4">
+          {securityMeasures.map((m, i) => {
+            const Icon = iconMap[m.icon] ?? Shield;
             return (
               <motion.div
-                key={measure.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.45, delay: index * 0.07 }}
-                className="group relative p-5 rounded-xl border overflow-hidden transition-all duration-300 hover:border-indigo-500/25 hover:shadow-[0_0_24px_rgba(99,102,241,0.09)]"
-                style={{
-                  background: "var(--bg-card)",
-                  borderColor: "var(--border-subtle)",
-                }}
+                key={m.title}
+                initial={{ opacity: 0, x: -16 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.25 + i * 0.06 }}
+                className="relative flex items-start gap-3 p-4 rounded-xl border overflow-hidden group hover:border-indigo-500/30 transition-all duration-200"
+                style={{ background: "rgba(17,17,37,0.7)", borderColor: "var(--border-subtle)" }}
               >
-                {/* Index number watermark */}
+                {/* Index watermark */}
                 <span
-                  className="absolute bottom-3 right-4 text-5xl font-black opacity-[0.04] select-none tabular-nums"
+                  className="absolute bottom-2 right-3 text-4xl font-black opacity-[0.04] select-none tabular-nums"
                   aria-hidden
                 >
-                  {String(index + 1).padStart(2, "0")}
+                  {String(i + 1).padStart(2, "0")}
                 </span>
 
-                <div className="flex items-start gap-4">
-                  {/* Icon */}
-                  <div
-                    className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center"
-                    style={{ background: "var(--accent-indigo-dim)" }}
-                  >
-                    <Icon
-                      className="w-4 h-4"
-                      style={{ color: "var(--accent-indigo)" }}
-                    />
-                  </div>
+                <div
+                  className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-0.5"
+                  style={{ background: "var(--accent-indigo-dim)" }}
+                >
+                  <Icon className="w-4 h-4" style={{ color: "var(--accent-indigo)" }} />
+                </div>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2 mb-1.5">
-                      <h3 className="text-sm font-semibold text-slate-100 leading-snug">
-                        {measure.title}
-                      </h3>
-                      <span
-                        className="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full"
-                        style={{
-                          background: "rgba(99,102,241,0.12)",
-                          color: "var(--accent-indigo)",
-                          border: "1px solid rgba(99,102,241,0.2)",
-                        }}
-                      >
-                        {measure.tag}
-                      </span>
-                    </div>
-                    <p
-                      className="text-xs leading-relaxed"
-                      style={{ color: "var(--text-secondary)" }}
-                    >
-                      {measure.description}
-                    </p>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <p className="text-xs font-semibold text-slate-100 leading-snug">{m.title}</p>
                   </div>
+                  <span
+                    className="inline-block text-[9px] font-semibold px-1.5 py-0.5 rounded-full mb-1.5"
+                    style={{
+                      background: "rgba(99,102,241,0.12)",
+                      color: "var(--accent-indigo)",
+                      border: "1px solid rgba(99,102,241,0.2)",
+                    }}
+                  >
+                    {m.tag}
+                  </span>
+                  <p className="text-[11px] leading-relaxed hidden sm:block" style={{ color: "var(--text-secondary)" }}>
+                    {m.description}
+                  </p>
                 </div>
               </motion.div>
             );
           })}
         </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.9 }}
+          className="text-xs"
+          style={{ color: "var(--text-muted)" }}
+        >
+          Cybersecurity major — security is baked in, not bolted on.
+        </motion.p>
       </div>
-    </SectionWrapper>
+    </div>
   );
 }

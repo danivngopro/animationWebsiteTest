@@ -1,12 +1,16 @@
 # Daniel Ventura — Portfolio
 
-Premium personal portfolio for **Daniel Ventura**, Senior Full-Stack Developer with AI-native engineering expertise.
+**Live:** [portfolio.emperordanivn.com](https://portfolio.emperordanivn.com)
+
+Premium, cinematic personal portfolio for **Daniel Ventura**, Senior Full-Stack Developer. Designed to feel like a high-end interactive product experience — not a CV on a page.
 
 ---
 
-## Project Concept
+## Concept
 
-Not a CV on a page — an interactive product experience. The site communicates technical depth, leadership credibility, and AI-native engineering as a professional differentiator. Each section is a story beat, not a data dump.
+A fullscreen snap-scroll site where every section is its own cinematic "slide". Content is revealed dramatically as each section enters the viewport. A right-side sidebar lets you jump between sections or enable **autoplay** — which advances through slides automatically with a circular progress indicator.
+
+Inspired by [remix.run](https://remix.run) and high-end agency landing pages: huge typography, strong motion, deliberate whitespace, and distinctive per-section visual identity.
 
 ---
 
@@ -14,143 +18,164 @@ Not a CV on a page — an interactive product experience. The site communicates 
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 15 (App Router, RSC) |
-| Language | TypeScript (strict mode) |
+| Framework | Next.js 15 App Router + `output: standalone` |
+| Language | TypeScript 5 (strict) |
 | Styling | Tailwind CSS v4 + CSS custom properties |
-| Components | shadcn/ui (base-nova style) |
-| Animation | Motion for React (scroll reveals, entrance, hover) |
-| Smooth scroll | Lenis v1 |
-| 3D / WebGL | React Three Fiber + Drei (hero particle field) |
-| Form validation | Zod + react-hook-form + @hookform/resolvers |
-| Icons | lucide-react |
+| Components | shadcn/ui (base-nova) |
+| Animation | Motion for React (whileInView, AnimatePresence, useInView) |
+| 3D / WebGL | React Three Fiber + Drei (hero particle sphere) |
+| Form validation | Zod + react-hook-form |
+| Icons | lucide-react + custom brand SVG icons |
+| Deployment | Docker (multi-stage) + Nginx reverse proxy |
 
 ---
 
-## Animation Strategy
+## Animation System
 
-### Philosophy
-Premium motion — purposeful, not decorative. Every animation communicates state or hierarchy, never distracts.
+### Layout Architecture
+- **CSS `scroll-snap-type: y mandatory`** on `<html>` — each `.slide-section` is `height: 100dvh` and `scroll-snap-align: start`
+- Sections snap into place on scroll. No JS scroll-hijacking, no Lenis needed.
+- `scrollIntoView({ behavior: 'smooth' })` used for programmatic navigation from the sidebar and autoplay.
 
-### Implementation
-- **Entrance reveals**: `whileInView` + `once: true` on all section content. Fade + `translateY(32px → 0)`.
-- **Hero stagger**: `variants` stagger container with `delayChildren` and `staggerChildren` for the headline, title, and CTAs.
-- **Timeline**: Sequential dot + line-draw animations triggered by `useInView` with per-item delays.
-- **Skill + security cards**: Staggered grid pop-in with `delay: index * 0.07`.
-- **Hover**: `whileHover: { y: -4 }` spring on all cards; glow box-shadow transitions in CSS.
-- **HeroCanvas**: React Three Fiber particle sphere with dual-axis rotation via `useFrame`.
-- **Smooth scroll**: Lenis wraps the full app, skipped automatically when `prefers-reduced-motion` is set.
-- **Reduced motion**: `useReducedMotion` hook reads the OS media query; passes `false` to Motion `initial` to skip all transforms.
+### Per-section Techniques
+| Section | Animation Technique |
+|---|---|
+| **Hero** | Character-scramble glitch text via `useGlitchText` hook, split name reveal (translateX from left/right), neon border trace via Motion `scaleX`, floating scroll badge |
+| **About** | Count-up stats via `useCountUp` hook with `easeOutExpo`, word-reveal heading, pillar card scale-in stagger |
+| **Experience** | Giant job title in `7vw` font, `AnimatePresence` blur+slide transitions between jobs, animated segment selector |
+| **Skills** | Bento grid scale-in, expand/collapse per-category with `AnimatePresence`, badge scatter-in with stagger |
+| **AI Workflow** | Spotlight hover glow, watermark "AI" text, staggered card reveals |
+| **Security** | Hexagonal CSS grid background, animated scan line, shield entrance spring animation |
+| **Projects** | Project number watermark, `AnimatePresence` blur+slide between projects, dot selector |
+| **Education** | Oversized degree names, hover lift on cards, gradient divider |
+| **Contact** | Split-screen slide-in, Zod-validated form, animated submit button |
 
----
+### Sidebar & Autoplay
+- **`SlideSidebar`** — fixed right-side dots. Hover expands to show section labels. `IntersectionObserver` tracks active section (≥45% in view).
+- **Autoplay** — RAF-based circular SVG progress ring. Advances every 5 seconds. Click to play/pause. Manual dot click resets the timer.
+- **Slide counter** — `01/09` style AnimatePresence counter at the bottom of the sidebar.
 
-## Security Strategy
-
-Security is implemented as a default, not a feature flag. Key measures:
-
-### HTTP Headers (`next.config.ts`)
-- `Content-Security-Policy` — restricts script, style, and resource origins
-- `X-Frame-Options: DENY` — blocks clickjacking
-- `X-Content-Type-Options: nosniff` — prevents MIME sniffing
-- `Strict-Transport-Security` — enforces HTTPS for 1 year
-- `Referrer-Policy: strict-origin-when-cross-origin`
-- `Permissions-Policy` — disables camera, microphone, geolocation
-
-### Contact Form (`lib/schemas.ts`)
-- Zod schema validates name, email, subject, and message at type + value level
-- Honeypot field (`_hp`) traps bot submissions
-- Client-side validation only — backend re-validation required before any real sending
-- No API keys or SMTP credentials committed anywhere (see `.env.local.example`)
-
-### General
-- No `dangerouslySetInnerHTML` anywhere — all content is typed static data
-- DOMPurify imported as a dependency but only invoked if dynamic HTML rendering is ever needed
-- No secrets committed — all env vars documented in `.env.local.example` only
+### Reduced Motion
+- All `useInView`/`whileInView` transitions respect the user's OS `prefers-reduced-motion` setting via the `useReducedMotion` hook.
 
 ---
 
-## AI-Assisted Engineering
+## Security
 
-This project was itself built using AI-assisted engineering practices:
+All security headers are applied in **`next.config.ts`** (not `layout.tsx`):
 
-- **Architecture planning**: Claude used for section structure, component hierarchy, and security header decisions
-- **Code generation**: Motion animation variants, Zod schemas, and Three.js particle logic
-- **Human review checkpoint**: Every generated file was reviewed for correctness, security, and style before being committed
+| Header | Value |
+|---|---|
+| `Content-Security-Policy` | `default-src 'self'`, restricts scripts, styles, fonts, frames |
+| `X-Frame-Options` | `DENY` — blocks clickjacking |
+| `X-Content-Type-Options` | `nosniff` |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | Disables camera, mic, geolocation, topics |
+
+Contact form uses a **Zod schema** (`lib/schemas.ts`) with a honeypot field (`_hp`). Client-side validation only — a server action must be added before the form sends real email (see `TODO` in Contact section and `.env.local.example`).
+
+No `dangerouslySetInnerHTML` anywhere. No secrets committed.
 
 ---
 
-## Design System & Component Attribution
+## 21st.dev Component Attribution
 
-### Color Palette
-| Token | Value | Role |
+The following sections were designed with direct reference to 21st.dev component patterns:
+
+| Section | Pattern Inspiration | File |
 |---|---|---|
-| `--bg-base` | `#07070f` | Page background |
-| `--bg-surface` | `#0d0d1a` | Alternating sections |
-| `--bg-card` | `#111122` | Card surfaces |
-| `--accent-indigo` | `#6366f1` | Primary CTAs, highlights |
-| `--accent-cyan` | `#22d3ee` | Secondary labels, AI section |
-| `--text-primary` | `#f1f5f9` | Body text |
-| `--text-secondary` | `#94a3b8` | Descriptions |
-| `--text-muted` | `#4b5563` | Labels, metadata |
+| **Sidebar** | `vertical-slide-nav` — floating dot nav with label reveal | `SlideSidebar.tsx` |
+| **Hero** | `hero-split-text` — oversized split name layout | `Hero.tsx` |
+| **Skills** | `bento-grid-expand` — expandable icon-led bento grid | `Skills.tsx` |
+| **AI Workflow** | `spotlight-feature-card` — numbered cards with radial hover glow | `AIWorkflow.tsx` |
+| **Security** | `numbered-feature-grid` — icon + tag card layout | `Security.tsx` |
+| **Projects / Experience** | `animate-presence-carousel` — blur-slide AnimatePresence transitions | `Projects.tsx`, `Experience.tsx` |
 
-### Typography
-- **Sans**: Geist Sans (variable, Google Fonts via `next/font`)
-- **Mono**: Geist Mono (available for code-adjacent contexts)
-
-### 21st.dev / Magic Component Inspiration
-The following sections were designed with reference to 21st.dev component patterns:
-
-| Section | Pattern Inspiration | Implementation |
-|---|---|---|
-| **Navbar** | `floating-nav` — transparent-to-blur on scroll | Custom implementation in `Navbar.tsx` |
-| **Hero** | `hero-gradient-text` — gradient headline | Custom with R3F particle field background |
-| **Skills** | `bento-grid` — feature card grid with icon + badge layout | Custom in `Skills.tsx` |
-| **AI Workflow** | `spotlight-feature-card` — numbered cards with spotlight glow on hover | Custom in `AIWorkflow.tsx` |
-| **Security** | `numbered-feature-grid` — icon + tag + description layout | Custom in `Security.tsx` |
-| **Projects** | `project-card-hover-gradient` — gradient border reveal on hover | Custom in `ProjectCard.tsx` |
-
-> Note: The 21st.dev MCP registry was queried during development. The registry search endpoint was not resolving in this environment, so all components are original implementations inspired by the visual patterns documented at 21st.dev.
+> The 21st.dev MCP registry was queried during development. Search resolution was unavailable in this environment; components are original implementations inspired by the visual patterns.
 
 ---
 
 ## Running Locally
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server
-npm run dev
-
-# Production build
-npm run build
-
-# Start production server
-npm run start
-
-# Lint
-npm run lint
+npm run dev       # http://localhost:3000
+npm run build     # Production build
+npm run lint      # ESLint
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+---
+
+## Docker Deployment (portfolio.emperordanivn.com)
+
+### 1. Build and run on your home server
+
+```bash
+# Clone or copy the project to your server
+git clone <repo> portfolio
+cd portfolio
+
+# Build and start
+docker compose up -d --build
+
+# Check health
+docker compose ps
+docker compose logs -f portfolio
+```
+
+The container listens on **port 3000**.
+
+### 2. Nginx reverse proxy
+
+Copy `nginx.conf.example` to `/etc/nginx/sites-available/portfolio`:
+
+```bash
+sudo cp nginx.conf.example /etc/nginx/sites-available/portfolio
+sudo ln -s /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/
+```
+
+Get a free SSL certificate:
+```bash
+sudo certbot --nginx -d portfolio.emperordanivn.com
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### 3. Environment variables
+
+```bash
+cp .env.local.example .env.local
+# Fill in values (RESEND_API_KEY etc.) before deploying
+```
+
+### 4. Updates
+
+```bash
+git pull
+docker compose up -d --build
+# Zero-downtime: compose keeps the old container running until new one is healthy
+```
 
 ---
 
 ## Content Updates
 
-All portfolio content lives in a single file: [`src/lib/data.ts`](src/lib/data.ts)
+All portfolio content lives in [`src/lib/data.ts`](src/lib/data.ts) — the single source of truth.
 
-- Update `personal` for contact details
-- Update `experience` for work history
-- Update `projects` to replace TODO cards with real project data
-- Update `skills` to add/remove technologies
+- `personal` — name, email, LinkedIn, GitHub
+- `experience` — work history with highlights and tech
+- `projects` — 4 project cards (currently filled with real descriptions)
+- `skills` — 6 technology categories
+- `aiWorkflow` — 6 AI workflow steps
+- `securityMeasures` — 9 defensive practices
+- `education` — 2 degrees
 
 ---
 
 ## TODO
 
-- [ ] Wire up contact form backend (Next.js Server Action + Resend or SMTP)
-- [ ] Add rate-limiting middleware to contact API route (Upstash Redis)
-- [ ] Replace project card TODOs with real project details in `lib/data.ts`
-- [ ] Add OG image (`app/opengraph-image.tsx`)
-- [ ] Configure real `metadataBase` URL in `layout.tsx`
+- [ ] Wire up contact form (Next.js Server Action + Resend / SendGrid)
+- [ ] Add rate-limiting to contact API (Upstash Redis)
+- [ ] Add `public/` folder with OG image and favicons
+- [ ] Configure real `metadataBase` in `layout.tsx` once domain is live
 - [ ] Add Cloudflare Turnstile or hCaptcha to contact form

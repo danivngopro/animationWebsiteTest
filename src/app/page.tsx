@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/Navbar";
+import { SlideSidebar } from "@/components/layout/SlideSidebar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
@@ -10,21 +10,28 @@ import { Projects } from "@/components/sections/Projects";
 import { Education } from "@/components/sections/Education";
 import { Contact } from "@/components/sections/Contact";
 
+// SlideSidebar is a client component that manages:
+//   • Intersection Observer to track active section
+//   • Right-side dot navigation with hover labels
+//   • Autoplay with circular progress ring
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Experience />
-        <Skills />
-        <AIWorkflow />
-        <Security />
-        <Projects />
-        <Education />
-        <Contact />
-      </main>
+      {/* Fixed right-side navigation sidebar */}
+      <SlideSidebar />
+
+      {/* All sections are .slide-section (height: 100dvh, scroll-snap-align: start) */}
+      <Hero />
+      <About />
+      <Experience />
+      <Skills />
+      <AIWorkflow />
+      <Security />
+      <Projects />
+      <Education />
+      <Contact />
+
+      {/* Footer sits below the last snap section, reachable by final scroll */}
       <Footer />
     </>
   );

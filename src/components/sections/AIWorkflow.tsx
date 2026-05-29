@@ -1,15 +1,8 @@
 "use client";
 
-import { motion } from "motion/react";
-import {
-  Brain,
-  Zap,
-  Code,
-  Network,
-  Bug,
-  TestTube,
-} from "lucide-react";
-import { SectionWrapper, SectionHeading } from "@/components/ui/SectionWrapper";
+import { useRef } from "react";
+import { motion, useInView } from "motion/react";
+import { Brain, Zap, Code, Network, Bug, TestTube } from "lucide-react";
 import { aiWorkflow } from "@/lib/data";
 
 type LucideIcon = React.FC<{ className?: string; style?: React.CSSProperties }>;
@@ -23,81 +16,109 @@ const iconMap: Record<string, LucideIcon> = {
   TestTube: TestTube as LucideIcon,
 };
 
-// AI Workflow section — spotlight feature cards inspired by 21st.dev spotlight card patterns.
-// Each card highlights one tool/practice in Daniel's AI-assisted engineering workflow.
-export function AIWorkflow() {
-  return (
-    <SectionWrapper id="ai-workflow" className="bg-[var(--bg-base)]">
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeading
-          label="AI-Assisted Engineering"
-          title="How I work with AI."
-          subtitle="Not prompt-and-paste. AI tools are embedded in every phase — architecture, review, debugging, testing — with human judgement at every checkpoint."
-        />
 
-        {/* Workflow grid — 2 columns on desktop, spotlight effect per card */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {aiWorkflow.map((item, index) => {
+export function AIWorkflow() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-10%" });
+
+  return (
+    <div
+      id="ai-workflow"
+      className="slide-section"
+      ref={ref}
+      style={{ background: "var(--bg-base)" }}
+    >
+      {/* "AI" giant watermark */}
+      <div className="absolute inset-0 flex items-center justify-end pr-10 pointer-events-none overflow-hidden" aria-hidden>
+        <span
+          className="font-black select-none"
+          style={{
+            fontSize: "clamp(8rem, 35vw, 40rem)",
+            color: "rgba(34,211,238,0.025)",
+            letterSpacing: "-0.08em",
+            lineHeight: 1,
+          }}
+        >
+          AI
+        </span>
+      </div>
+
+      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-10 max-w-[1400px] mx-auto w-full">
+
+        {/* Header */}
+        <div>
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4 }}
+            className="text-xs font-semibold tracking-[0.3em] uppercase mb-2"
+            style={{ color: "var(--accent-cyan)" }}
+          >
+            AI-Assisted Engineering
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="font-black tracking-tight"
+            style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", letterSpacing: "-0.03em" }}
+          >
+            <span className="text-gradient-subtle">How I work </span>
+            <span className="text-gradient-indigo">with AI.</span>
+          </motion.h2>
+        </div>
+
+        {/* 2×3 grid with animated cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 flex-1 my-6">
+          {aiWorkflow.map((item, i) => {
             const Icon = iconMap[item.icon] ?? Brain;
             return (
               <motion.div
                 key={item.tool}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: index * 0.09 }}
-                className="group relative p-6 rounded-xl border overflow-hidden transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_30px_rgba(34,211,238,0.08)]"
+                initial={{ opacity: 0, y: 24 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.2 + i * 0.09 }}
+                whileHover={{ y: -4, borderColor: "rgba(34,211,238,0.35)" }}
+                className="relative group p-5 rounded-2xl border overflow-hidden flex flex-col gap-3 transition-all duration-300"
                 style={{
                   background: "var(--bg-card)",
                   borderColor: "var(--border-subtle)",
                 }}
               >
-                {/* Spotlight glow on hover */}
+                {/* Spotlight glow */}
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                   style={{
-                    background:
-                      "radial-gradient(ellipse 50% 40% at 50% 0%, rgba(34,211,238,0.07) 0%, transparent 70%)",
+                    background: "radial-gradient(ellipse 50% 40% at 50% 0%, rgba(34,211,238,0.08) 0%, transparent 70%)",
                   }}
                   aria-hidden
                 />
 
                 {/* Step number */}
                 <span
-                  className="absolute top-5 right-5 text-4xl font-black opacity-5 select-none"
+                  className="absolute top-4 right-4 text-5xl font-black opacity-[0.04] select-none tabular-nums"
                   style={{ color: "var(--accent-cyan)" }}
                   aria-hidden
                 >
-                  {String(index + 1).padStart(2, "0")}
+                  {String(i + 1).padStart(2, "0")}
                 </span>
 
                 {/* Icon */}
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+                  className="w-9 h-9 rounded-xl flex items-center justify-center"
                   style={{ background: "var(--accent-cyan-dim)" }}
                 >
-                  <Icon
-                    className="w-5 h-5"
-                    style={{ color: "var(--accent-cyan)" }}
-                  />
+                  <Icon className="w-4.5 h-4.5" style={{ color: "var(--accent-cyan)" }} />
                 </div>
 
-                {/* Tool name */}
-                <h3 className="text-sm font-bold text-slate-100 mb-1">
-                  {item.tool}
-                </h3>
-                <p
-                  className="text-xs font-medium mb-3"
-                  style={{ color: "var(--accent-cyan)" }}
-                >
-                  {item.role}
-                </p>
+                <div>
+                  <p className="text-sm font-bold text-slate-100">{item.tool}</p>
+                  <p className="text-xs font-medium mt-0.5" style={{ color: "var(--accent-cyan)" }}>
+                    {item.role}
+                  </p>
+                </div>
 
-                {/* Description */}
-                <p
-                  className="text-sm leading-relaxed"
-                  style={{ color: "var(--text-secondary)" }}
-                >
+                <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {item.description}
                 </p>
               </motion.div>
@@ -105,30 +126,22 @@ export function AIWorkflow() {
           })}
         </div>
 
-        {/* Bottom callout */}
+        {/* Callout */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.5 }}
-          className="mt-10 p-6 rounded-xl border text-center"
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.9 }}
+          className="px-5 py-3 rounded-xl border text-sm text-center"
           style={{
             background: "rgba(34,211,238,0.04)",
             borderColor: "rgba(34,211,238,0.15)",
+            color: "var(--text-secondary)",
           }}
         >
-          <p
-            className="text-sm leading-relaxed max-w-2xl mx-auto"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            Every AI output is reviewed before it ships.{" "}
-            <span className="text-slate-200 font-medium">
-              AI accelerates; engineering judgment decides.
-            </span>{" "}
-            This is the professional standard for AI-native senior engineering.
-          </p>
+          <span className="font-semibold text-slate-200">AI accelerates.</span>{" "}
+          Engineering judgment decides. Every output reviewed before it ships.
         </motion.div>
       </div>
-    </SectionWrapper>
+    </div>
   );
 }

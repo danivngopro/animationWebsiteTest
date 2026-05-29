@@ -1,93 +1,115 @@
 "use client";
 
-import { motion } from "motion/react";
-import { GraduationCap, BookOpen } from "lucide-react";
-import { SectionWrapper, SectionHeading } from "@/components/ui/SectionWrapper";
+import { useRef } from "react";
+import { motion, useInView } from "motion/react";
 import { education } from "@/lib/data";
 
-type LucideIcon = React.FC<{ className?: string; style?: React.CSSProperties }>;
-
-const iconMap: LucideIcon[] = [GraduationCap as LucideIcon, BookOpen as LucideIcon];
-
 export function Education() {
-  return (
-    <SectionWrapper id="education" className="bg-[var(--bg-surface)]">
-      <div className="mx-auto max-w-4xl px-6">
-        <SectionHeading
-          label="Education"
-          title="The foundation."
-          centered
-        />
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-10%" });
 
+  return (
+    <div
+      id="education"
+      className="slide-section"
+      ref={ref}
+      style={{
+        background: "var(--bg-surface)",
+        backgroundImage: "radial-gradient(ellipse 60% 60% at 50% 100%, rgba(99,102,241,0.07) 0%, transparent 70%)",
+      }}
+    >
+      <div className="h-full flex flex-col justify-center px-8 sm:px-14 lg:px-20 max-w-[1400px] mx-auto w-full gap-12">
+
+        {/* Header */}
+        <div>
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4 }}
+            className="text-xs font-semibold tracking-[0.3em] uppercase mb-2"
+            style={{ color: "var(--accent-cyan)" }}
+          >
+            Education
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="font-black tracking-tight"
+            style={{ fontSize: "clamp(2.5rem, 7vw, 7rem)", letterSpacing: "-0.04em" }}
+          >
+            <span className="text-gradient-subtle">The </span>
+            <span className="text-gradient-indigo">foundation.</span>
+          </motion.h2>
+        </div>
+
+        {/* Degree cards */}
         <div className="grid sm:grid-cols-2 gap-6">
-          {education.map((item, index) => {
-            const Icon = iconMap[index] ?? GraduationCap;
-            return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                whileHover={{ y: -4 }}
-                className="group p-7 rounded-xl border transition-all duration-300 hover:border-indigo-500/30 hover:shadow-[0_0_28px_rgba(99,102,241,0.1)]"
+          {education.map((item, i) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
+              whileHover={{ y: -6, borderColor: "rgba(99,102,241,0.4)" }}
+              className="p-8 rounded-2xl border transition-all duration-300"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--border-subtle)",
+              }}
+            >
+              {/* Period badge */}
+              <span
+                className="inline-block text-xs font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full mb-5"
                 style={{
-                  background: "var(--bg-card)",
-                  borderColor: "var(--border-subtle)",
+                  background: "var(--accent-indigo-dim)",
+                  color: "var(--accent-indigo)",
+                  border: "1px solid rgba(99,102,241,0.2)",
                 }}
               >
-                {/* Icon + period */}
-                <div className="flex items-start justify-between mb-5">
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center"
-                    style={{ background: "var(--accent-indigo-dim)" }}
-                  >
-                    <Icon
-                      className="w-5 h-5"
-                      style={{ color: "var(--accent-indigo)" }}
-                    />
-                  </div>
-                  <span
-                    className="text-xs font-semibold tracking-widest uppercase"
-                    style={{ color: "var(--accent-cyan)" }}
-                  >
-                    {item.period}
-                  </span>
-                </div>
+                {item.period}
+              </span>
 
-                {/* Degree */}
-                <h3 className="text-lg font-bold text-slate-100 leading-snug">
-                  {item.degree}
-                </h3>
+              {/* Degree in huge text */}
+              <h3
+                className="font-black leading-tight text-slate-100"
+                style={{ fontSize: "clamp(1.3rem, 3vw, 2.5rem)", letterSpacing: "-0.02em" }}
+              >
+                {item.degree}
+              </h3>
 
-                {/* Major */}
-                <p
-                  className="text-xs font-semibold mt-1 mb-0.5"
-                  style={{ color: "var(--accent-indigo)" }}
-                >
-                  {item.major}
-                </p>
+              {/* Major */}
+              <p
+                className="mt-1 text-sm font-semibold"
+                style={{ color: "var(--accent-cyan)" }}
+              >
+                {item.major}
+              </p>
 
-                {/* Institution */}
-                <p
-                  className="text-sm font-medium mb-4"
-                  style={{ color: "var(--text-secondary)" }}
-                >
-                  {item.institution}
-                </p>
+              {/* Institution */}
+              <p
+                className="mt-0.5 text-sm"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                {item.institution}
+              </p>
 
-                {/* Description */}
-                <p
-                  className="text-sm leading-relaxed"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {item.description}
-                </p>
-              </motion.div>
-            );
-          })}
+              {/* Divider */}
+              <div
+                className="my-4 h-px"
+                style={{
+                  background: "linear-gradient(90deg, rgba(99,102,241,0.3), transparent)",
+                }}
+              />
+
+              {/* Description */}
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                {item.description}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </SectionWrapper>
+    </div>
   );
 }

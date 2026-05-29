@@ -4,45 +4,45 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── Portfolio design tokens ─────────────────────────────────────── */
+/* ─── Design tokens ───────────────────────────────────────────────── */
 :root {
-  --bg-base: #07070f;
-  --bg-surface: #0d0d1a;
-  --bg-card: #111122;
-  --accent-indigo: #6366f1;
-  --accent-indigo-dim: rgba(99, 102, 241, 0.15);
-  --accent-cyan: #22d3ee;
-  --accent-cyan-dim: rgba(34, 211, 238, 0.12);
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #4b5563;
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-glow: rgba(99, 102, 241, 0.35);
-  --glow-indigo: 0 0 40px rgba(99, 102, 241, 0.2);
-  --glow-cyan: 0 0 30px rgba(34, 211, 238, 0.15);
+  --bg-base:    #07070f;
+  --bg-surface: #0c0c1a;
+  --bg-card:    #111125;
 
-  /* shadcn tokens mapped to dark theme */
-  --background: oklch(0.09 0.02 270);
-  --foreground: oklch(0.94 0.01 260);
-  --card: oklch(0.12 0.025 270);
-  --card-foreground: oklch(0.94 0.01 260);
-  --popover: oklch(0.12 0.025 270);
-  --popover-foreground: oklch(0.94 0.01 260);
-  --primary: oklch(0.60 0.19 265);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.16 0.025 270);
-  --secondary-foreground: oklch(0.94 0.01 260);
-  --muted: oklch(0.16 0.025 270);
-  --muted-foreground: oklch(0.58 0.01 260);
-  --accent: oklch(0.16 0.025 270);
-  --accent-foreground: oklch(0.94 0.01 260);
-  --destructive: oklch(0.70 0.19 22);
-  --border: oklch(1 0 0 / 7%);
-  --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.60 0.19 265 / 50%);
+  --accent-indigo:     #6366f1;
+  --accent-indigo-dim: rgba(99, 102, 241, 0.14);
+  --accent-cyan:       #22d3ee;
+  --accent-cyan-dim:   rgba(34, 211, 238, 0.12);
+
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted:     #4b5563;
+
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-glow:   rgba(99, 102, 241, 0.4);
+
+  /* shadcn mapped to dark palette */
+  --background:          oklch(0.09 0.02 270);
+  --foreground:          oklch(0.94 0.01 260);
+  --card:                oklch(0.12 0.025 270);
+  --card-foreground:     oklch(0.94 0.01 260);
+  --popover:             oklch(0.12 0.025 270);
+  --popover-foreground:  oklch(0.94 0.01 260);
+  --primary:             oklch(0.60 0.19 265);
+  --primary-foreground:  oklch(0.98 0 0);
+  --secondary:           oklch(0.16 0.025 270);
+  --secondary-foreground:oklch(0.94 0.01 260);
+  --muted:               oklch(0.16 0.025 270);
+  --muted-foreground:    oklch(0.58 0.01 260);
+  --accent:              oklch(0.16 0.025 270);
+  --accent-foreground:   oklch(0.94 0.01 260);
+  --destructive:         oklch(0.70 0.19 22);
+  --border:              oklch(1 0 0 / 7%);
+  --input:               oklch(1 0 0 / 10%);
+  --ring:                oklch(0.60 0.19 265 / 50%);
   --radius: 0.75rem;
 
-  /* chart/sidebar */
   --chart-1: oklch(0.60 0.19 265);
   --chart-2: oklch(0.68 0.16 195);
   --chart-3: oklch(0.75 0.12 160);
@@ -101,39 +101,48 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ─── Slide layout system ─────────────────────────────────────────── */
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100%;
+  color-scheme: dark;
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.slide-section {
+  height: 100dvh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ─── Base layer ──────────────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
 
-  html {
-    @apply font-sans scroll-smooth;
-    color-scheme: dark;
-  }
-
-  body {
-    background-color: var(--bg-base);
-    color: var(--text-primary);
-    @apply antialiased;
-  }
-
-  /* Scrollbar styling */
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--bg-base);
-  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg-base); }
   ::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.4);
-    border-radius: 3px;
+    background: rgba(99, 102, 241, 0.35);
+    border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(99, 102, 241, 0.7);
+    background: rgba(99, 102, 241, 0.6);
   }
 }
 
-/* ─── Utility classes ─────────────────────────────────────────────── */
+/* ─── Gradient text utilities ─────────────────────────────────────── */
 @layer utilities {
   .text-gradient-indigo {
     background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #22d3ee 100%);
@@ -143,15 +152,17 @@
   }
 
   .text-gradient-subtle {
-    background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
+    background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .border-glow {
-    border: 1px solid var(--border-glow);
-    box-shadow: var(--glow-indigo);
+  .text-gradient-fire {
+    background: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .card-surface {
@@ -159,25 +170,125 @@
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
   }
-
-  .noise-overlay::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-  }
 }
 
-/* ─── Section spacing ─────────────────────────────────────────────── */
+/* ─── Keyframe animations ─────────────────────────────────────────── */
+
+/* Neon border trace — runs around the viewport edge in the hero */
+@keyframes border-trace {
+  0%   { clip-path: inset(0 100% 100% 0); }
+  25%  { clip-path: inset(0 0 100% 0); }
+  50%  { clip-path: inset(0 0 0 100%); }   /* should be inset(0 0 0 0) at 50% */
+  75%  { clip-path: inset(100% 0 0 0); }
+  100% { clip-path: inset(0 100% 100% 0); }
+}
+
+/* Slow ambient glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 0.7; transform: scale(1.06); }
+}
+
+/* Floating up-down */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-12px); }
+}
+
+/* Horizontal scan line (security section) */
+@keyframes scan {
+  0%   { top: -2px; }
+  100% { top: 100%; }
+}
+
+/* Gradient mesh shift */
+@keyframes mesh-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Spinning slow */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Badge blink */
+@keyframes status-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* Typing cursor */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* Section line draw (for timeline, etc.) */
+@keyframes line-draw {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* Shimmer (for project cards) */
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+/* ─── Animation utility classes ───────────────────────────────────── */
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-status-blink {
+  animation: status-blink 2s ease-in-out infinite;
+}
+
+.animate-cursor {
+  animation: cursor-blink 1s step-end infinite;
+}
+
+.animate-mesh {
+  background-size: 400% 400%;
+  animation: mesh-shift 12s ease infinite;
+}
+
+/* ─── Hexagonal grid background (security section) ────────────────── */
+.hex-bg {
+  background-color: var(--bg-base);
+  background-image:
+    linear-gradient(60deg, rgba(99,102,241,0.04) 25%, transparent 25%),
+    linear-gradient(-60deg, rgba(99,102,241,0.04) 25%, transparent 25%),
+    linear-gradient(60deg, transparent 75%, rgba(99,102,241,0.04) 75%),
+    linear-gradient(-60deg, transparent 75%, rgba(99,102,241,0.04) 75%);
+  background-size: 40px 70px;
+  background-position: 0 0, 0 35px, 20px -35px, -20px 0px;
+}
+
+/* ─── Glitch text (applied by GlitchText component) ──────────────── */
+.glitch-char {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  min-width: 0.55em;
+  text-align: center;
+}
+
+/* ─── Old section-padding (preserved for any remaining usages) ────── */
 .section-padding {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
 }
-
 @media (max-width: 768px) {
-  .section-padding {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
+  .section-padding { padding-top: 3rem; padding-bottom: 3rem; }
 }

@@ -1,192 +1,246 @@
 "use client";
 
+import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { ArrowDown } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/BrandIcons";
+import { useGlitchText } from "@/hooks/useGlitchText";
 import { personal } from "@/lib/data";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-// Dynamic import prevents SSR for the WebGL canvas
 const HeroCanvas = dynamic(
   () => import("@/components/three/HeroCanvas").then((m) => m.HeroCanvas),
   { ssr: false }
 );
 
-const EASE_OUT_CURVE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
-
-const stagger = {
-  container: {
-    hidden: {},
-    show: {
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  },
-  item: {
-    hidden: { opacity: 0, y: 24 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE_OUT_CURVE } },
-  },
-};
+// ─── Animated neon border that traces the viewport edges ──────────────
+function ViewportBorder() {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+      {/* Top edge */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
+        style={{
+          originX: 0,
+          position: "absolute", top: 0, left: 0, right: 0,
+          height: 1,
+          background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.6), rgba(34,211,238,0.4), transparent)",
+        }}
+      />
+      {/* Bottom edge */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 1.2, delay: 0.7, ease: "easeOut" }}
+        style={{
+          originX: 1,
+          position: "absolute", bottom: 0, left: 0, right: 0,
+          height: 1,
+          background: "linear-gradient(90deg, transparent, rgba(34,211,238,0.4), rgba(99,102,241,0.6), transparent)",
+        }}
+      />
+    </div>
+  );
+}
 
 export function Hero() {
-  const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true });
 
-  const scrollToAbout = () => {
-    document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
-  };
+  const firstName = useGlitchText("DANIEL", inView);
+  const lastName  = useGlitchText("VENTURA", inView);
+
+  const scrollNext = () =>
+    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: "var(--bg-base)" }}
-    >
-      {/* R3F particle field background */}
+    <div id="hero" className="slide-section" ref={ref} style={{ background: "var(--bg-base)" }}>
+      {/* Particle field */}
       <HeroCanvas />
 
-      {/* Radial glow behind text */}
+      {/* Deep radial glow behind text */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(99,102,241,0.12) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 60% at 50% 55%, rgba(99,102,241,0.11) 0%, transparent 70%)",
         }}
         aria-hidden
       />
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-        <motion.div
-          variants={reduced ? undefined : stagger.container}
-          initial="hidden"
-          animate="show"
+      <ViewportBorder />
+
+      {/* ── Top bar ── */}
+      <div className="absolute top-0 inset-x-0 flex items-center justify-between px-8 py-6 z-10">
+        <motion.span
+          initial={{ opacity: 0, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.4, duration: 0.5 }}
+          className="text-xs font-semibold tracking-[0.3em] uppercase"
+          style={{ color: "var(--text-muted)" }}
         >
-          {/* Eyebrow */}
-          <motion.div
-            variants={reduced ? undefined : stagger.item}
-            className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border text-xs font-semibold tracking-widest uppercase"
+          Portfolio
+        </motion.span>
+
+        {/* Status badge */}
+        <motion.div
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.4, duration: 0.5 }}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium"
+          style={{
+            borderColor: "rgba(34,211,238,0.3)",
+            background: "rgba(34,211,238,0.06)",
+            color: "var(--accent-cyan)",
+          }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full animate-status-blink" style={{ background: "var(--accent-cyan)" }} />
+          Available for Senior Roles
+        </motion.div>
+      </div>
+
+      {/* ── Main content ── */}
+      <div className="relative z-10 h-full flex flex-col justify-center px-8 sm:px-14 lg:px-20">
+
+        {/* First name — top-left */}
+        <motion.div
+          initial={{ opacity: 0, x: -60 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <div
+            className="font-black leading-none tracking-tight select-none"
             style={{
-              borderColor: "rgba(99,102,241,0.35)",
-              background: "rgba(99,102,241,0.08)",
-              color: "var(--accent-cyan)",
+              fontSize: "clamp(4rem, 17vw, 18rem)",
+              color: "#f1f5f9",
+              fontFamily: "var(--font-sans)",
+              letterSpacing: "-0.04em",
             }}
+            aria-label="Daniel"
           >
-            <span
-              className="w-1.5 h-1.5 rounded-full animate-pulse"
-              style={{ background: "var(--accent-cyan)" }}
-            />
-            Available for Senior Roles
+            {firstName.split("").map((ch, i) => (
+              <span
+                key={i}
+                className="glitch-char"
+                style={{ color: ch === "░" || ch === "▒" ? "rgba(99,102,241,0.5)" : undefined }}
+              >
+                {ch}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Last name — offset right */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="self-end sm:self-start sm:pl-[8vw]"
+        >
+          <div
+            className="font-black leading-none tracking-tight select-none text-gradient-indigo"
+            style={{
+              fontSize: "clamp(4rem, 17vw, 18rem)",
+              fontFamily: "var(--font-sans)",
+              letterSpacing: "-0.04em",
+            }}
+            aria-label="Ventura"
+          >
+            {lastName.split("").map((ch, i) => (
+              <span key={i} className="glitch-char">
+                {ch}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Divider line */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.7 }}
+          style={{
+            originX: 0,
+            height: 1,
+            marginTop: "2rem",
+            marginBottom: "1.5rem",
+            background: "linear-gradient(90deg, rgba(99,102,241,0.5), rgba(34,211,238,0.3), transparent)",
+          }}
+        />
+
+        {/* Subtitle row */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.85 }}
+          >
+            <p className="text-lg sm:text-xl font-medium" style={{ color: "var(--text-secondary)" }}>
+              {personal.title}
+            </p>
+            <p className="text-xs sm:text-sm tracking-[0.2em] uppercase mt-1" style={{ color: "var(--text-muted)" }}>
+              {personal.tagline}
+            </p>
           </motion.div>
-
-          {/* Name */}
-          <motion.h1
-            variants={reduced ? undefined : stagger.item}
-            className="text-5xl sm:text-6xl lg:text-8xl font-bold tracking-tight leading-none"
-          >
-            <span className="text-gradient-subtle">{personal.name.split(" ")[0]} </span>
-            <span className="text-gradient-indigo">{personal.name.split(" ")[1]}</span>
-          </motion.h1>
-
-          {/* Title */}
-          <motion.p
-            variants={reduced ? undefined : stagger.item}
-            className="mt-5 text-lg sm:text-xl lg:text-2xl font-medium"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            {personal.title}
-          </motion.p>
-
-          {/* Tagline */}
-          <motion.p
-            variants={reduced ? undefined : stagger.item}
-            className="mt-3 text-sm sm:text-base tracking-widest uppercase"
-            style={{ color: "var(--text-muted)" }}
-          >
-            {personal.tagline}
-          </motion.p>
 
           {/* CTAs */}
           <motion.div
-            variants={reduced ? undefined : stagger.item}
-            className="mt-10 flex flex-wrap items-center justify-center gap-4"
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 1.0 }}
+            className="flex items-center gap-3"
           >
             <a
               href={`mailto:${personal.email}`}
-              className="group px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(99,102,241,0.4)]"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_28px_rgba(99,102,241,0.45)]"
               style={{ background: "var(--accent-indigo)" }}
             >
               Get in Touch
             </a>
-            <button
-              onClick={scrollToAbout}
-              className="px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 border"
-              style={{
-                color: "var(--text-secondary)",
-                borderColor: "var(--border-subtle)",
-                background: "rgba(255,255,255,0.03)",
-              }}
-            >
-              View My Work
-            </button>
-          </motion.div>
-
-          {/* Social links */}
-          <motion.div
-            variants={reduced ? undefined : stagger.item}
-            className="mt-8 flex items-center justify-center gap-5"
-          >
             <a
               href={personal.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              className="transition-colors hover:text-slate-100"
-              style={{ color: "var(--text-muted)" }}
+              className="p-2.5 rounded-xl border transition-colors hover:border-white/20 hover:bg-white/6"
+              style={{ borderColor: "var(--border-subtle)", color: "var(--text-muted)" }}
             >
-              <GitHubIcon className="w-5 h-5" />
+              <GitHubIcon className="w-4.5 h-4.5" />
             </a>
             <a
               href={personal.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="transition-colors hover:text-slate-100"
-              style={{ color: "var(--text-muted)" }}
+              className="p-2.5 rounded-xl border transition-colors hover:border-white/20 hover:bg-white/6"
+              style={{ borderColor: "var(--border-subtle)", color: "var(--text-muted)" }}
             >
-              <LinkedInIcon className="w-5 h-5" />
+              <LinkedInIcon className="w-4.5 h-4.5" />
             </a>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Scroll hint */}
+      {/* ── Scroll hint ── */}
       <motion.button
-        onClick={scrollToAbout}
+        onClick={scrollNext}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs tracking-widest uppercase transition-colors hover:text-slate-300"
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ delay: 1.6, duration: 0.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[10px] tracking-[0.25em] uppercase transition-colors hover:text-slate-300 z-10"
         style={{ color: "var(--text-muted)" }}
-        aria-label="Scroll to about section"
+        aria-label="Next section"
       >
         <span>Scroll</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ArrowDown className="w-4 h-4" />
+          <ArrowDown className="w-3.5 h-3.5" />
         </motion.div>
       </motion.button>
-
-      {/* Bottom fade to next section */}
-      <div
-        className="absolute bottom-0 inset-x-0 h-32 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent, var(--bg-base))",
-        }}
-        aria-hidden
-      />
-    </section>
+    </div>
   );
 }

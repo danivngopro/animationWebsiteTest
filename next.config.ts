@@ -35,6 +35,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Produces a self-contained build for Docker deployment.
+  // The .next/standalone directory contains everything needed to run.
+  output: "standalone",
+
   async headers() {
     return [
       {

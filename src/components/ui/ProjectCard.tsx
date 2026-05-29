@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ExternalLink, Construction } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { TechBadge } from "./TechBadge";
 import type { Project } from "@/lib/data";
 import { cn } from "@/lib/utils";
@@ -12,8 +12,6 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
-  const isTodo = project.status === "TODO";
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -41,32 +39,24 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         <h3 className="text-base font-semibold text-slate-100 leading-snug">
           {project.title}
         </h3>
-        {isTodo ? (
-          <span className="shrink-0 flex items-center gap-1 text-xs text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded-full px-2 py-0.5">
-            <Construction className="w-3 h-3" />
-            TODO
-          </span>
-        ) : (
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            className="shrink-0 p-1.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors"
-            aria-label={`View ${project.title}`}
-          >
-            <ExternalLink className="w-4 h-4" />
-          </motion.button>
-        )}
+        <motion.span
+          whileHover={{ scale: 1.1 }}
+          className="shrink-0 flex items-center gap-1 text-xs rounded-full px-2 py-0.5"
+          style={{
+            background: "rgba(99,102,241,0.12)",
+            color: "var(--accent-indigo)",
+            border: "1px solid rgba(99,102,241,0.2)",
+          }}
+        >
+          <ExternalLink className="w-3 h-3" />
+          {project.year}
+        </motion.span>
       </div>
 
       {/* Description */}
       <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
         {project.description}
       </p>
-
-      {isTodo && (
-        <p className="text-xs italic" style={{ color: "var(--text-muted)" }}>
-          {project.note}
-        </p>
-      )}
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mt-auto pt-2">

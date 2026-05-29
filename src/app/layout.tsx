@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Syncopate } from "next/font/google";
+import { VenturaAIChat } from "@/components/ventura-ai/VenturaAIChat";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body>
         {children}
+        <VenturaAIChat />
       </body>
     </html>
   );

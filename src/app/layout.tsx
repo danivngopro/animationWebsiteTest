@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Syncopate } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -12,6 +12,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
+});
+
+const syncopate = Syncopate({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-syncopate",
   display: "swap",
 });
 
@@ -65,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // server/client HTML attribute mismatches from browser extensions.
     <html
       lang="en"
-      className={cn(geistSans.variable, geistMono.variable, "font-sans")}
+      className={cn(geistSans.variable, geistMono.variable, syncopate.variable, "font-sans")}
       suppressHydrationWarning
     >
       <body>

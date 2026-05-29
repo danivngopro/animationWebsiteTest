@@ -1,3 +1,5 @@
+import { ClientSpaceBackground } from "@/components/three/ClientSpaceBackground";
+import { IntroOverlay } from "@/components/sections/IntroOverlay";
 import { SlideSidebar } from "@/components/layout/SlideSidebar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
@@ -17,6 +19,12 @@ import { Contact } from "@/components/sections/Contact";
 export default function Home() {
   return (
     <>
+      {/* Full-screen intro animation — captured scroll, exits on completion */}
+      <IntroOverlay />
+
+      {/* Fixed galaxy canvas behind all content */}
+      <ClientSpaceBackground />
+
       {/* Fixed right-side navigation sidebar */}
       <SlideSidebar />
 

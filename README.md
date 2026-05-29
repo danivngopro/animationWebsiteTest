@@ -16,46 +16,50 @@ Inspired by [remix.run](https://remix.run) and high-end agency landing pages: hu
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 15 App Router + `output: standalone` |
-| Language | TypeScript 5 (strict) |
-| Styling | Tailwind CSS v4 + CSS custom properties |
-| Components | shadcn/ui (base-nova) |
-| Animation | Motion for React (whileInView, AnimatePresence, useInView) |
-| 3D / WebGL | React Three Fiber + Drei (hero particle sphere) |
-| Form validation | Zod + react-hook-form |
-| Icons | lucide-react + custom brand SVG icons |
-| Deployment | Docker (multi-stage) + Nginx reverse proxy |
+| Layer           | Technology                                                 |
+| --------------- | ---------------------------------------------------------- |
+| Framework       | Next.js 15 App Router + `output: standalone`               |
+| Language        | TypeScript 5 (strict)                                      |
+| Styling         | Tailwind CSS v4 + CSS custom properties                    |
+| Components      | shadcn/ui (base-nova)                                      |
+| Animation       | Motion for React (whileInView, AnimatePresence, useInView) |
+| 3D / WebGL      | React Three Fiber + Drei (hero particle sphere)            |
+| Form validation | Zod + react-hook-form                                      |
+| Icons           | lucide-react + custom brand SVG icons                      |
+| Deployment      | Docker (multi-stage) + Nginx reverse proxy                 |
 
 ---
 
 ## Animation System
 
 ### Layout Architecture
+
 - **CSS `scroll-snap-type: y mandatory`** on `<html>` — each `.slide-section` is `height: 100dvh` and `scroll-snap-align: start`
 - Sections snap into place on scroll. No JS scroll-hijacking, no Lenis needed.
 - `scrollIntoView({ behavior: 'smooth' })` used for programmatic navigation from the sidebar and autoplay.
 
 ### Per-section Techniques
-| Section | Animation Technique |
-|---|---|
-| **Hero** | Character-scramble glitch text via `useGlitchText` hook, split name reveal (translateX from left/right), neon border trace via Motion `scaleX`, floating scroll badge |
-| **About** | Count-up stats via `useCountUp` hook with `easeOutExpo`, word-reveal heading, pillar card scale-in stagger |
-| **Experience** | Giant job title in `7vw` font, `AnimatePresence` blur+slide transitions between jobs, animated segment selector |
-| **Skills** | Bento grid scale-in, expand/collapse per-category with `AnimatePresence`, badge scatter-in with stagger |
-| **AI Workflow** | Spotlight hover glow, watermark "AI" text, staggered card reveals |
-| **Security** | Hexagonal CSS grid background, animated scan line, shield entrance spring animation |
-| **Projects** | Project number watermark, `AnimatePresence` blur+slide between projects, dot selector |
-| **Education** | Oversized degree names, hover lift on cards, gradient divider |
-| **Contact** | Split-screen slide-in, Zod-validated form, animated submit button |
+
+| Section         | Animation Technique                                                                                                                                                   |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hero**        | Character-scramble glitch text via `useGlitchText` hook, split name reveal (translateX from left/right), neon border trace via Motion `scaleX`, floating scroll badge |
+| **About**       | Count-up stats via `useCountUp` hook with `easeOutExpo`, word-reveal heading, pillar card scale-in stagger                                                            |
+| **Experience**  | Giant job title in `7vw` font, `AnimatePresence` blur+slide transitions between jobs, animated segment selector                                                       |
+| **Skills**      | Bento grid scale-in, expand/collapse per-category with `AnimatePresence`, badge scatter-in with stagger                                                               |
+| **AI Workflow** | Spotlight hover glow, watermark "AI" text, staggered card reveals                                                                                                     |
+| **Security**    | Hexagonal CSS grid background, animated scan line, shield entrance spring animation                                                                                   |
+| **Projects**    | Project number watermark, `AnimatePresence` blur+slide between projects, dot selector                                                                                 |
+| **Education**   | Oversized degree names, hover lift on cards, gradient divider                                                                                                         |
+| **Contact**     | Split-screen slide-in, Zod-validated form, animated submit button                                                                                                     |
 
 ### Sidebar & Autoplay
+
 - **`SlideSidebar`** — fixed right-side dots. Hover expands to show section labels. `IntersectionObserver` tracks active section (≥45% in view).
 - **Autoplay** — RAF-based circular SVG progress ring. Advances every 5 seconds. Click to play/pause. Manual dot click resets the timer.
 - **Slide counter** — `01/09` style AnimatePresence counter at the bottom of the sidebar.
 
 ### Reduced Motion
+
 - All `useInView`/`whileInView` transitions respect the user's OS `prefers-reduced-motion` setting via the `useReducedMotion` hook.
 
 ---
@@ -64,14 +68,14 @@ Inspired by [remix.run](https://remix.run) and high-end agency landing pages: hu
 
 All security headers are applied in **`next.config.ts`** (not `layout.tsx`):
 
-| Header | Value |
-|---|---|
-| `Content-Security-Policy` | `default-src 'self'`, restricts scripts, styles, fonts, frames |
-| `X-Frame-Options` | `DENY` — blocks clickjacking |
-| `X-Content-Type-Options` | `nosniff` |
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` |
-| `Permissions-Policy` | Disables camera, mic, geolocation, topics |
+| Header                      | Value                                                          |
+| --------------------------- | -------------------------------------------------------------- |
+| `Content-Security-Policy`   | `default-src 'self'`, restricts scripts, styles, fonts, frames |
+| `X-Frame-Options`           | `DENY` — blocks clickjacking                                   |
+| `X-Content-Type-Options`    | `nosniff`                                                      |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains`                          |
+| `Referrer-Policy`           | `strict-origin-when-cross-origin`                              |
+| `Permissions-Policy`        | Disables camera, mic, geolocation, topics                      |
 
 Contact form uses a **Zod schema** (`lib/schemas.ts`) with a honeypot field (`_hp`). Client-side validation only — a server action must be added before the form sends real email (see `TODO` in Contact section and `.env.local.example`).
 
@@ -83,13 +87,13 @@ No `dangerouslySetInnerHTML` anywhere. No secrets committed.
 
 The following sections were designed with direct reference to 21st.dev component patterns:
 
-| Section | Pattern Inspiration | File |
-|---|---|---|
-| **Sidebar** | `vertical-slide-nav` — floating dot nav with label reveal | `SlideSidebar.tsx` |
-| **Hero** | `hero-split-text` — oversized split name layout | `Hero.tsx` |
-| **Skills** | `bento-grid-expand` — expandable icon-led bento grid | `Skills.tsx` |
-| **AI Workflow** | `spotlight-feature-card` — numbered cards with radial hover glow | `AIWorkflow.tsx` |
-| **Security** | `numbered-feature-grid` — icon + tag card layout | `Security.tsx` |
+| Section                   | Pattern Inspiration                                                  | File                             |
+| ------------------------- | -------------------------------------------------------------------- | -------------------------------- |
+| **Sidebar**               | `vertical-slide-nav` — floating dot nav with label reveal            | `SlideSidebar.tsx`               |
+| **Hero**                  | `hero-split-text` — oversized split name layout                      | `Hero.tsx`                       |
+| **Skills**                | `bento-grid-expand` — expandable icon-led bento grid                 | `Skills.tsx`                     |
+| **AI Workflow**           | `spotlight-feature-card` — numbered cards with radial hover glow     | `AIWorkflow.tsx`                 |
+| **Security**              | `numbered-feature-grid` — icon + tag card layout                     | `Security.tsx`                   |
 | **Projects / Experience** | `animate-presence-carousel` — blur-slide AnimatePresence transitions | `Projects.tsx`, `Experience.tsx` |
 
 > The 21st.dev MCP registry was queried during development. Search resolution was unavailable in this environment; components are original implementations inspired by the visual patterns.
@@ -136,6 +140,7 @@ sudo ln -s /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/
 ```
 
 Get a free SSL certificate:
+
 ```bash
 sudo certbot --nginx -d portfolio.emperordanivn.com
 sudo nginx -t && sudo systemctl reload nginx

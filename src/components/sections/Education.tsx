@@ -13,10 +13,7 @@ export function Education() {
       id="education"
       className="slide-section"
       ref={ref}
-      style={{
-        background: "var(--bg-surface)",
-        backgroundImage: "radial-gradient(ellipse 60% 60% at 50% 100%, rgba(99,102,241,0.07) 0%, transparent 70%)",
-      }}
+      style={{ background: "rgba(5,4,12,0.52)" }}
     >
       <div className="h-full flex flex-col justify-center px-8 sm:px-14 lg:px-20 max-w-[1400px] mx-auto w-full gap-12">
 
@@ -48,16 +45,28 @@ export function Education() {
           {education.map((item, i) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
-              whileHover={{ y: -6, borderColor: "rgba(99,102,241,0.4)" }}
-              className="p-8 rounded-2xl border transition-all duration-300"
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              whileHover={{ y: -4 }}
+              transition={{
+                opacity: { duration: 0.6, delay: 0.3 + i * 0.15 },
+                y: { type: "spring", stiffness: 600, damping: 30 },
+              }}
+              className="relative p-8 rounded-2xl border overflow-hidden group transition-colors duration-100"
               style={{
                 background: "var(--bg-card)",
-                borderColor: "var(--border-subtle)",
+                borderColor: "rgba(255,255,255,0.07)",
               }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(99,102,241,0.4)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.07)"; }}
             >
+              {/* Spotlight glow */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-100 pointer-events-none"
+                style={{ background: "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(99,102,241,0.1) 0%, transparent 70%)" }}
+                aria-hidden
+              />
+
               {/* Period badge */}
               <span
                 className="inline-block text-xs font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full mb-5"

@@ -1,26 +1,20 @@
 "use client";
 
-import { useRef } from "react";
-import dynamic from "next/dynamic";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Download } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/BrandIcons";
 import { useGlitchText } from "@/hooks/useGlitchText";
 import { personal } from "@/lib/data";
 
-const HeroCanvas = dynamic(
-  () => import("@/components/three/HeroCanvas").then((m) => m.HeroCanvas),
-  { ssr: false }
-);
-
 // ─── Animated neon border that traces the viewport edges ──────────────
-function ViewportBorder() {
+function ViewportBorder({ active }: { active: boolean }) {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
       {/* Top edge */}
       <motion.div
         initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
+        animate={active ? { scaleX: 1 } : {}}
         transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
         style={{
           originX: 0,
@@ -32,7 +26,7 @@ function ViewportBorder() {
       {/* Bottom edge */}
       <motion.div
         initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
+        animate={active ? { scaleX: 1 } : {}}
         transition={{ duration: 1.2, delay: 0.7, ease: "easeOut" }}
         style={{
           originX: 1,
@@ -46,19 +40,29 @@ function ViewportBorder() {
 }
 
 export function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
 
-  const firstName = useGlitchText("DANIEL", inView);
-  const lastName  = useGlitchText("VENTURA", inView);
+  // Gate all animations on the intro overlay completing (first scroll)
+  const [introReady, setIntroReady] = useState(false);
+  useEffect(() => {
+    const handler = () => setIntroReady(true);
+    window.addEventListener("intro-exit", handler, { once: true });
+    return () => window.removeEventListener("intro-exit", handler);
+  }, []);
+
+  const active    = introReady && inView;
+  const firstName = useGlitchText("DANIEL",  active);
+  const lastName  = useGlitchText("VENTURA", active);
 
   const scrollNext = () =>
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+  const scrollContact = () =>
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <div id="hero" className="slide-section" ref={ref} style={{ background: "var(--bg-base)" }}>
-      {/* Particle field */}
-      <HeroCanvas />
+    <div id="hero" className="slide-section" ref={ref} style={{ background: "transparent" }}>
+      {/* Background handled by SpaceBackground (fixed canvas) */}
 
       {/* Deep radial glow behind text */}
       <div
@@ -70,13 +74,13 @@ export function Hero() {
         aria-hidden
       />
 
-      <ViewportBorder />
+      <ViewportBorder active={active} />
 
       {/* ── Top bar ── */}
       <div className="absolute top-0 inset-x-0 flex items-center justify-between px-8 py-6 z-10">
         <motion.span
           initial={{ opacity: 0, x: -16 }}
-          animate={{ opacity: 1, x: 0 }}
+          animate={active ? { opacity: 1, x: 0 } : {}}
           transition={{ delay: 1.4, duration: 0.5 }}
           className="text-xs font-semibold tracking-[0.3em] uppercase"
           style={{ color: "var(--text-muted)" }}
@@ -84,20 +88,27 @@ export function Hero() {
           Portfolio
         </motion.span>
 
-        {/* Status badge */}
+        {/* Status badges */}
         <motion.div
           initial={{ opacity: 0, x: 16 }}
-          animate={{ opacity: 1, x: 0 }}
+          animate={active ? { opacity: 1, x: 0 } : {}}
           transition={{ delay: 1.4, duration: 0.5 }}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium"
-          style={{
-            borderColor: "rgba(34,211,238,0.3)",
-            background: "rgba(34,211,238,0.06)",
-            color: "var(--accent-cyan)",
-          }}
+          className="flex flex-col items-end gap-2"
         >
-          <span className="w-1.5 h-1.5 rounded-full animate-status-blink" style={{ background: "var(--accent-cyan)" }} />
-          Available for Senior Roles
+          {["Available for Senior Roles", "Available for Leading Roles"].map((label) => (
+            <div
+              key={label}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium"
+              style={{
+                borderColor: "rgba(34,211,238,0.3)",
+                background: "rgba(34,211,238,0.06)",
+                color: "var(--accent-cyan)",
+              }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full animate-status-blink" style={{ background: "var(--accent-cyan)" }} />
+              {label}
+            </div>
+          ))}
         </motion.div>
       </div>
 
@@ -107,7 +118,7 @@ export function Hero() {
         {/* First name — top-left */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
+          animate={active ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <div
@@ -135,7 +146,7 @@ export function Hero() {
         {/* Last name — offset right */}
         <motion.div
           initial={{ opacity: 0, x: 60 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
+          animate={active ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="self-end sm:self-start sm:pl-[8vw]"
         >
@@ -159,7 +170,7 @@ export function Hero() {
         {/* Divider line */}
         <motion.div
           initial={{ scaleX: 0 }}
-          animate={inView ? { scaleX: 1 } : {}}
+          animate={active ? { scaleX: 1 } : {}}
           transition={{ duration: 0.7, delay: 0.7 }}
           style={{
             originX: 0,
@@ -174,7 +185,7 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={active ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.85 }}
           >
             <p className="text-lg sm:text-xl font-medium" style={{ color: "var(--text-secondary)" }}>
@@ -188,16 +199,25 @@ export function Hero() {
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={active ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 1.0 }}
             className="flex items-center gap-3"
           >
-            <a
-              href={`mailto:${personal.email}`}
+            <button
+              onClick={scrollContact}
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_28px_rgba(99,102,241,0.45)]"
               style={{ background: "var(--accent-indigo)" }}
             >
               Get in Touch
+            </button>
+            <a
+              href="/Daniel-Ventura-Resume.pdf"
+              download="Daniel-Ventura-Resume.pdf"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 hover:border-white/20 hover:bg-white/8"
+              style={{ border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
+            >
+              <Download className="w-3.5 h-3.5" />
+              Resume
             </a>
             <a
               href={personal.github}
@@ -227,7 +247,7 @@ export function Hero() {
       <motion.button
         onClick={scrollNext}
         initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
+        animate={active ? { opacity: 1 } : {}}
         transition={{ delay: 1.6, duration: 0.5 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[10px] tracking-[0.25em] uppercase transition-colors hover:text-slate-300 z-10"
         style={{ color: "var(--text-muted)" }}

@@ -276,6 +276,24 @@ body {
   background-position: 0 0, 0 35px, 20px -35px, -20px 0px;
 }
 
+/* ─── Intro overlay scroll wheel indicator ───────────────────────── */
+@keyframes intro-scroll-wheel {
+  0%   { top: 7px; opacity: 1; }
+  100% { top: 24px; opacity: 0; }
+}
+
+.intro-wheel {
+  width: 3px;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  animation: intro-scroll-wheel 1.5s infinite;
+}
+
 /* ─── Glitch text (applied by GlitchText component) ──────────────── */
 .glitch-char {
   display: inline-block;

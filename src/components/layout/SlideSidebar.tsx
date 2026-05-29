@@ -138,7 +138,16 @@ export function SlideSidebar() {
       {SLIDE_IDS.map((id, i) => {
         const isActive = id === current;
         return (
-          <div key={id} className="relative flex items-center justify-end gap-3">
+          // Entire row is the click target — label text and dot both navigate
+          <motion.button
+            key={id}
+            onClick={() => goTo(id)}
+            aria-label={`Go to ${SLIDE_LABELS[id]}`}
+            aria-pressed={isActive}
+            whileHover={{ x: -2 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="relative flex items-center justify-end gap-3 py-1 pl-2 rounded-lg"
+          >
             {/* Label — slides in from right on hover */}
             <AnimatePresence>
               {hovered && (
@@ -147,7 +156,7 @@ export function SlideSidebar() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 8 }}
                   transition={{ duration: 0.18, delay: i * 0.03 }}
-                  className="text-xs font-medium whitespace-nowrap pointer-events-none"
+                  className="text-xs font-medium whitespace-nowrap"
                   style={{
                     color: isActive ? "var(--accent-cyan)" : "var(--text-muted)",
                   }}
@@ -158,14 +167,7 @@ export function SlideSidebar() {
             </AnimatePresence>
 
             {/* Dot */}
-            <motion.button
-              onClick={() => goTo(id)}
-              aria-label={`Go to ${SLIDE_LABELS[id]}`}
-              whileHover={{ scale: 1.4 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="relative flex items-center justify-center"
-              style={{ width: 12, height: 12 }}
-            >
+            <div className="flex items-center justify-center" style={{ width: 12, height: 12 }}>
               <motion.div
                 animate={{
                   width: isActive ? 10 : 6,
@@ -180,8 +182,8 @@ export function SlideSidebar() {
                 transition={{ duration: 0.25 }}
                 className="rounded-full"
               />
-            </motion.button>
-          </div>
+            </div>
+          </motion.button>
         );
       })}
 

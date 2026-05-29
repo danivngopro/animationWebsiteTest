@@ -3,12 +3,12 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { TechBadge } from "@/components/ui/TechBadge";
 import { projects } from "@/lib/data";
 
 export function Projects() {
   const [active, setActive] = useState(0);
   const [dir, setDir] = useState(1);
+  const [hoveredTag, setHoveredTag] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
@@ -20,7 +20,7 @@ export function Projects() {
   };
 
   return (
-    <div id="projects" className="slide-section" ref={ref} style={{ background: "var(--bg-base)" }}>
+    <div id="projects" className="slide-section" ref={ref} style={{ background: "rgba(5,5,12,0.50)" }}>
       {/* Project number watermark */}
       <div className="absolute inset-0 flex items-center justify-end pr-10 pointer-events-none overflow-hidden" aria-hidden>
         <span
@@ -124,9 +124,27 @@ export function Projects() {
                 {project.description}
               </p>
 
-              {/* Tags */}
+              {/* Tags with hover highlight */}
               <div className="mt-5 flex flex-wrap gap-2">
-                {project.tags.map((t) => <TechBadge key={t} label={t} variant="ghost" />)}
+                {project.tags.map((t) => (
+                  <motion.span
+                    key={t}
+                    onHoverStart={() => setHoveredTag(t)}
+                    onHoverEnd={() => setHoveredTag(null)}
+                    whileHover={{ scale: 1.08, y: -2 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                    className="inline-block px-3 py-1 text-xs font-semibold rounded-full cursor-default"
+                    style={{
+                      background: hoveredTag === t ? "rgba(99,102,241,0.2)" : "rgba(99,102,241,0.08)",
+                      color: hoveredTag === t ? "#a5b4fc" : "var(--text-secondary)",
+                      border: `1px solid ${hoveredTag === t ? "rgba(99,102,241,0.5)" : "rgba(99,102,241,0.2)"}`,
+                      boxShadow: hoveredTag === t ? "0 0 12px rgba(99,102,241,0.3)" : "none",
+                      transition: "background 0.1s, color 0.1s, border-color 0.1s, box-shadow 0.1s",
+                    }}
+                  >
+                    {t}
+                  </motion.span>
+                ))}
               </div>
             </motion.div>
           </AnimatePresence>

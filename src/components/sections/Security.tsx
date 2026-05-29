@@ -40,11 +40,11 @@ export function Security() {
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
   return (
-    <div id="security" className="slide-section hex-bg" ref={ref}>
+    <div id="security" className="slide-section hex-bg" ref={ref} style={{ background: "transparent" }}>
       <ScanLine />
 
-      {/* Dark overlay over hex bg */}
-      <div className="absolute inset-0" style={{ background: "rgba(7,7,15,0.82)" }} aria-hidden />
+      {/* Semi-transparent overlay — hex pattern + galaxy both show through */}
+      <div className="absolute inset-0" style={{ background: "rgba(4,4,10,0.55)" }} aria-hidden />
 
       <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-10 max-w-[1400px] mx-auto w-full">
 
@@ -95,10 +95,24 @@ export function Security() {
                 key={m.title}
                 initial={{ opacity: 0, x: -16 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.25 + i * 0.06 }}
-                className="relative flex items-start gap-3 p-4 rounded-xl border overflow-hidden group hover:border-indigo-500/30 transition-all duration-200"
-                style={{ background: "rgba(17,17,37,0.7)", borderColor: "var(--border-subtle)" }}
+                whileHover={{ y: -3 }}
+                transition={{
+                  opacity: { duration: 0.4, delay: 0.25 + i * 0.06 },
+                  x: { duration: 0.4, delay: 0.25 + i * 0.06 },
+                  y: { type: "spring", stiffness: 600, damping: 30 },
+                }}
+                className="relative flex items-start gap-3 p-4 rounded-xl border overflow-hidden group transition-colors duration-100"
+                style={{ background: "rgba(17,17,37,0.7)", borderColor: "rgba(255,255,255,0.07)" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(99,102,241,0.4)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.07)"; }}
               >
+                {/* Spotlight glow on hover */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-100 pointer-events-none"
+                  style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(99,102,241,0.12) 0%, transparent 70%)" }}
+                  aria-hidden
+                />
+
                 {/* Index watermark */}
                 <span
                   className="absolute bottom-2 right-3 text-4xl font-black opacity-[0.04] select-none tabular-nums"

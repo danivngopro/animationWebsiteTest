@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Digital Marketing Website Template - AI Editable & 3D Immersive
+    </title>
+    <meta
+      name="description"
+      content="Discover a next-gen digital marketing website template featuring immersive 3D WebGL backgrounds. Optimized for AI editing."
+    />
+    <meta
+      name="keywords"
+      content="digital marketing website template, digital marketing template AI editing, website template, AI website builder, 3D agency template, interactive portfolio, responsive web design, creative agency theme"
+    />
+    <meta name="author" content="Digital Marketing Agency" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syncopate:wght@400;700&display=swap");
+
+      :root {
+        --depth: 30px;
+        --layers: 20;
+        --text-color: #ffffff;
+        --side-color: #3b82f6;
+        /* Blue-500 */
+        --shadow-color: rgba(0, 0, 0, 0.5);
+      }
+
+      body {
+        background-color: #000000;
+        color: white;
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+        margin: 0;
+      }
+
+      /* --- Background Canvas --- */
+      #bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        /* Behind everything */
+        pointer-events: none;
+        /* Let scroll pass through */
+      }
+
+      /* --- Animation Wrapper --- */
+      .animation-wrapper {
+        position: relative;
+        height: 200vh;
+        width: 100%;
+      }
+
+      /* --- 3D Scene Container --- */
+      .sticky-container {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        perspective: 1000px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        z-index: 10;
+      }
+
+      /* --- The 3D Text Wrapper --- */
+      .stage {
+        position: relative;
+        transform-style: preserve-3d;
+        /* Initial state: Completely flat (90deg) */
+        transform: rotateX(90deg) rotateY(0deg);
+        transition: transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+
+      .word-3d {
+        font-family: "Syncopate", sans-serif;
+        font-weight: 900;
+        font-size: clamp(3rem, 8vw, 8rem);
+        text-transform: uppercase;
+        position: relative;
+        transform-style: preserve-3d;
+        white-space: nowrap;
+        letter-spacing: -0.05em;
+        cursor: default;
+      }
+
+      /* The Layers creating the extrusion */
+      .layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backface-visibility: hidden;
+      }
+
+      /* Front Face */
+      .layer:first-child {
+        color: var(--text-color);
+        z-index: 100;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+      }
+
+      /* Side/Back Faces */
+      .layer:not(:first-child) {
+        color: var(--side-color);
+        filter: brightness(0.6);
+      }
+
+      /* Shadow Layer */
+      .layer:last-child {
+        color: transparent;
+        text-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        filter: blur(8px);
+        opacity: 0.5;
+      }
+
+      /* --- Content Layout --- */
+      .content-section {
+        position: relative;
+        z-index: 20;
+        /* Semi-transparent background to see galaxy behind */
+        background-color: rgba(5, 5, 5, 0.85);
+        backdrop-filter: blur(8px);
+        padding-top: 100px;
+        box-shadow: 0 -50px 100px rgba(0, 0, 0, 0.8);
+        margin-top: -20vh;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .scroll-indicator {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+
+      .mouse {
+        width: 30px;
+        height: 50px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        position: relative;
+      }
+
+      .wheel {
+        width: 4px;
+        height: 8px;
+        background: white;
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+        animation: scrollWheel 1.5s infinite;
+      }
+
+      @keyframes scrollWheel {
+        0% {
+          top: 8px;
+          opacity: 1;
+        }
+
+        100% {
+          top: 25px;
+          opacity: 0;
+        }
+      }
+
+      /* Card Hover Effects */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition:
+          transform 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(59, 130, 246, 0.5);
+      }
+
+      .glow-text {
+        background: linear-gradient(to right, #fff, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Contact Form Styles */
+      .contact-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .contact-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+      }
+
+      .contact-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Background Galaxy Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Animation Wrapper: Holds the sticky scene -->
+    <div class="animation-wrapper">
+      <div class="sticky-container">
+        <!-- The 3D Object -->
+        <div class="stage" id="stage">
+          <div class="word-3d" id="word-target">DIGITAL AGENCY</div>
+        </div>
+
+        <div class="scroll-indicator" id="scrollIndicator">
+          <span class="text-xs tracking-widest uppercase text-gray-400"
+            >Scroll to Initiate</span
+          >
+          <div class="mouse">
+            <div class="wheel"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actual Content Below -->
+    <section class="content-section min-h-screen">
+      <div class="max-w-7xl mx-auto px-6 py-24">
+        <!-- Intro Text -->
+        <div
+          class="text-center mb-24 opacity-0 transition-opacity duration-1000"
+          id="introContent"
+        >
+          <h2 class="text-4xl md:text-6xl font-bold mb-6 font-['Syncopate']">
+            We Build New <span class="glow-text">Realities</span>
+          </h2>
+          <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            We don't just write code. We manipulate pixels and logic to
+            construct immersive digital experiences that define brands.
+          </p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+          <!-- Card 1 -->
+          <div class="glass-card p-8 rounded-2xl">
+            <div
+              class="w-12 h-12 bg-blue-900/30 rounded-lg flex items-center justify-center mb-6 text-blue-400"
+            >
+              <i class="fas fa-cube text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">3D WebGL</h3>
+            <p class="text-gray-400">
+              Interactive 3D environments that run smoothly in the browser. High
+              impact visual storytelling.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="glass-card p-8 rounded-2xl">
+            <div
+              class="w-12 h-12 bg-purple-900/30 rounded-lg flex items-center justify-center mb-6 text-purple-400"
+            >
+              <i class="fas fa-mobile-alt text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Responsive UI</h3>
+            <p class="text-gray-400">
+              Fluid interfaces that adapt to any glass rectangle. Mobile-first,
+              performance-obsessed design.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="glass-card p-8 rounded-2xl">
+            <div
+              class="w-12 h-12 bg-cyan-900/30 rounded-lg flex items-center justify-center mb-6 text-cyan-400"
+            >
+              <i class="fas fa-rocket text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Brand Strategy</h3>
+            <p class="text-gray-400">
+              Data-driven positioning to launch your product into the market
+              stratosphere.
+            </p>
+          </div>
+        </div>
+
+        <!-- Showcase Strip -->
+        <div class="border-t border-gray-800 pt-24">
+          <div
+            class="flex flex-col md:flex-row justify-between items-end mb-12"
+          >
+            <div>
+              <h3 class="text-3xl font-bold mb-2">Featured Work</h3>
+              <p class="text-gray-500">Selected Projects 2024-2025</p>
+            </div>
+            <button
+              class="mt-4 md:mt-0 px-6 py-3 border border-gray-700 hover:border-white rounded-full transition-colors"
+            >
+              View All Work
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Project 1: Neon Protocol -->
+            <div
+              class="group cursor-pointer relative overflow-hidden rounded-2xl aspect-video bg-gray-900"
+            >
+              <div
+                class="absolute inset-0 bg-blue-900/20 group-hover:bg-blue-900/0 transition-all z-0"
+              ></div>
+
+              <!-- Procedural SVG: Data Graph -->
+              <svg
+                class="w-full h-full opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                viewBox="0 0 800 600"
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="none"
+              >
+                <defs>
+                  <linearGradient
+                    id="gridGrad"
+                    x1="0%"
+                    y1="0%"
+                    x2="0%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2" />
+                    <stop
+                      offset="100%"
+                      stop-color="#000000"
+                      stop-opacity="0.8"
+                    />
+                  </linearGradient>
+                  <pattern
+                    id="smallGrid"
+                    width="40"
+                    height="40"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M 40 0 L 0 0 0 40"
+                      fill="none"
+                      stroke="#3b82f6"
+                      stroke-width="0.5"
+                      opacity="0.3"
+                    />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="#0a0a0a" />
+                <rect width="100%" height="100%" fill="url(#smallGrid)" />
+                <!-- Abstract Chart Line -->
+                <path
+                  d="M0,500 Q100,450 200,480 T400,300 T600,250 T800,100 L800,600 L0,600 Z"
+                  fill="url(#gridGrad)"
+                />
+                <path
+                  d="M0,500 Q100,450 200,480 T400,300 T600,250 T800,100"
+                  fill="none"
+                  stroke="#60a5fa"
+                  stroke-width="3"
+                />
+                <!-- Data Nodes -->
+                <circle cx="200" cy="480" r="6" fill="#60a5fa" />
+                <circle cx="400" cy="300" r="6" fill="#60a5fa" />
+                <circle cx="600" cy="250" r="6" fill="#60a5fa" />
+              </svg>
+
+              <div
+                class="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black to-transparent z-10"
+              >
+                <h4 class="text-xl font-bold">Neon Protocol</h4>
+                <p class="text-blue-400 text-sm">Fintech Dashboard</p>
+              </div>
+            </div>
+
+            <!-- Project 2: Aero Systems -->
+            <div
+              class="group cursor-pointer relative overflow-hidden rounded-2xl aspect-video bg-gray-900"
+            >
+              <div
+                class="absolute inset-0 bg-purple-900/20 group-hover:bg-purple-900/0 transition-all z-0"
+              ></div>
+
+              <!-- Procedural SVG: Aerodynamics -->
+              <svg
+                class="w-full h-full opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                viewBox="0 0 800 600"
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="none"
+              >
+                <defs>
+                  <linearGradient
+                    id="aeroGrad"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="0%"
+                  >
+                    <stop offset="0%" stop-color="#a855f7" stop-opacity="0.1" />
+                    <stop
+                      offset="100%"
+                      stop-color="#e879f9"
+                      stop-opacity="0.3"
+                    />
+                  </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="#110518" />
+                <!-- Streamlines -->
+                <path
+                  d="M-100,200 C200,200 300,100 900,100"
+                  fill="none"
+                  stroke="#a855f7"
+                  stroke-width="1"
+                  opacity="0.5"
+                />
+                <path
+                  d="M-100,300 C200,300 300,200 900,200"
+                  fill="none"
+                  stroke="#c084fc"
+                  stroke-width="2"
+                  opacity="0.7"
+                />
+                <path
+                  d="M-100,400 C200,400 300,300 900,300"
+                  fill="none"
+                  stroke="#e879f9"
+                  stroke-width="1"
+                  opacity="0.5"
+                />
+                <path
+                  d="M-100,500 C200,500 300,400 900,400"
+                  fill="none"
+                  stroke="#a855f7"
+                  stroke-width="1"
+                  opacity="0.3"
+                />
+                <!-- Abstract Wing Shape -->
+                <path
+                  d="M300,250 L600,280 L550,450 L250,350 Z"
+                  fill="url(#aeroGrad)"
+                  stroke="#d8b4fe"
+                  stroke-width="1"
+                />
+              </svg>
+
+              <div
+                class="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black to-transparent z-10"
+              >
+                <h4 class="text-xl font-bold">Aero Systems</h4>
+                <p class="text-purple-400 text-sm">Aerospace Landing Page</p>
+              </div>
+            </div>
+
+            <!-- Project 3: Neural Architecture -->
+            <div
+              class="group cursor-pointer relative overflow-hidden rounded-2xl aspect-video bg-gray-900"
+            >
+              <div
+                class="absolute inset-0 bg-green-900/20 group-hover:bg-green-900/0 transition-all z-0"
+              ></div>
+
+              <!-- Procedural SVG: Network Nodes -->
+              <svg
+                class="w-full h-full opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                viewBox="0 0 800 600"
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="none"
+              >
+                <rect width="100%" height="100%" fill="#021005" />
+                <!-- Connections -->
+                <g stroke="#22c55e" stroke-width="1" opacity="0.4">
+                  <line x1="200" y1="200" x2="400" y2="100" />
+                  <line x1="200" y1="200" x2="400" y2="300" />
+                  <line x1="200" y1="200" x2="100" y2="400" />
+                  <line x1="400" y1="100" x2="600" y2="200" />
+                  <line x1="400" y1="300" x2="600" y2="200" />
+                  <line x1="600" y1="200" x2="700" y2="500" />
+                </g>
+                <!-- Nodes -->
+                <g fill="#4ade80">
+                  <circle cx="200" cy="200" r="15" opacity="0.2" />
+                  <circle cx="200" cy="200" r="5" />
+                  <circle cx="400" cy="100" r="15" opacity="0.2" />
+                  <circle cx="400" cy="100" r="5" />
+                  <circle cx="400" cy="300" r="15" opacity="0.2" />
+                  <circle cx="400" cy="300" r="5" />
+                  <circle cx="600" cy="200" r="20" opacity="0.2" />
+                  <circle cx="600" cy="200" r="8" />
+                  <circle cx="100" cy="400" r="10" opacity="0.2" />
+                  <circle cx="100" cy="400" r="4" />
+                </g>
+              </svg>
+
+              <div
+                class="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black to-transparent z-10"
+              >
+                <h4 class="text-xl font-bold">Neural Architecture</h4>
+                <p class="text-green-400 text-sm">Medical AI Interface</p>
+              </div>
+            </div>
+
+            <!-- Project 4: Quantum Grid -->
+            <div
+              class="group cursor-pointer relative overflow-hidden rounded-2xl aspect-video bg-gray-900"
+            >
+              <div
+                class="absolute inset-0 bg-cyan-900/20 group-hover:bg-cyan-900/0 transition-all z-0"
+              ></div>
+
+              <!-- Procedural SVG: Cyber City -->
+              <svg
+                class="w-full h-full opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                viewBox="0 0 800 600"
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="none"
+              >
+                <defs>
+                  <linearGradient
+                    id="cityGrad"
+                    x1="0%"
+                    y1="100%"
+                    x2="0%"
+                    y2="0%"
+                  >
+                    <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.5" />
+                    <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="#08141c" />
+                <!-- Perspective Grid -->
+                <path
+                  d="M0,400 L800,400 M0,450 L800,450 M0,520 L800,520 M0,600 L800,600"
+                  stroke="#06b6d4"
+                  stroke-width="1"
+                  opacity="0.3"
+                />
+                <path
+                  d="M400,300 L0,600 M400,300 L200,600 M400,300 L600,600 M400,300 L800,600"
+                  stroke="#06b6d4"
+                  stroke-width="1"
+                  opacity="0.3"
+                />
+                <!-- Buildings -->
+                <rect
+                  x="150"
+                  y="250"
+                  width="60"
+                  height="150"
+                  fill="url(#cityGrad)"
+                />
+                <rect
+                  x="230"
+                  y="180"
+                  width="80"
+                  height="220"
+                  fill="url(#cityGrad)"
+                />
+                <rect
+                  x="350"
+                  y="100"
+                  width="100"
+                  height="300"
+                  fill="url(#cityGrad)"
+                  opacity="0.8"
+                />
+                <rect
+                  x="480"
+                  y="220"
+                  width="70"
+                  height="180"
+                  fill="url(#cityGrad)"
+                />
+                <rect
+                  x="580"
+                  y="280"
+                  width="60"
+                  height="120"
+                  fill="url(#cityGrad)"
+                />
+              </svg>
+
+              <div
+                class="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black to-transparent z-10"
+              >
+                <h4 class="text-xl font-bold">Cyber City</h4>
+                <p class="text-cyan-400 text-sm">Smart Infrastructure</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form Section -->
+        <div class="border-t border-gray-800 pt-24 mt-32">
+          <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12">
+              <h3
+                class="text-3xl md:text-4xl font-bold mb-4 font-['Syncopate']"
+              >
+                Get In <span class="glow-text">Touch</span>
+              </h3>
+              <p class="text-gray-400">
+                Ready to launch your next project into orbit? Let's talk.
+              </p>
+            </div>
+
+            <form
+              class="space-y-6"
+              onsubmit="
+                event.preventDefault();
+                alert('Thank you! Your message has been received.');
+              "
+            >
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm text-gray-400 mb-2"
+                    >Your Name</label
+                  >
+                  <input
+                    type="text"
+                    placeholder="John Doe"
+                    class="contact-input w-full px-4 py-3 rounded-lg text-white"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-400 mb-2"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    placeholder="john@company.com"
+                    class="contact-input w-full px-4 py-3 rounded-lg text-white"
+                  />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-400 mb-2">Subject</label>
+                <input
+                  type="text"
+                  placeholder="Project Inquiry"
+                  class="contact-input w-full px-4 py-3 rounded-lg text-white"
+                />
+              </div>
+              <div>
+                <label class="block text-sm text-gray-400 mb-2"
+                  >Your Message</label
+                >
+                <textarea
+                  rows="5"
+                  placeholder="Tell us about your project..."
+                  class="contact-input w-full px-4 py-3 rounded-lg text-white resize-none"
+                ></textarea>
+              </div>
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="px-10 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-full font-semibold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30"
+                >
+                  <i class="fas fa-paper-plane mr-2"></i>Send Message
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-32 border-t border-gray-800 pt-12 pb-12">
+          <div
+            class="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm mb-6"
+          >
+            <p>&copy; 2025 Digital Marketing Agency. All rights reserved.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+              <a href="#" class="hover:text-white transition-colors">Twitter</a>
+              <a href="#" class="hover:text-white transition-colors"
+                >LinkedIn</a
+              >
+              <a href="#" class="hover:text-white transition-colors"
+                >Instagram</a
+              >
+            </div>
+          </div>
+          <div class="text-center text-gray-600 text-xs">
+            Template made by
+            <a
+              href="https://website-generator.gptchatly.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-400 hover:text-blue-300 transition-colors"
+              >GPTchatly</a
+            >
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- MAIN SCRIPT: Combines Three.js Background and Page Logic -->
+    <script type="module">
+      import * as THREE from "https://cdn.skypack.dev/three@0.136.0";
+      // Note: OrbitControls imported but used passively to allow page scroll
+      import { OrbitControls } from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js";
+
+      // ==========================================
+      // PART 1: THREE.JS GALAXY BACKGROUND
+      // ==========================================
+
+      const canvas = document.getElementById("bg-canvas");
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x000000, 0.03);
+
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        100,
+      );
+      camera.position.x = 4;
+      camera.position.y = 3;
+      camera.position.z = 6;
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        alpha: true,
+        antialias: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Controls (Passive)
+      const controls = new OrbitControls(camera, canvas);
+      controls.enableDamping = true;
+      controls.enableZoom = false; // Disable zoom to not interfere with scroll
+      controls.autoRotate = false;
+      controls.dampingFactor = 0.05;
+
+      // Galaxy Configuration - REDUCED jet count
+      const parameters = {
+        count: 20000,
+        size: 0.015,
+        radius: 8,
+        branches: 4,
+        spin: 1,
+        randomness: 0.3,
+        randomnessPower: 3,
+        insideColor: "#ff6030",
+        outsideColor: "#1b3984",
+        jetCount: 0, // Reduced from 6000 to 2000
+        jetHeight: 6,
+        jetSpeed: 0.04,
+      };
+
+      let geometry = null;
+      let material = null;
+      let points = null;
+      let jetGeometry = null;
+      let jetMaterial = null;
+      let jetPoints = null;
+      let jetVelocities = [];
+      let blackHoleMesh = null;
+      let accretionMesh = null;
+      let accretionMeshHalo = null;
+      let accretionPoints = null;
+
+      // --- Black Hole ---
+      const generateBlackHole = () => {
+        if (blackHoleMesh) {
+          scene.remove(blackHoleMesh);
+          scene.remove(accretionMesh);
+          scene.remove(accretionMeshHalo);
+          if (accretionPoints) scene.remove(accretionPoints);
+        }
+        // Event Horizon (The Black Sphere)
+        const bhGeometry = new THREE.SphereGeometry(0.25, 64, 64); // Reduced from 0.3
+        const bhMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        blackHoleMesh = new THREE.Mesh(bhGeometry, bhMaterial);
+        scene.add(blackHoleMesh);
+
+        // Accretion Disk (Flat Ring) - REDUCED SIZE
+        const diskGeometry = new THREE.RingGeometry(0.28, 0.55, 64, 8); // Reduced from (0.35, 0.85)
+        const diskMaterial = new THREE.MeshBasicMaterial({
+          color: 0xffaa00,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.7,
+          blending: THREE.AdditiveBlending,
+        });
+        accretionMesh = new THREE.Mesh(diskGeometry, diskMaterial);
+        accretionMesh.rotation.x = Math.PI / 2;
+        scene.add(accretionMesh);
+
+        // Accretion "Halo" - REDUCED SIZE
+        const haloGeometry = new THREE.RingGeometry(0.26, 0.4, 64, 8); // Reduced from (0.32, 0.55)
+        const haloMaterial = new THREE.MeshBasicMaterial({
+          color: 0xff4400,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.4,
+          blending: THREE.AdditiveBlending,
+        });
+        accretionMeshHalo = new THREE.Mesh(haloGeometry, haloMaterial);
+        accretionMeshHalo.rotation.y = Math.PI / 3;
+        scene.add(accretionMeshHalo);
+
+        // Accretion Particles - REDUCED COUNT AND RADIUS
+        const accParticlesCount = 2500; // Reduced from 6000
+        const accGeo = new THREE.BufferGeometry();
+        const accPos = new Float32Array(accParticlesCount * 3);
+        const accCol = new Float32Array(accParticlesCount * 3);
+        const baseColor = new THREE.Color(0xffaa55);
+
+        for (let i = 0; i < accParticlesCount; i++) {
+          const i3 = i * 3;
+          // Tighter radius range
+          const r = 0.26 + Math.random() * 0.25; // Reduced from 0.32 + 0.45
+          const angle = Math.random() * Math.PI * 2;
+
+          const y = (Math.random() - 0.5) * 0.015;
+
+          accPos[i3] = Math.cos(angle) * r;
+          accPos[i3 + 1] = y;
+          accPos[i3 + 2] = Math.sin(angle) * r;
+
+          const heat = 1 - (r - 0.26) / 0.25;
+          const pColor = baseColor.clone();
+          pColor.offsetHSL(0, 0, heat * 0.5);
+          accCol[i3] = pColor.r;
+          accCol[i3 + 1] = pColor.g;
+          accCol[i3 + 2] = pColor.b;
+        }
+        accGeo.setAttribute("position", new THREE.BufferAttribute(accPos, 3));
+        accGeo.setAttribute("color", new THREE.BufferAttribute(accCol, 3));
+        const accMat = new THREE.PointsMaterial({
+          size: 0.01,
+          vertexColors: true,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        });
+        accretionPoints = new THREE.Points(accGeo, accMat);
+        scene.add(accretionPoints);
+      };
+
+      // --- Galaxy ---
+      const generateGalaxy = () => {
+        if (points !== null) {
+          geometry.dispose();
+          material.dispose();
+          scene.remove(points);
+        }
+        geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(parameters.count * 3);
+        const colors = new Float32Array(parameters.count * 3);
+        const colorInside = new THREE.Color(parameters.insideColor);
+        const colorOutside = new THREE.Color(parameters.outsideColor);
+
+        for (let i = 0; i < parameters.count; i++) {
+          const i3 = i * 3;
+          let radius = Math.random() * parameters.radius;
+          if (radius < 1.0) radius += 1.0;
+          const spinAngle = radius * parameters.spin;
+          const branchAngle =
+            ((i % parameters.branches) / parameters.branches) * Math.PI * 2;
+          const randomX =
+            Math.pow(Math.random(), parameters.randomnessPower) *
+            (Math.random() < 0.5 ? 1 : -1) *
+            parameters.randomness *
+            radius;
+          const randomY =
+            Math.pow(Math.random(), parameters.randomnessPower) *
+            (Math.random() < 0.5 ? 1 : -1) *
+            parameters.randomness *
+            radius;
+          const randomZ =
+            Math.pow(Math.random(), parameters.randomnessPower) *
+            (Math.random() < 0.5 ? 1 : -1) *
+            parameters.randomness *
+            radius;
+
+          const x = Math.cos(branchAngle + spinAngle) * radius + randomX;
+          const y = randomY / 2;
+          const z = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+
+          positions[i3] = x;
+          positions[i3 + 1] = y;
+          positions[i3 + 2] = z;
+          const mixedColor = colorInside.clone();
+          mixedColor.lerp(colorOutside, radius / parameters.radius);
+          colors[i3] = mixedColor.r;
+          colors[i3 + 1] = mixedColor.g;
+          colors[i3 + 2] = mixedColor.b;
+        }
+        geometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(positions, 3),
+        );
+        geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+        material = new THREE.PointsMaterial({
+          size: parameters.size,
+          sizeAttenuation: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+          vertexColors: true,
+        });
+        points = new THREE.Points(geometry, material);
+        scene.add(points);
+      };
+
+      // --- Jet ---
+      const generateJet = () => {
+        if (jetPoints !== null) {
+          jetGeometry.dispose();
+          jetMaterial.dispose();
+          scene.remove(jetPoints);
+        }
+        jetGeometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(parameters.jetCount * 3);
+        const colors = new Float32Array(parameters.jetCount * 3);
+        jetVelocities = [];
+        const colorCore = new THREE.Color("#aaccff");
+
+        for (let i = 0; i < parameters.jetCount; i++) {
+          const i3 = i * 3;
+          const rStart = Math.random() * 0.08; // Slightly smaller start
+          const angle = Math.random() * Math.PI * 2;
+          positions[i3] = Math.cos(angle) * rStart;
+          const direction = Math.random() > 0.5 ? 1 : -1;
+          positions[i3 + 1] = direction * 0.25;
+          positions[i3 + 2] = Math.sin(angle) * rStart;
+
+          const spread = 0.004;
+          const vx = (Math.random() - 0.5) * spread;
+          const vy =
+            (Math.random() * 0.2 + 1.2) * parameters.jetSpeed * direction;
+          const vz = (Math.random() - 0.5) * spread;
+          jetVelocities.push({ vx, vy, vz, direction });
+
+          colors[i3] = colorCore.r;
+          colors[i3 + 1] = colorCore.g;
+          colors[i3 + 2] = colorCore.b;
+        }
+        jetGeometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(positions, 3),
+        );
+        jetGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+        jetMaterial = new THREE.PointsMaterial({
+          size: 0.025,
+          sizeAttenuation: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.8,
+        });
+        jetPoints = new THREE.Points(jetGeometry, jetMaterial);
+        scene.add(jetPoints);
+      };
+
+      // --- Stars ---
+      const generateBgStars = () => {
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 3000;
+        const starPositions = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+          const i3 = i * 3;
+          const r = 15 + Math.random() * 90;
+          const theta = 2 * Math.PI * Math.random();
+          const phi = Math.acos(2 * Math.random() - 1);
+          starPositions[i3] = r * Math.sin(phi) * Math.cos(theta);
+          starPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+          starPositions[i3 + 2] = r * Math.cos(phi);
+        }
+        starGeometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(starPositions, 3),
+        );
+        const starMaterial = new THREE.PointsMaterial({
+          color: 0x888888,
+          size: 0.03,
+          sizeAttenuation: true,
+          transparent: true,
+          opacity: 0.5,
+          depthWrite: false,
+        });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+      };
+
+      // Initialize Galaxy
+      generateBlackHole();
+      generateGalaxy();
+      generateJet();
+      generateBgStars();
+
+      // --- Animation Loop ---
+      const clock = new THREE.Clock();
+      const tick = () => {
+        const elapsedTime = clock.getElapsedTime();
+
+        // Rotate objects
+        if (points) points.rotation.y = elapsedTime * 0.05;
+        if (accretionPoints) accretionPoints.rotation.y = elapsedTime * 2.0;
+        if (accretionMesh) accretionMesh.rotation.z = elapsedTime * 1.5;
+        if (accretionMeshHalo)
+          accretionMeshHalo.rotation.z = -elapsedTime * 0.5;
+
+        if (jetPoints) {
+          jetPoints.rotation.y = elapsedTime * 0.05;
+          const positions = jetPoints.geometry.attributes.position.array;
+          const colors = jetPoints.geometry.attributes.color.array;
+
+          for (let i = 0; i < parameters.jetCount; i++) {
+            const i3 = i * 3;
+            const velocity = jetVelocities[i];
+            positions[i3] += velocity.vx;
+            positions[i3 + 1] += velocity.vy;
+            positions[i3 + 2] += velocity.vz;
+            positions[i3] += positions[i3] * 0.01;
+            positions[i3 + 2] += positions[i3 + 2] * 0.01;
+
+            const dist = Math.abs(positions[i3 + 1]);
+            const lifeRatio = Math.max(0, 1 - dist / parameters.jetHeight);
+            colors[i3] = 1.0 - 0.4 * lifeRatio;
+            colors[i3 + 1] = 0.8 * lifeRatio;
+            colors[i3 + 2] = 1.0 * lifeRatio + 0.3;
+
+            if (
+              Math.abs(positions[i3 + 1]) > parameters.jetHeight ||
+              Math.random() < 0.002
+            ) {
+              const rStart = Math.random() * 0.04;
+              const angle = Math.random() * Math.PI * 2;
+              const direction = velocity.direction;
+              positions[i3] = Math.cos(angle) * rStart;
+              positions[i3 + 1] = direction * 0.14;
+              positions[i3 + 2] = Math.sin(angle) * rStart;
+            }
+          }
+          jetPoints.geometry.attributes.position.needsUpdate = true;
+          jetPoints.geometry.attributes.color.needsUpdate = true;
+        }
+        controls.update();
+        renderer.render(scene, camera);
+        window.requestAnimationFrame(tick);
+      };
+      tick();
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // ==========================================
+      // PART 2: NEXUS SCROLL ANIMATION LOGIC
+      // ==========================================
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const wordContainer = document.getElementById("word-target");
+        const stage = document.getElementById("stage");
+        const scrollIndicator = document.getElementById("scrollIndicator");
+        const introContent = document.getElementById("introContent");
+
+        const layersCount = 20;
+        const depthStep = 1.5;
+
+        // Build 3D Text
+        const textContent = wordContainer.innerText;
+        wordContainer.innerHTML = "";
+
+        for (let i = 0; i < layersCount; i++) {
+          const layer = document.createElement("span");
+          layer.className = "layer";
+          layer.innerText = textContent;
+          const zPos = -(i * depthStep);
+          layer.style.transform = `translateZ(${zPos}px)`;
+          wordContainer.appendChild(layer);
+        }
+
+        // Scroll Logic
+        function update3D() {
+          const scrollY = window.scrollY;
+          const windowHeight = window.innerHeight;
+          const progress = Math.min(
+            Math.max(scrollY / (windowHeight * 0.8), 0),
+            1,
+          );
+
+          const startRotation = 90;
+          const endRotation = 0;
+          const currentRotation =
+            startRotation - progress * (startRotation - endRotation);
+
+          const startScale = 1.2;
+          const endScale = 1;
+          const currentScale = startScale - progress * (startScale - endScale);
+
+          const opacity = progress < 0.1 ? progress * 5 : 0.5 + progress * 0.5;
+
+          stage.style.transform = `rotateX(${currentRotation}deg) scale(${currentScale})`;
+          stage.style.opacity = opacity;
+
+          if (progress > 0.1) {
+            scrollIndicator.style.opacity = "0";
+          } else {
+            scrollIndicator.style.opacity = "1";
+          }
+
+          if (progress >= 0.9) {
+            introContent.classList.remove("opacity-0");
+            introContent.classList.add("opacity-100");
+          }
+        }
+
+        let ticking = false;
+        window.addEventListener("scroll", () => {
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              update3D();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+
+        update3D();
+      });
+    </script>
+  </body>
+</html>

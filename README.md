@@ -109,6 +109,25 @@ npm run build     # Production build
 npm run lint      # ESLint
 ```
 
+### Ventura's AI
+
+Ventura's AI uses local Ollama for matched portfolio intents and deterministic safe answers for FAQ, fallback, safety, and offline cases.
+
+```bash
+ollama pull qwen2.5:0.5b
+ollama serve
+npm run dev
+```
+
+Configure local defaults in `.env.local`:
+
+```env
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5:0.5b
+```
+
+For Docker/home-server notes and manual API checks, see [`docs/ventura-ai.md`](docs/ventura-ai.md).
+
 ---
 
 ## Docker Deployment (portfolio.emperordanivn.com)

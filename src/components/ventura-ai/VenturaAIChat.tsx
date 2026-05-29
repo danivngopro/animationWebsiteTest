@@ -53,7 +53,7 @@ function sourceLabel(source?: ChatSource) {
   }
 
   const labels: Record<ChatSource, string> = {
-    faq: "FAQ",
+    faq: "Portfolio",
     llm: "AI",
     fallback: "Scope",
     safety: "Verified",
@@ -90,6 +90,22 @@ export function VenturaAIChat() {
     const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 120);
 
     return () => window.clearTimeout(focusTimer);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
   async function sendMessage(messageText: string) {
@@ -159,14 +175,10 @@ export function VenturaAIChat() {
       aria-label="Ventura's AI chat"
       className="fixed bottom-4 right-4 z-[70] flex max-w-[calc(100vw-2rem)] flex-col items-end gap-3 sm:bottom-6 sm:right-6"
     >
+      {isOpen ? (
       <div
-        className={cn(
-          "flex h-[min(600px,calc(100dvh-6.5rem))] w-[min(410px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#080814]/95 shadow-[0_24px_80px_rgba(0,0,0,0.55),0_0_40px_rgba(34,211,238,0.12)] backdrop-blur-xl transition-all duration-200",
-          isOpen
-            ? "translate-y-0 opacity-100"
-            : "pointer-events-none translate-y-3 opacity-0",
-        )}
-        aria-hidden={!isOpen}
+        id="ventura-ai-chat-panel"
+        className="flex h-[min(600px,calc(100dvh-6.5rem))] w-[min(410px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#080814]/95 shadow-[0_24px_80px_rgba(0,0,0,0.55),0_0_40px_rgba(34,211,238,0.12)] backdrop-blur-xl transition-all duration-200"
       >
         <div className="shrink-0 border-b border-white/10 bg-white/[0.03] px-4 py-4">
           <div className="flex items-start justify-between gap-3">
@@ -202,6 +214,7 @@ export function VenturaAIChat() {
                   type="button"
                   onClick={() => void sendMessage(question)}
                   disabled={isLoading}
+                  aria-label={`Ask Ventura's AI: ${question}`}
                   className="shrink-0 rounded-full border border-indigo-300/20 bg-indigo-300/10 px-3 py-1.5 text-xs text-indigo-100 transition hover:border-cyan-300/35 hover:bg-cyan-300/10 hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {question}
@@ -210,7 +223,7 @@ export function VenturaAIChat() {
             </div>
           </div>
 
-          <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
+          <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite" aria-label="Ventura's AI conversation">
             {messages.map((message) => {
               const isUser = message.role === "user";
               const label = sourceLabel(message.source);
@@ -232,7 +245,6 @@ export function VenturaAIChat() {
                     {!isUser && label ? (
                       <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-slate-500">
                         <span>{label}</span>
-                        {message.intent ? <span>{message.intent}</span> : null}
                       </div>
                     ) : null}
                   </div>
@@ -242,7 +254,7 @@ export function VenturaAIChat() {
 
             {isLoading ? (
               <div className="flex justify-start">
-                <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.06] px-3.5 py-2.5 text-sm text-slate-300">
+                <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.06] px-3.5 py-2.5 text-sm text-slate-300" role="status">
                   <Loader2 className="size-4 animate-spin text-cyan-200" aria-hidden="true" />
                   <span>Thinking...</span>
                 </div>
@@ -279,6 +291,7 @@ export function VenturaAIChat() {
           </form>
         </div>
       </div>
+      ) : null}
 
       <button
         type="button"
@@ -286,6 +299,7 @@ export function VenturaAIChat() {
         className="group flex h-12 items-center gap-3 rounded-2xl border border-cyan-300/25 bg-[#0b1020]/90 px-4 text-sm font-medium text-slate-100 shadow-[0_16px_50px_rgba(0,0,0,0.45),0_0_26px_rgba(34,211,238,0.16)] backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:bg-[#10172a]/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70"
         aria-label={isOpen ? "Minimize Ventura's AI chat" : "Open Ventura's AI chat"}
         aria-expanded={isOpen}
+        aria-controls={isOpen ? "ventura-ai-chat-panel" : undefined}
       >
         <span className="flex size-8 items-center justify-center rounded-xl bg-cyan-300/12 text-cyan-200 transition group-hover:bg-cyan-300/18">
           {isOpen ? (

@@ -2,19 +2,21 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { Brain, Zap, Code, Network, Bug, TestTube, Server } from "lucide-react";
+import { Brain, Zap, Code, Network, Bug, TestTube, Server, Cpu, BarChart2 } from "lucide-react";
 import { aiWorkflow } from "@/lib/data";
 
 type LucideIcon = React.FC<{ className?: string; style?: React.CSSProperties }>;
 
 const iconMap: Record<string, LucideIcon> = {
-  Brain:    Brain    as LucideIcon,
-  Zap:      Zap      as LucideIcon,
-  Code:     Code     as LucideIcon,
-  Network:  Network  as LucideIcon,
-  Bug:      Bug      as LucideIcon,
-  TestTube: TestTube as LucideIcon,
-  Server:   Server   as LucideIcon,
+  Brain:     Brain     as LucideIcon,
+  Zap:       Zap       as LucideIcon,
+  Code:      Code      as LucideIcon,
+  Network:   Network   as LucideIcon,
+  Bug:       Bug       as LucideIcon,
+  TestTube:  TestTube  as LucideIcon,
+  Server:    Server    as LucideIcon,
+  Cpu:       Cpu       as LucideIcon,
+  BarChart2: BarChart2 as LucideIcon,
 };
 
 export function AIWorkflow() {

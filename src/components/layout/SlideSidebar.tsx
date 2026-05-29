@@ -130,7 +130,7 @@ export function SlideSidebar() {
 
   return (
     <div
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-1 select-none"
+      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-end gap-1 select-none"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-label="Section navigation"
@@ -172,15 +172,11 @@ export function SlideSidebar() {
                 animate={{
                   width: isActive ? 10 : 6,
                   height: isActive ? 10 : 6,
-                  backgroundColor: isActive
-                    ? "var(--accent-indigo)"
-                    : "rgba(255,255,255,0.25)",
-                  boxShadow: isActive
-                    ? "0 0 10px rgba(99,102,241,0.7)"
-                    : "none",
+                  backgroundColor: isActive ? "rgba(34,211,238,1)" : "rgba(255,255,255,0.25)",
+                  boxShadow: isActive ? "0 0 10px rgba(34,211,238,0.9), 0 0 20px rgba(34,211,238,0.4)" : "none",
                 }}
                 transition={{ duration: 0.25 }}
-                className="rounded-full"
+                className={`rounded-full ${isActive ? "animate-rgb-hue" : ""}`}
               />
             </div>
           </motion.button>
@@ -220,11 +216,12 @@ export function SlideSidebar() {
                 cy={20}
                 r={R}
                 fill="none"
-                stroke="var(--accent-indigo)"
+                stroke="rgba(34,211,238,1)"
                 strokeWidth={2}
                 strokeDasharray={CIRC}
                 strokeDashoffset={dashOffset}
                 strokeLinecap="round"
+                style={{ filter: "drop-shadow(0 0 4px rgba(34,211,238,0.8))" }}
               />
             )}
           </svg>
@@ -237,14 +234,14 @@ export function SlideSidebar() {
             {isPlaying ? (
               /* Pause icon */
               <svg width={12} height={12} viewBox="0 0 12 12" fill="currentColor"
-                style={{ color: "var(--accent-indigo)" }}>
+                style={{ color: "rgba(34,211,238,1)", filter: "drop-shadow(0 0 4px rgba(34,211,238,0.9))" }}>
                 <rect x="1" y="1" width="4" height="10" rx="1" />
                 <rect x="7" y="1" width="4" height="10" rx="1" />
               </svg>
             ) : (
               /* Play icon */
               <svg width={12} height={12} viewBox="0 0 12 12" fill="currentColor"
-                style={{ color: "var(--text-muted)" }}>
+                style={{ color: "rgba(34,211,238,0.6)", filter: "drop-shadow(0 0 3px rgba(34,211,238,0.5))" }}>
                 <path d="M2 1.5l9 4.5-9 4.5V1.5z" />
               </svg>
             )}
@@ -261,7 +258,7 @@ export function SlideSidebar() {
           exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.2 }}
           className="text-[10px] font-mono tabular-nums mt-1"
-          style={{ color: "var(--text-muted)" }}
+          style={{ color: "rgba(34,211,238,0.85)", textShadow: "0 0 8px rgba(34,211,238,0.5)" }}
         >
           {String(currentIdx + 1).padStart(2, "0")}/{SLIDE_IDS.length}
         </motion.span>

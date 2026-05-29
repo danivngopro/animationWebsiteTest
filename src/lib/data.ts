@@ -212,6 +212,20 @@ export const aiWorkflow = [
       "Self-hosted Ollama with quantized open-source models integrated into the development platform. Enables AI-assisted analysis on platform data and logs without sending sensitive information to the cloud.",
     icon: "Server",
   },
+  {
+    tool: "Local LLM Integration",
+    role: "On-premise AI inference infrastructure",
+    description:
+      "Engineered the integration layer connecting on-premise LLM inference servers to the production platform. Built REST adapters, streaming endpoints, and model routing for multiple quantized models on internal hardware.",
+    icon: "Cpu",
+  },
+  {
+    tool: "Custom AI & Statistical Models",
+    role: "Domain-specific ML & data science",
+    description:
+      "Developed custom ML models and statistical analysis pipelines for operational data pattern recognition. Python stack: scikit-learn, pandas, and custom inference layers integrated into the TypeScript platform via REST.",
+    icon: "BarChart2",
+  },
 ] as const;
 
 export const securityMeasures = [
@@ -288,7 +302,7 @@ export const projects = [
       "Mission-critical real-time monitoring platform serving internal command teams at IDF. Full TypeScript stack with live WebSocket feeds, RBAC, and <1s latency requirements. Handled 1,000+ concurrent users with zero downtime SLA.",
     tags: ["TypeScript", "Python", "React", "Node.js", "PostgreSQL", "MongoDB", "Redis", "RabbitMQ", "Docker", "Kubernetes", "AWS", "Linux"],
     status: "live" as const,
-    year: "2022–2024",
+    year: "2022–2026",
   },
   {
     id: "ai-dev-pipeline",

@@ -76,6 +76,29 @@ export function Hero() {
 
       <ViewportBorder active={active} />
 
+      {/* ── Neon atmosphere rings ── */}
+      {active && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden>
+          {([
+            { size: 180, color: "rgba(34,211,238,0.28)",  shadow: "rgba(34,211,238,0.14)",  dur: 4.5, delay: 0   },
+            { size: 320, color: "rgba(99,102,241,0.18)",  shadow: "rgba(99,102,241,0.09)",  dur: 6,   delay: 1.2 },
+            { size: 480, color: "rgba(167,139,250,0.12)", shadow: "rgba(167,139,250,0.06)", dur: 8,   delay: 2.4 },
+          ] as const).map(({ size, color, shadow, dur, delay }) => (
+            <motion.div
+              key={size}
+              animate={{ scale: [1, 1.1, 1], opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: dur, repeat: Infinity, ease: "easeInOut", delay }}
+              style={{
+                position: "absolute",
+                width: size, height: size, borderRadius: "50%",
+                border: `1px solid ${color}`,
+                boxShadow: `0 0 24px 4px ${shadow}, inset 0 0 24px 4px ${shadow}`,
+              }}
+            />
+          ))}
+        </div>
+      )}
+
       {/* ── Top bar ── */}
       <div className="absolute top-0 inset-x-0 flex items-center justify-between px-8 py-6 z-10">
         <motion.span
@@ -124,10 +147,10 @@ export function Hero() {
           <div
             className="font-black leading-none tracking-tight select-none"
             style={{
-              fontSize: "clamp(4rem, 17vw, 18rem)",
+              fontSize: "clamp(3rem, 13vw, 14rem)",
               color: "#f1f5f9",
-              fontFamily: "var(--font-sans)",
-              letterSpacing: "-0.04em",
+              fontFamily: "var(--font-syncopate), var(--font-sans)",
+              letterSpacing: "0.02em",
             }}
             aria-label="Daniel"
           >
@@ -153,9 +176,9 @@ export function Hero() {
           <div
             className="font-black leading-none tracking-tight select-none text-gradient-indigo"
             style={{
-              fontSize: "clamp(4rem, 17vw, 18rem)",
-              fontFamily: "var(--font-sans)",
-              letterSpacing: "-0.04em",
+              fontSize: "clamp(3rem, 13vw, 14rem)",
+              fontFamily: "var(--font-syncopate), var(--font-sans)",
+              letterSpacing: "0.02em",
             }}
             aria-label="Ventura"
           >

@@ -134,7 +134,7 @@ function GalaxyScene({ sr }: { sr: React.MutableRefObject<ScrollRef> }) {
     const elapsed = state.clock.getElapsedTime();
 
     // ── Pure velocity-based rotation — no spring, no overshoot ──────────────
-    rotation.current += (0.016 + sr.current.velocity * 0.30) * delta;
+    rotation.current += (0.05 + sr.current.velocity * 0.30) * delta;
     if (galaxyRef.current) galaxyRef.current.rotation.y = rotation.current;
 
     // ── Accretion disk (independent rotation) ───────────────────────────────

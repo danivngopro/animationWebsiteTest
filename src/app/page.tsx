@@ -1,4 +1,5 @@
 import { ClientSpaceBackground } from "@/components/three/ClientSpaceBackground";
+import { NeonOverlay } from "@/components/ui/NeonOverlay";
 import { IntroOverlay } from "@/components/sections/IntroOverlay";
 import { SlideSidebar } from "@/components/layout/SlideSidebar";
 import { Footer } from "@/components/layout/Footer";
@@ -24,6 +25,9 @@ export default function Home() {
 
       {/* Fixed galaxy canvas behind all content */}
       <ClientSpaceBackground />
+
+      {/* Fixed neon atmosphere — corner brackets, scan line, ambient blobs */}
+      <NeonOverlay />
 
       {/* Fixed right-side navigation sidebar */}
       <SlideSidebar />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, AnimatePresence, useInView } from "motion/react";
+import { motion, AnimatePresence, useInView, useMotionValue, animate } from "motion/react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { projects } from "@/lib/data";
 
@@ -9,14 +9,41 @@ export function Projects() {
   const [active, setActive] = useState(0);
   const [dir, setDir] = useState(1);
   const [hoveredTag, setHoveredTag] = useState<string | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-10%" });
+  const ref        = useRef<HTMLDivElement>(null);
+  const inView     = useInView(ref, { once: true, margin: "-10%" });
+  const dragX      = useMotionValue(0);
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
 
   const project = projects[active];
 
   const go = (next: number) => {
     setDir(next > active ? 1 : -1);
     setActive(next);
+  };
+
+  const onDragStart = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragStartX.current = e.clientX;
+    isDragging.current = true;
+  };
+
+  const onDragMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current) return;
+    dragX.set(e.clientX - dragStartX.current);
+  };
+
+  const onDragEnd = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    const offset = dragX.get();
+    if (offset < -60 && active < projects.length - 1) {
+      dragX.set(0); go(active + 1);
+    } else if (offset > 60 && active > 0) {
+      dragX.set(0); go(active - 1);
+    } else {
+      animate(dragX, 0, { type: "spring", stiffness: 500, damping: 35 });
+    }
   };
 
   return (
@@ -67,18 +94,25 @@ export function Projects() {
                 <motion.div
                   animate={{
                     width: i === active ? 24 : 8,
-                    background: i === active ? "var(--accent-indigo)" : "rgba(255,255,255,0.2)",
+                    background: i === active ? "rgba(34,211,238,1)" : "rgba(255,255,255,0.2)",
                   }}
                   transition={{ duration: 0.25 }}
-                  className="h-1.5 rounded-full"
+                  className={`h-1.5 rounded-full ${i === active ? "animate-rgb-hue" : ""}`}
                 />
               </button>
             ))}
           </motion.div>
         </div>
 
-        {/* Main project display */}
-        <div className="flex-1 flex items-center">
+        {/* Main project display — drag left/right to navigate */}
+        <motion.div
+          className="flex-1 flex items-center"
+          style={{ x: dragX, cursor: "grab" }}
+          onPointerDown={onDragStart}
+          onPointerMove={onDragMove}
+          onPointerUp={onDragEnd}
+          onPointerCancel={onDragEnd}
+        >
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div
               key={active}
@@ -148,7 +182,7 @@ export function Projects() {
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
 
         {/* Bottom navigation */}
         <div className="flex items-center justify-between">

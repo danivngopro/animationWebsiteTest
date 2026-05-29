@@ -17,7 +17,7 @@
 
   --text-primary:   #f1f5f9;
   --text-secondary: #94a3b8;
-  --text-muted:     #4b5563;
+  --text-muted:     #64748b;
 
   --border-subtle: rgba(255, 255, 255, 0.07);
   --border-glow:   rgba(99, 102, 241, 0.4);
@@ -274,6 +274,24 @@ body {
     linear-gradient(-60deg, transparent 75%, rgba(99,102,241,0.04) 75%);
   background-size: 40px 70px;
   background-position: 0 0, 0 35px, 20px -35px, -20px 0px;
+}
+
+/* ─── Neon overlay animations ────────────────────────────────────── */
+@keyframes rgbHue {
+  from { filter: hue-rotate(0deg); }
+  to   { filter: hue-rotate(360deg); }
+}
+.animate-rgb-hue {
+  animation: rgbHue 4s linear infinite;
+}
+
+/* Corner variant — drop-shadow follows the actual border shape, not the bounding box */
+@keyframes rgbHueCorner {
+  from { filter: hue-rotate(0deg)   drop-shadow(0 0 5px rgba(34,211,238,0.95)); }
+  to   { filter: hue-rotate(360deg) drop-shadow(0 0 5px rgba(34,211,238,0.95)); }
+}
+.animate-rgb-hue-corner {
+  animation: rgbHueCorner 4s linear infinite;
 }
 
 /* ─── Intro overlay scroll wheel indicator ───────────────────────── */

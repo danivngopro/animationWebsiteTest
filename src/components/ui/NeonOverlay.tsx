@@ -44,9 +44,11 @@ export function NeonOverlay() {
       {/* Top neon bar — 2.5px, aligns with the top of TL/TR corner brackets */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, height: 2.5,
-        background: "linear-gradient(90deg, transparent 0%, rgba(34,211,238,0.6) 30%, rgba(99,102,241,0.85) 60%, rgba(34,211,238,0.6) 85%, transparent 100%)",
-        boxShadow: "0 0 20px 4px rgba(34,211,238,0.28), 0 0 40px 8px rgba(99,102,241,0.18)",
-      }} />
+        background: "linear-gradient(90deg, transparent 0%, rgba(34,211,238,0.78) 22%, rgba(99,102,241,0.95) 46%, rgba(236,72,153,0.92) 65%, rgba(34,211,238,0.75) 86%, transparent 100%)",
+        boxShadow: "0 0 18px 4px rgba(34,211,238,0.36), 0 0 34px 8px rgba(99,102,241,0.22), 0 0 48px 10px rgba(236,72,153,0.16)",
+      }}
+      className="animate-rgb-hue"
+      />
     </div>
   );
 }

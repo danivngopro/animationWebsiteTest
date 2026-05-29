@@ -197,7 +197,7 @@ export function SlideSidebar() {
           <svg
             width={40}
             height={40}
-            className="absolute inset-0 -rotate-90"
+            className="absolute inset-0 -rotate-90 animate-rgb-hue"
             aria-hidden
           >
             {/* Track */}
@@ -206,7 +206,7 @@ export function SlideSidebar() {
               cy={20}
               r={R}
               fill="none"
-              stroke="rgba(255,255,255,0.08)"
+              stroke="rgba(34,211,238,0.28)"
               strokeWidth={2}
             />
             {/* Progress */}
@@ -221,7 +221,7 @@ export function SlideSidebar() {
                 strokeDasharray={CIRC}
                 strokeDashoffset={dashOffset}
                 strokeLinecap="round"
-                style={{ filter: "drop-shadow(0 0 4px rgba(34,211,238,0.8))" }}
+                style={{ filter: "drop-shadow(0 0 5px rgba(34,211,238,0.95)) drop-shadow(0 0 12px rgba(236,72,153,0.45))" }}
               />
             )}
           </svg>
@@ -229,19 +229,19 @@ export function SlideSidebar() {
           {/* Icon */}
           <motion.div
             animate={{ opacity: 1 }}
-            className="relative z-10 flex items-center justify-center"
+            className="relative z-10 flex items-center justify-center animate-rgb-hue"
           >
             {isPlaying ? (
               /* Pause icon */
               <svg width={12} height={12} viewBox="0 0 12 12" fill="currentColor"
-                style={{ color: "rgba(34,211,238,1)", filter: "drop-shadow(0 0 4px rgba(34,211,238,0.9))" }}>
+                style={{ color: "rgba(34,211,238,1)", filter: "drop-shadow(0 0 5px rgba(34,211,238,0.95)) drop-shadow(0 0 10px rgba(236,72,153,0.4))" }}>
                 <rect x="1" y="1" width="4" height="10" rx="1" />
                 <rect x="7" y="1" width="4" height="10" rx="1" />
               </svg>
             ) : (
               /* Play icon */
               <svg width={12} height={12} viewBox="0 0 12 12" fill="currentColor"
-                style={{ color: "rgba(34,211,238,0.6)", filter: "drop-shadow(0 0 3px rgba(34,211,238,0.5))" }}>
+                style={{ color: "rgba(34,211,238,0.85)", filter: "drop-shadow(0 0 5px rgba(34,211,238,0.8)) drop-shadow(0 0 10px rgba(236,72,153,0.35))" }}>
                 <path d="M2 1.5l9 4.5-9 4.5V1.5z" />
               </svg>
             )}
@@ -250,19 +250,21 @@ export function SlideSidebar() {
       </div>
 
       {/* Slide counter */}
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={currentIdx}
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: 0.2 }}
-          className="text-[10px] font-mono tabular-nums mt-1"
-          style={{ color: "rgba(34,211,238,0.85)", textShadow: "0 0 8px rgba(34,211,238,0.5)" }}
-        >
-          {String(currentIdx + 1).padStart(2, "0")}/{SLIDE_IDS.length}
-        </motion.span>
-      </AnimatePresence>
+      <div className="mt-1 flex w-10 justify-center">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={currentIdx}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2 }}
+            className="block text-center text-[10px] font-mono tabular-nums animate-rgb-hue"
+            style={{ color: "rgba(34,211,238,0.95)", textShadow: "0 0 8px rgba(34,211,238,0.7), 0 0 16px rgba(236,72,153,0.35)" }}
+          >
+            {String(currentIdx + 1).padStart(2, "0")}/{SLIDE_IDS.length}
+          </motion.span>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

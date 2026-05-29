@@ -2,7 +2,6 @@
 
 import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
 interface ScrollRef { velocity: number; }
@@ -33,22 +32,16 @@ function buildGalaxy() {
   return { pos, col };
 }
 
-// ─── Colorful background stars ───────────────────────────────────────────────
+// ─── Background stars from example.html ──────────────────────────────────────
 function buildStars() {
   const count = 3000;
   const pos = new Float32Array(count * 3);
-  const col = new Float32Array(count * 3);
-  // palette: yellow, orange, pink, blue, white — matching example.html
-  const palette = [[1,.9,.2],[1,.5,.12],[1,.28,.65],[.25,.55,1],[1,1,1]] as const;
   for (let i = 0; i < count; i++) {
     const i3 = i * 3;
     const r = 15 + Math.random() * 90, t = 2*Math.PI*Math.random(), phi = Math.acos(2*Math.random()-1);
     pos[i3] = r*Math.sin(phi)*Math.cos(t); pos[i3+1] = r*Math.sin(phi)*Math.sin(t); pos[i3+2] = r*Math.cos(phi);
-    const c = palette[Math.floor(Math.random() * palette.length)];
-    const b = 0.85 + Math.random() * 0.15;
-    col[i3] = c[0]*b; col[i3+1] = c[1]*b; col[i3+2] = c[2]*b;
   }
-  return { pos, col };
+  return pos;
 }
 
 // ─── Accretion disk particles ────────────────────────────────────────────────
@@ -88,21 +81,26 @@ function GalaxyScene({ sr }: { sr: React.MutableRefObject<ScrollRef> }) {
   const rotation  = useRef(0);
 
   const { pos: gP, col: gC }   = useMemo(buildGalaxy,   []);
-  const { pos: sP, col: sC }   = useMemo(buildStars,    []);
+  const sP                     = useMemo(buildStars,    []);
   const { pos: aP, col: aC }   = useMemo(buildAccretion,[]);
   const jetData                  = useMemo(buildJet,      []);
+
+  const galaxyGeo = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(gP, 3));
+    g.setAttribute("color", new THREE.BufferAttribute(gC, 3));
+    return g;
+  }, [gP, gC]);
 
   const starGeo = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(sP, 3));
-    g.setAttribute("color",    new THREE.BufferAttribute(sC, 3));
     return g;
-  }, [sP, sC]);
+  }, [sP]);
 
   const starMat = useMemo(() => new THREE.PointsMaterial({
-    size: 0.15, sizeAttenuation: true, depthWrite: false,
-    blending: THREE.AdditiveBlending, vertexColors: true,
-    transparent: true, opacity: 0.95, fog: false,
+    color: 0x888888, size: 0.03, sizeAttenuation: true,
+    transparent: true, opacity: 0.5, depthWrite: false,
   }), []);
 
   const accGeo = useMemo(() => {
@@ -134,7 +132,7 @@ function GalaxyScene({ sr }: { sr: React.MutableRefObject<ScrollRef> }) {
     const elapsed = state.clock.getElapsedTime();
 
     // ── Pure velocity-based rotation — no spring, no overshoot ──────────────
-    rotation.current += (0.05 + sr.current.velocity * 0.30) * delta;
+    rotation.current += (0.10 + sr.current.velocity * 0.30) * delta;
     if (galaxyRef.current) galaxyRef.current.rotation.y = rotation.current;
 
     // ── Accretion disk (independent rotation) ───────────────────────────────
@@ -167,9 +165,15 @@ function GalaxyScene({ sr }: { sr: React.MutableRefObject<ScrollRef> }) {
       <points geometry={starGeo} material={starMat} />
 
       <group ref={galaxyRef}>
-        <Points positions={gP} colors={gC} frustumCulled={false}>
-          <PointMaterial vertexColors size={0.015} sizeAttenuation depthWrite={false} blending={THREE.AdditiveBlending} transparent />
-        </Points>
+        <points geometry={galaxyGeo} frustumCulled={false}>
+          <pointsMaterial
+            vertexColors
+            size={0.015}
+            sizeAttenuation
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+          />
+        </points>
       </group>
 
       {/* Black hole */}

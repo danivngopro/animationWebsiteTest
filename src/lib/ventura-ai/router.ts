@@ -62,7 +62,7 @@ export function findFaqMatch(message: string): FaqItem | null {
         return item;
       }
 
-      if (text.includes(normalizedQuestion)) {
+      if (normalizedQuestion.length >= 4 && text.includes(normalizedQuestion)) {
         return item;
       }
 

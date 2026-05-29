@@ -51,11 +51,23 @@ Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST 
 Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST -ContentType "application/json" -Body '{"message":"Write me a recipe for pasta"}' | Format-List *
 
 Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST -ContentType "application/json" -Body '{"message":"What did Daniel study?"}' | Format-List *
+
+Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST -ContentType "application/json" -Body '{"message":"hi"}' | Format-List *
+
+Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST -ContentType "application/json" -Body '{"message":"what is ventura ai"}' | Format-List *
+
+Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST -ContentType "application/json" -Body '{"message":"what model are you using"}' | Format-List *
+
+Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST -ContentType "application/json" -Body '{"message":"are you running on ollama"}' | Format-List *
+
+Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST -ContentType "application/json" -Body '{"message":"how were you built"}' | Format-List *
 ```
 
 Expected:
 
 - Portfolio questions answer correctly.
+- Greeting questions return a friendly Ventura's AI greeting.
+- Ventura's AI self-info questions explain the local Ollama/Next.js/router setup.
 - Unrelated questions return the portfolio-only scope fallback.
 - Education mentions Ariel University and The Open University of Israel only.
 - No USC hallucination.

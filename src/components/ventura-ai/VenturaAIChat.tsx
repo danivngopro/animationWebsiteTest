@@ -23,10 +23,10 @@ type ChatApiResponse = {
 
 const STARTER_QUESTIONS = [
   "What does Daniel do?",
+  "What is Ventura's AI?",
   "What is Daniel's flagship project?",
   "What technologies does Daniel use?",
   "How does Daniel use AI tools?",
-  "How can I contact Daniel?",
 ] as const;
 
 const INITIAL_MESSAGE: ChatMessage = {

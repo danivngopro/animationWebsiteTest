@@ -35,6 +35,8 @@ const suspiciousModelClaims = [
 ] as const;
 
 const safeIntentAnswers: Record<VenturaIntent, string> = {
+  greeting:
+    "Hi, I'm Ventura's AI. Ask me about Daniel's experience, projects, skills, AI workflow, or portfolio website.",
   about:
     "Daniel Ventura is a Senior Full-Stack Developer and team lead specializing in Node.js, TypeScript, React, cloud-native systems, real-time monitoring platforms, and AI-assisted engineering. He has 7+ years of experience building production systems and leading delivery for mission-critical products used by 1,000+ users.",
   experience:
@@ -57,6 +59,8 @@ const safeIntentAnswers: Record<VenturaIntent, string> = {
     "Daniel's portfolio is a cinematic fullscreen snap-scroll experience built with Next.js 15 App Router, TypeScript 5 strict mode, Tailwind CSS v4, shadcn/ui, Motion for React, React Three Fiber, Drei, Three.js, Zod, react-hook-form, Docker, and Nginx reverse proxy. It includes security headers, CSP, validation, anti-spam concepts, and AI-aware security practices.",
   contact:
     "The best way to contact Daniel is by email at danivngopro@gmail.com. You can also view his GitHub at https://github.com/danivngopro or LinkedIn at https://www.linkedin.com/in/daniel-v-03b663152/.",
+  venturaAI:
+    "Ventura's AI is Daniel Ventura's lightweight self-hosted portfolio assistant. It uses a local Ollama model, currently configured as qwen2.5:0.5b, and runs through Daniel's Next.js portfolio backend with FAQ routing, intent detection, safety checks, and small context prompts.",
 };
 
 function jsonResponse(body: ChatResponse, init?: ResponseInit) {

@@ -50,6 +50,31 @@ const cases: ManualCase[] = [
     expectedId: "contact",
   },
   {
+    question: "hi",
+    expectedType: "faq",
+    expectedId: "greeting",
+  },
+  {
+    question: "what is ventura ai",
+    expectedType: "faq",
+    expectedId: "ventura-ai-overview",
+  },
+  {
+    question: "what model are you using",
+    expectedType: "faq",
+    expectedId: "ventura-ai-overview",
+  },
+  {
+    question: "are you running on ollama",
+    expectedType: "faq",
+    expectedId: "ventura-ai-runtime",
+  },
+  {
+    question: "how were you built",
+    expectedType: "faq",
+    expectedId: "ventura-ai-built",
+  },
+  {
     question: "Who is the president of the United States?",
     expectedType: "fallback",
   },

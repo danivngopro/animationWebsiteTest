@@ -1,4 +1,5 @@
 export type VenturaIntent =
+  | "greeting"
   | "about"
   | "experience"
   | "skills"
@@ -9,7 +10,8 @@ export type VenturaIntent =
   | "flagshipProject"
   | "education"
   | "portfolioWebsite"
-  | "contact";
+  | "contact"
+  | "venturaAI";
 
 export type IntentConfig = {
   id: VenturaIntent;
@@ -52,6 +54,68 @@ export const forbiddenClaims = [
 ] as const;
 
 export const faq: FaqItem[] = [
+  {
+    id: "greeting",
+    intent: "greeting",
+    questions: [
+      "hi",
+      "hello",
+      "hey",
+      "yo",
+      "good morning",
+      "good evening",
+      "sup",
+      "what's up",
+      "whats up",
+    ],
+    answer:
+      "Hi, I'm Ventura's AI. Ask me about Daniel's experience, projects, skills, AI workflow, or portfolio website.",
+  },
+  {
+    id: "ventura-ai-overview",
+    intent: "venturaAI",
+    questions: [
+      "what are you",
+      "who are you",
+      "what is ventura's ai",
+      "what is ventura ai",
+      "what model are you using",
+      "are you using ollama",
+      "is this chat using chatgpt",
+      "what powers this ai",
+    ],
+    answer:
+      "Ventura's AI is Daniel Ventura's lightweight self-hosted portfolio assistant. It uses a local Ollama model, currently configured as qwen2.5:0.5b, and runs through Daniel's Next.js portfolio backend with FAQ routing, intent detection, safety checks, and small context prompts.",
+  },
+  {
+    id: "ventura-ai-runtime",
+    intent: "venturaAI",
+    questions: [
+      "where are you running",
+      "are you local",
+      "are you running on ollama",
+      "are you self hosted",
+      "where does ventura's ai run",
+      "where does ventura ai run",
+    ],
+    answer:
+      "Ventura's AI is designed to run locally through Ollama on Daniel's own server/home-server setup, with the Next.js portfolio calling it through a protected backend API route.",
+  },
+  {
+    id: "ventura-ai-built",
+    intent: "venturaAI",
+    questions: [
+      "how were you built",
+      "how was ventura's ai built",
+      "how was ventura ai built",
+      "how does this chat work",
+      "how did daniel build this ai",
+      "how did daniel build ventura's ai",
+      "how did daniel build ventura ai",
+    ],
+    answer:
+      "Daniel built Ventura's AI as a portfolio feature using Next.js, TypeScript, a deterministic FAQ/intent router, a safe API route, and a tiny local Ollama model. The goal is to demonstrate local LLM integration, prompt control, safety routing, and practical AI-assisted product development.",
+  },
   {
     id: "what-does-daniel-do",
     intent: "about",

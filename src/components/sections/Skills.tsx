@@ -44,7 +44,7 @@ export function Skills() {
       ref={ref}
       style={{ background: "rgba(5,5,12,0.52)" }}
     >
-      <div className="h-full flex flex-col px-8 sm:px-14 lg:px-20 py-5 max-w-[1400px] mx-auto w-full gap-6">
+      <div className="h-full flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-8 sm:py-10 max-w-[1400px] mx-auto w-full gap-7 sm:gap-8">
 
         {/* Header */}
         <div>
@@ -69,7 +69,7 @@ export function Skills() {
         </div>
 
         {/* Body: category sidebar + tech grid */}
-        <div className="flex-1 grid grid-cols-[auto_1fr] gap-6 min-h-0">
+        <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 min-h-0">
 
           {/* ── Left: category tabs ── */}
           <motion.div
@@ -232,7 +232,7 @@ export function Skills() {
                 initial={{ opacity: 0 }}
                 animate={inView ? { opacity: 1 } : {}}
                 transition={{ delay: 0.6 }}
-                className="text-[11px] mt-auto"
+                className="text-[11px]"
                 style={{ color: "var(--text-muted)" }}
               >
                 Click any technology to see how I've used it

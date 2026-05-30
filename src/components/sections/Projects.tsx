@@ -74,7 +74,7 @@ export function Projects() {
             className="text-xs font-semibold tracking-[0.3em] uppercase"
             style={{ color: "var(--accent-cyan)" }}
           >
-            Projects
+            Public Proof & Systems
           </motion.p>
 
           {/* Dot selector */}
@@ -123,13 +123,27 @@ export function Projects() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="w-full"
             >
-              {/* Year */}
-              <p
-                className="text-xs font-semibold tracking-[0.3em] uppercase mb-4"
-                style={{ color: "var(--accent-indigo)" }}
-              >
-                {project.year}
-              </p>
+              {/* Year + badge */}
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <p
+                  className="text-xs font-semibold tracking-[0.3em] uppercase"
+                  style={{ color: "var(--accent-indigo)" }}
+                >
+                  {project.year}
+                </p>
+                {project.badge != null && (
+                  <span
+                    className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full border"
+                    style={{
+                      borderColor: "rgba(34,211,238,0.35)",
+                      color: "var(--accent-cyan)",
+                      background: "rgba(34,211,238,0.06)",
+                    }}
+                  >
+                    {project.badge}
+                  </span>
+                )}
+              </div>
 
               {/* Huge project title */}
               <h2

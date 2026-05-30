@@ -327,7 +327,7 @@ export const faq: FaqItem[] = [
       "should we hire daniel",
     ],
     answer:
-      "Daniel is a strong senior full-stack candidate because he combines hands-on engineering, architecture ownership, production delivery, and team leadership. He has 7+ years of full-stack experience across Node.js, TypeScript, React, databases, Docker/Kubernetes, and cloud-native systems. What makes him especially relevant for modern teams is that he does not treat AI as a shortcut — he uses AI tools to move faster, but keeps architecture, code review, validation, testing, and production accountability under human control.",
+      "Daniel is a strong senior full-stack candidate because he combines hands-on engineering, architecture ownership, production delivery, and team leadership. He has 7+ years of full-stack experience across Node.js, TypeScript, React, databases, Docker/Kubernetes, and cloud-native systems. What makes him especially relevant for modern teams is that he does not treat AI as a shortcut — he uses AI tools to move faster, but keeps architecture, code review, validation, testing, and production accountability under human control, yet accelerated by AI.",
   },
   {
     id: "senior-experience",

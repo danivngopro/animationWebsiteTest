@@ -11,7 +11,7 @@ import {
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { experience } from "@/lib/data";
 
-// Group last two words on the same line (e.g. "Full-Stack Team Lead" â†’ ["Full-Stack", "Team Lead"])
+// Group last two words on the same line (e.g. "Full-Stack Team Lead" → ["Full-Stack", "Team Lead"])
 function roleLines(role: string): string[] {
   const words = role.split(" ");
   if (words.length >= 3)

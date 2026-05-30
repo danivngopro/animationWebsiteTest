@@ -233,14 +233,32 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 1.0 }}
             className="flex items-center gap-3"
           >
-            <button
+            <motion.button
               onClick={() => window.dispatchEvent(new CustomEvent("ventura-ai:open"))}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 hover:border-white/20 hover:bg-white/8"
-              style={{ border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="relative flex items-center gap-2.5 px-5 py-3 rounded-2xl text-sm font-semibold text-white overflow-hidden"
+              style={{
+                background: "linear-gradient(135deg, rgba(8,14,30,0.96) 0%, rgba(14,10,28,0.96) 100%)",
+                border: "1px solid rgba(34,211,238,0.52)",
+                boxShadow: "0 0 24px rgba(34,211,238,0.22), 0 0 48px rgba(99,102,241,0.09), inset 0 1px 0 rgba(255,255,255,0.06)",
+                transition: "box-shadow 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                  "0 0 36px rgba(34,211,238,0.48), 0 0 70px rgba(99,102,241,0.2), inset 0 1px 0 rgba(255,255,255,0.09)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                  "0 0 24px rgba(34,211,238,0.22), 0 0 48px rgba(99,102,241,0.09), inset 0 1px 0 rgba(255,255,255,0.06)";
+              }}
             >
-              <Bot className="w-3.5 h-3.5" />
+              <Bot
+                className="w-4 h-4 shrink-0"
+                style={{ color: "rgba(34,211,238,0.96)", filter: "drop-shadow(0 0 6px rgba(34,211,238,0.65))" }}
+              />
               Ask my AI assistant about my experience
-            </button>
+            </motion.button>
             <button
               onClick={scrollContact}
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_28px_rgba(99,102,241,0.45)]"

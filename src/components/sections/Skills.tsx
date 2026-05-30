@@ -44,7 +44,7 @@ export function Skills() {
       ref={ref}
       style={{ background: "rgba(5,5,12,0.52)" }}
     >
-      <div className="h-full flex flex-col justify-start px-8 sm:px-14 lg:px-20 pt-8 pb-10 sm:pt-[134px] sm:pb-14 max-w-[1400px] mx-auto w-full gap-7 sm:gap-8">
+      <div className="h-full flex flex-col justify-start px-8 sm:px-14 lg:px-20 pt-8 pb-6 sm:pt-[134px] sm:pb-9 max-w-[1400px] mx-auto w-full gap-5 sm:gap-6">
 
         {/* Header */}
         <div>
@@ -69,9 +69,9 @@ export function Skills() {
         </div>
 
         {/* Body: category sidebar + tech grid */}
-        <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 min-h-[46vh] sm:min-h-[59.4vh]">
+        <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 min-h-[30vh] sm:min-h-[44vh]">
 
-          {/* â”€â”€ Left: category tabs â”€â”€ */}
+          {/* — Left: category tabs — */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -115,7 +115,7 @@ export function Skills() {
             </LayoutGroup>
           </motion.div>
 
-          {/* â”€â”€ Right: tech grid + description â”€â”€ */}
+          {/* — Right: tech grid + description — */}
           <div className="flex flex-col gap-4 min-h-0 overflow-hidden">
 
             {/* Category heading */}
@@ -133,7 +133,7 @@ export function Skills() {
               </motion.p>
             </AnimatePresence>
 
-            {/* Tech chips â€” stagger on category switch */}
+            {/* Tech chips — stagger on category switch */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeCategory}
@@ -167,7 +167,7 @@ export function Skills() {
                     >
                       {tech}
                       {!hasDesc && (
-                        <span className="ml-1 opacity-30 text-[9px]">Â·</span>
+                        <span className="ml-1 opacity-30 text-[9px]">·</span>
                       )}
                     </motion.button>
                   );
@@ -175,7 +175,7 @@ export function Skills() {
               </motion.div>
             </AnimatePresence>
 
-            {/* â”€â”€ Description panel â”€â”€ */}
+            {/* — Description panel — */}
             <AnimatePresence>
               {selectedTech && detail && (
                 <motion.div

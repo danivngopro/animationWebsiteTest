@@ -110,13 +110,13 @@ const safeIntentAnswers: Record<VenturaIntent, string> = {
   cloud:
     "Daniel works with AWS, Docker, Kubernetes, CI/CD, GitHub Actions, Nginx, Linux, Windows environments, release management, and production deployment. He has supported containerized services, Kubernetes-based environments, Docker deployments, and Nginx reverse proxy setups.",
   aiWorkflow:
-    "Daniel uses AI tools as part of a controlled engineering workflow, including Claude Agent, Claude Code, ChatGPT, OpenAI Codex, GitHub Copilot, MCP servers, developer plugins, and local Ollama models. He uses them for planning, implementation, debugging, refactoring, reviews, tests, and UI checks, then reviews and validates AI-assisted work before production use.",
+    "Daniel uses a seven-step process: understand requirements manually, break work into architecture and implementation layers, use AI for alternatives/scaffolding/debugging/test generation, review generated code manually, add validation and tests, refactor for maintainability, then deploy and verify. Tools include Claude, Claude Code, ChatGPT, Codex, GitHub Copilot, MCP servers, and a local Ollama integration. Architecture, review, and accountability remain his — AI accelerates the work.",
   flagshipProject:
     "Daniel's Operational Command Dashboard is a real-time monitoring, alerting, analytics, and AI-assisted investigation platform built in the IDF. It collects monitoring data from servers, databases, scripts, Docker services, Kubernetes services, and application components, processes it through RabbitMQ and backend services, stores it in SQL/MongoDB, applies custom alert rules, and updates the UI through WebSockets. Daniel later designed and implemented analytics dashboards, outlier detection, pattern recognition, ARIMA forecasting, and local Ollama LLM integration for error investigation.",
   education:
     "Daniel studied B.Sc. Mathematics & Computer Science with a Cybersecurity major at Ariel University from 2018-2021. He is also completing an MBA in Economics at The Open University of Israel from 2024-2026.",
   portfolioWebsite:
-    "Daniel's portfolio is a cinematic fullscreen snap-scroll experience built with Next.js 15 App Router, TypeScript 5 strict mode, Tailwind CSS v4, shadcn/ui, Motion for React, React Three Fiber, Drei, Three.js, Zod, react-hook-form, Docker, and Nginx reverse proxy. It includes security headers, CSP, validation, anti-spam concepts, and AI-aware security practices.",
+    "Daniel's portfolio is a cinematic fullscreen snap-scroll experience and a small production-style product. Built with Next.js 15, TypeScript 5 strict mode, Tailwind CSS v4, Motion for React, React Three Fiber, Three.js, Zod, and react-hook-form. Deployed via Docker and Nginx. Features include security headers, CSP, Zod validation, Ventura's AI (local Ollama, qwen2.5:0.5b), and a Build Log section that documents the full stack and deployment approach.",
   contact:
     "The best way to contact Daniel is by email at danivngopro@gmail.com. You can also view his GitHub at https://github.com/danivngopro or LinkedIn at https://www.linkedin.com/in/daniel-v-03b663152/.",
   venturaAI:

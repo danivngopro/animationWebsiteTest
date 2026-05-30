@@ -249,6 +249,85 @@ export const faq: FaqItem[] = [
     answer:
       "Daniel's portfolio is built as a cinematic fullscreen snap-scroll experience using Next.js, TypeScript, Tailwind CSS, Motion, React Three Fiber, and Docker/Nginx deployment. It also highlights security headers, validation, anti-spam concepts, and AI-aware security practices.",
   },
+  {
+    id: "classified-work-why",
+    intent: "experience",
+    questions: [
+      "why can't you share your work",
+      "why no source code",
+      "why no live demos",
+      "why are projects classified",
+      "why can't i see the code",
+      "why no public projects",
+      "military work classified",
+      "why classified",
+    ],
+    answer:
+      "Most of Daniel's production work was built for internal military environments in the IDF. Source code, screenshots, infrastructure details, and live demos cannot be published. The portfolio demonstrates the same engineering ability through sanitized architecture decisions, system design thinking, AI-assisted workflow, and public reference implementations.",
+  },
+  {
+    id: "case-studies-what",
+    questions: [
+      "what are the case studies",
+      "architecture case studies",
+      "what is a sanitized case study",
+      "case study",
+      "what do the case studies show",
+    ],
+    answer:
+      "The Architecture Case Studies section presents three sanitized case studies: Real-Time Operational Dashboard (architecture and system design), AI-Assisted Engineering Workflow (modern development process), and Secure Full-Stack Delivery (security and reliability mindset). No classified details are included.",
+  },
+  {
+    id: "build-log-what",
+    intent: "portfolioWebsite",
+    questions: [
+      "what is the build log",
+      "how was this portfolio built",
+      "portfolio build log",
+      "what stack does this site use",
+      "how did daniel build this site",
+    ],
+    answer:
+      "The Build Log section explains that the portfolio itself is a small production-style product. It uses Next.js 15, TypeScript 5 strict mode, Tailwind CSS v4, Motion for React, React Three Fiber, Zod, and react-hook-form. It is deployed via Docker and Nginx, includes security headers, and features Ventura's AI — a local Ollama integration (qwen2.5:0.5b) with a deterministic FAQ router, safety checks, and fallback behavior.",
+  },
+  {
+    id: "public-proof-what",
+    questions: [
+      "what is public proof",
+      "public proof and systems",
+      "what projects are public",
+      "why no live project links",
+      "why no demos",
+    ],
+    answer:
+      "The Public Proof & Systems section presents Daniel's projects as sanitized or internal case studies. Most production work was classified military work and cannot be published publicly. The B2B platform is a sanitized client project. The portfolio site itself serves as the primary public proof of modern full-stack delivery.",
+  },
+  {
+    id: "ai-responsible-use",
+    intent: "aiWorkflow",
+    questions: [
+      "does daniel use ai responsibly",
+      "how responsibly does daniel use ai",
+      "ai ethics daniel",
+      "does daniel just use ai to write code",
+      "how does daniel control ai output",
+    ],
+    answer:
+      "Daniel follows a seven-step process: understand requirements manually, break work into architecture and task layers, use AI for alternatives and scaffolding, review all generated code manually, add validation and tests, refactor for maintainability, then deploy and verify. AI accelerates; architecture, review, and accountability remain his.",
+  },
+  {
+    id: "hire-daniel",
+    intent: "about",
+    questions: [
+      "why should we hire daniel",
+      "why hire daniel",
+      "what makes daniel a good hire",
+      "why is daniel a strong candidate",
+      "should we hire daniel",
+    ],
+    answer:
+      "Daniel brings 7+ years of production full-stack experience, including 4 years as a Full-Stack Engineer and 2 years as a Team Lead delivering mission-critical systems used by 1,000+ operational users. He combines TypeScript, Node.js, React, cloud-native infrastructure, and AI-assisted engineering into a senior-level delivery skillset. He codes, architects, reviews, and ships.",
+  },
 ];
 
 export const intents: IntentConfig[] = [
@@ -370,7 +449,7 @@ export const intents: IntentConfig[] = [
       "ui tests",
     ],
     context:
-      "Daniel uses AI tools as part of a controlled engineering workflow. He uses Claude Agent for code generation; Claude and Claude Code for deeper implementation help and code reasoning; ChatGPT for design thinking, architecture exploration, technology search, implementation planning, and technical research; OpenAI Codex for coding assistance; developer plugins for Git management, tests, UI tests, and code reviews; GitHub Copilot for in-editor productivity; MCP servers for context-aware AI tooling; and Ollama/local LLMs for privacy-first local inference. Daniel reviews, adapts, tests, and validates AI-assisted outputs before production use.",
+      "Daniel uses AI as part of a seven-step engineering process: understand requirements manually, break work into architecture and implementation layers, use AI for alternatives/scaffolding/debugging/test generation, review generated code manually, add validation and edge-case tests, refactor for maintainability, then deploy and verify. Tools include Claude, Claude Code, ChatGPT, Codex, GitHub Copilot, MCP servers, and Ollama for local LLM inference. Architecture, review, and accountability remain Daniel's — AI accelerates the work.",
   },
   {
     id: "flagshipProject",

@@ -117,6 +117,21 @@ export const faq: FaqItem[] = [
       "Daniel built Ventura's AI as a portfolio feature using Next.js, TypeScript, a deterministic FAQ/intent router, a safe API route, and a tiny local Ollama model. The goal is to demonstrate local LLM integration, prompt control, safety routing, and practical AI-assisted product development.",
   },
   {
+    id: "technologies",
+    intent: "skills",
+    questions: [
+      "what technologies does daniel use",
+      "what is daniel's tech stack",
+      "what tools does daniel use",
+      "what programming languages does daniel know",
+      "what frameworks does daniel use",
+      "what are daniel's skills",
+      "list daniel's technologies",
+    ],
+    answer:
+      "Daniel works mainly with TypeScript, Node.js, React, Next.js, NestJS, Express, REST APIs, RabbitMQ, Zod, Redis, SQL/MySQL/PostgreSQL, MongoDB, Docker, Kubernetes, AWS, GitHub Actions, Nginx, Linux, Windows, Python, WebSockets, Ollama, and ARIMA. He also uses AI-assisted development tools such as Claude Agent, Claude Code, ChatGPT, OpenAI Codex, GitHub Copilot, MCP servers, and developer plugins for code generation, reviews, testing, debugging, and architecture planning.",
+  },
+  {
     id: "what-does-daniel-do",
     intent: "about",
     questions: [
@@ -259,6 +274,8 @@ export const intents: IntentConfig[] = [
       "tools",
       "programming",
       "stack",
+      "frameworks",
+      "languages",
     ],
     context:
       "Daniel's main skills include Node.js, TypeScript, Express, NestJS, REST APIs, React, Next.js, Tailwind CSS, SQL, MySQL, PostgreSQL, MongoDB, Redis, RabbitMQ, Docker, Kubernetes, AWS, GitHub Actions, Nginx, Linux, Python, WebSockets, AI-assisted development, code reviews, mentoring, system design, and technical planning.",

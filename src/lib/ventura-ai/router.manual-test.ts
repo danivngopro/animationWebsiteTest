@@ -14,6 +14,21 @@ type ManualCase = {
 
 const cases: ManualCase[] = [
   {
+    question: "What technologies does Daniel use?",
+    expectedType: "faq",
+    expectedId: "technologies",
+  },
+  {
+    question: "What is Daniel's tech stack?",
+    expectedType: "faq",
+    expectedId: "technologies",
+  },
+  {
+    question: "What tools does Daniel use?",
+    expectedType: "faq",
+    expectedId: "technologies",
+  },
+  {
     question: "What does Daniel do?",
     expectedType: "faq",
     expectedId: "what-does-daniel-do",

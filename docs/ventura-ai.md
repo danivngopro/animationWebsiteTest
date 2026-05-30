@@ -1,6 +1,6 @@
 # Ventura's AI
 
-Ventura's AI is the lightweight local portfolio chatbot used by this site. It routes portfolio questions deterministically first, only calls Ollama for matched portfolio intents, and falls back to safe deterministic answers when Ollama is unavailable or unsafe.
+Ventura's AI is the lightweight local portfolio chatbot used by this site. It routes portfolio questions deterministically first, can use Ollama to rewrite grounded in-scope answers with more natural wording, and falls back to safe deterministic answers when Ollama is unavailable or unsafe.
 
 ## Local Development
 
@@ -66,15 +66,19 @@ Invoke-RestMethod -Uri "http://localhost:3000/api/ventura-ai/chat" -Method POST 
 Expected:
 
 - Portfolio questions answer correctly.
+- Repeating the same portfolio question several times can produce safe wording variation when Ollama is running.
+- Repeating the same portfolio question with Ollama stopped still returns a deterministic safe answer.
 - Greeting questions return a friendly Ventura's AI greeting.
 - Ventura's AI self-info questions explain the local Ollama/Next.js/router setup.
 - Unrelated questions return the portfolio-only scope fallback.
 - Education mentions Ariel University and The Open University of Israel only.
 - No USC hallucination.
+- Contact answers preserve Daniel's exact email, GitHub, and LinkedIn links.
 
 ## Production Notes
 
 - The API route does not expose prompts, full context, stack traces, or raw Ollama errors to the client.
-- FAQ and fallback routes return before calling Ollama.
-- Intent routes return deterministic safe answers if Ollama is unavailable, times out, or fails safety checks.
+- Fallback routes return before calling Ollama.
+- FAQ and intent routes may call Ollama only to rewrite grounded portfolio answers.
+- FAQ and intent routes return deterministic safe answers if Ollama is unavailable, times out, or fails safety checks.
 - Rate limiting is still a TODO before exposing the route broadly.

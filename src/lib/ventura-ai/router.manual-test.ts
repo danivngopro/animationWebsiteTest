@@ -1,4 +1,5 @@
 import {
+  buildGroundedRewritePrompt,
   buildOllamaPrompt,
   containsForbiddenClaim,
   routeVenturaQuestion,
@@ -141,6 +142,27 @@ for (const required of [
 ]) {
   if (!prompt.includes(required)) {
     throw new Error(`Ollama prompt is missing: ${required}`);
+  }
+}
+
+const rewritePrompt = buildGroundedRewritePrompt({
+  question: "What did Daniel study?",
+  canonicalAnswer:
+    "Daniel studied B.Sc. Mathematics & Computer Science with a Cybersecurity major at Ariel University. He is also completing an MBA in Economics at The Open University of Israel.",
+  intent: "education",
+  styleInstruction: "Use natural wording.",
+});
+
+for (const required of [
+  "Rewrite the canonical answer",
+  "Use only the canonical answer",
+  "Preserve exact names",
+  "2-3 short sentences",
+  "Ariel University",
+  "The Open University of Israel",
+]) {
+  if (!rewritePrompt.includes(required)) {
+    throw new Error(`Grounded rewrite prompt is missing: ${required}`);
   }
 }
 

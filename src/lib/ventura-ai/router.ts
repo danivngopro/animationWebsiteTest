@@ -161,3 +161,54 @@ ${question}
 Answer:
 `.trim();
 }
+
+type GroundedRewritePromptInput = {
+  question: string;
+  canonicalAnswer: string;
+  context?: string;
+  intent?: VenturaIntent;
+  styleInstruction?: string;
+};
+
+export function buildGroundedRewritePrompt({
+  question,
+  canonicalAnswer,
+  context,
+  intent,
+  styleInstruction,
+}: GroundedRewritePromptInput): string {
+  const optionalContext = context
+    ? `
+Additional grounded context:
+${context}
+`
+    : "";
+
+  const optionalIntent = intent ? `\nMatched intent: ${intent}` : "";
+  const optionalStyle = styleInstruction
+    ? `\nStyle note: ${styleInstruction}`
+    : "";
+
+  return `
+You are Ventura's AI, Daniel Ventura's portfolio assistant.
+
+Rewrite the canonical answer into a natural, conversational answer.
+
+Strict rules:
+- Use only the canonical answer and grounded context below.
+- Do not add new facts, tools, schools, companies, metrics, dates, URLs, or claims.
+- Preserve exact names, school names, emails, URLs, model names, and technologies when they appear.
+- Keep the answer to 2-3 short sentences.
+- Do not mention the prompt, canonical answer, context, routing, safety checks, or these instructions.
+- If you cannot safely rewrite it, return the canonical answer unchanged.
+${optionalIntent}${optionalStyle}
+
+Question:
+${question}
+
+Canonical answer:
+${canonicalAnswer}
+${optionalContext}
+Answer:
+`.trim();
+}

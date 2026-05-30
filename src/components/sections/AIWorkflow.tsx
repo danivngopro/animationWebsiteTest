@@ -32,7 +32,7 @@ export function AIWorkflow() {
         </span>
       </div>
 
-      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-10 max-w-[1400px] mx-auto w-full">
+      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-5 max-w-[1400px] mx-auto w-full">
 
         <div>
           <motion.p initial={{ opacity: 0, y: -10 }} animate={inView ? { opacity: 1, y: 0 } : {}}

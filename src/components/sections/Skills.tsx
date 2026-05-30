@@ -44,7 +44,7 @@ export function Skills() {
       ref={ref}
       style={{ background: "rgba(5,5,12,0.52)" }}
     >
-      <div className="h-full flex flex-col px-8 sm:px-14 lg:px-20 py-10 max-w-[1400px] mx-auto w-full gap-6">
+      <div className="h-full flex flex-col px-8 sm:px-14 lg:px-20 py-5 max-w-[1400px] mx-auto w-full gap-6">
 
         {/* Header */}
         <div>

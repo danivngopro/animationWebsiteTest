@@ -46,7 +46,7 @@ export function Security() {
       {/* Semi-transparent overlay — hex pattern + galaxy both show through */}
       <div className="absolute inset-0" style={{ background: "rgba(4,4,10,0.55)" }} aria-hidden />
 
-      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-10 max-w-[1400px] mx-auto w-full">
+      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-5 max-w-[1400px] mx-auto w-full">
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">

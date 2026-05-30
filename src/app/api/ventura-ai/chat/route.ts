@@ -6,7 +6,7 @@ import {
   type VenturaIntent,
 } from "@/lib/ventura-ai/knowledge";
 import {
-  buildOllamaPrompt,
+  buildGroundedRewritePrompt,
   containsForbiddenClaim,
   routeVenturaQuestion,
 } from "@/lib/ventura-ai/router";
@@ -25,6 +25,8 @@ type ChatResponse = {
 
 const OLLAMA_TIMEOUT_MS = 15_000;
 const MAX_MODEL_ANSWER_CHARACTERS = 600;
+const OLLAMA_REWRITE_NUM_PREDICT = 180;
+const OLLAMA_REWRITE_TEMPERATURE = 0.42;
 
 const suspiciousModelClaims = [
   "azure functions",
@@ -32,6 +34,56 @@ const suspiciousModelClaims = [
   "gcp",
   "firebase",
   "supabase",
+] as const;
+
+const unsafeBotInfoClaims = [
+  "always online",
+  "fully private",
+  "always private",
+  "fully secure",
+  "guaranteed secure",
+  "100% private",
+  "100% secure",
+] as const;
+
+const promptLeakClaims = [
+  "canonical answer",
+  "provided context",
+  "grounded context",
+  "these instructions",
+  "the prompt",
+] as const;
+
+const unsupportedEducationClaims = [
+  "graduated",
+  "graduating",
+  "completed his bachelor's",
+  "completed his bachelor",
+  "completed a bachelor's",
+  "completed a bachelor",
+  "completed an mba",
+  "earned a bachelor's",
+  "earned a bachelor",
+  "earned an mba",
+] as const;
+
+const highPrecisionTerms = [
+  "Ventura's AI",
+  "Ariel University",
+  "The Open University of Israel",
+  "danivngopro@gmail.com",
+  "https://github.com/danivngopro",
+  "https://www.linkedin.com/in/daniel-v-03b663152/",
+  "qwen2.5:0.5b",
+  "Ollama",
+  "Next.js",
+] as const;
+
+const rewriteStyleInstructions = [
+  "Answer directly, with warm but professional wording.",
+  "Use a slightly different sentence rhythm while staying concise.",
+  "Lead with the most relevant point, then add one grounded detail.",
+  "Sound natural and recruiter-friendly without adding extra claims.",
 ] as const;
 
 const safeIntentAnswers: Record<VenturaIntent, string> = {
@@ -78,13 +130,43 @@ function normalizeModelAnswer(answer: string): string {
   return answer.replace(/\s+/g, " ").trim();
 }
 
-function isUnsafeModelAnswer(answer: string): boolean {
+function getRequiredTerms(canonicalAnswer: string): string[] {
+  return highPrecisionTerms.filter((term) => canonicalAnswer.includes(term));
+}
+
+function missesRequiredTerms(answer: string, requiredTerms: string[]): boolean {
+  return requiredTerms.some((term) => !answer.includes(term));
+}
+
+function includesUnsafeBotInfoClaim(answer: string): boolean {
   const normalizedAnswer = answer.toLowerCase();
+
+  return unsafeBotInfoClaims.some((claim) => normalizedAnswer.includes(claim));
+}
+
+function includesAnyClaim(answer: string, claims: readonly string[]): boolean {
+  const normalizedAnswer = answer.toLowerCase();
+
+  return claims.some((claim) => normalizedAnswer.includes(claim));
+}
+
+function isUnsafeModelAnswer(
+  answer: string,
+  canonicalAnswer: string,
+  intent?: VenturaIntent,
+): boolean {
+  const normalizedAnswer = answer.toLowerCase();
+  const requiredTerms = getRequiredTerms(canonicalAnswer);
 
   return (
     answer.length > MAX_MODEL_ANSWER_CHARACTERS ||
     containsForbiddenClaim(answer) ||
-    suspiciousModelClaims.some((claim) => normalizedAnswer.includes(claim))
+    missesRequiredTerms(answer, requiredTerms) ||
+    suspiciousModelClaims.some((claim) => normalizedAnswer.includes(claim)) ||
+    includesAnyClaim(answer, promptLeakClaims) ||
+    (intent === "education" &&
+      includesAnyClaim(answer, unsupportedEducationClaims)) ||
+    (intent === "venturaAI" && includesUnsafeBotInfoClaim(answer))
   );
 }
 
@@ -92,7 +174,21 @@ function getSafeIntentAnswer(intentId: VenturaIntent): string {
   return safeIntentAnswers[intentId];
 }
 
-async function callOllama(prompt: string): Promise<string> {
+function pickRewriteStyleInstruction(): string {
+  return rewriteStyleInstructions[
+    Math.floor(Math.random() * rewriteStyleInstructions.length)
+  ];
+}
+
+type OllamaCallOptions = {
+  numPredict?: number;
+  temperature?: number;
+};
+
+async function callOllama(
+  prompt: string,
+  options: OllamaCallOptions = {},
+): Promise<string> {
   const { baseUrl, model } = getOllamaConfig();
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), OLLAMA_TIMEOUT_MS);
@@ -108,8 +204,8 @@ async function callOllama(prompt: string): Promise<string> {
         prompt,
         stream: false,
         options: {
-          num_predict: 140,
-          temperature: 0.1,
+          num_predict: options.numPredict ?? 140,
+          temperature: options.temperature ?? 0.1,
         },
       }),
       signal: controller.signal,
@@ -136,6 +232,31 @@ async function callOllama(prompt: string): Promise<string> {
   } finally {
     clearTimeout(timeout);
   }
+}
+
+async function rewriteGroundedAnswer({
+  message,
+  canonicalAnswer,
+  context,
+  intent,
+}: {
+  message: string;
+  canonicalAnswer: string;
+  context?: string;
+  intent?: VenturaIntent;
+}): Promise<string> {
+  const prompt = buildGroundedRewritePrompt({
+    question: message,
+    canonicalAnswer,
+    context,
+    intent,
+    styleInstruction: pickRewriteStyleInstruction(),
+  });
+
+  return callOllama(prompt, {
+    numPredict: OLLAMA_REWRITE_NUM_PREDICT,
+    temperature: OLLAMA_REWRITE_TEMPERATURE,
+  });
 }
 
 export async function POST(request: Request) {
@@ -171,11 +292,33 @@ export async function POST(request: Request) {
   const routed = routeVenturaQuestion(message);
 
   if (routed.type === "faq") {
-    return jsonResponse({
-      answer: routed.answer,
-      source: "faq",
-      intent: routed.intent,
-    });
+    try {
+      const answer = await rewriteGroundedAnswer({
+        message,
+        canonicalAnswer: routed.answer,
+        intent: routed.intent,
+      });
+
+      if (isUnsafeModelAnswer(answer, routed.answer, routed.intent)) {
+        return jsonResponse({
+          answer: routed.answer,
+          source: "safety",
+          intent: routed.intent,
+        });
+      }
+
+      return jsonResponse({
+        answer,
+        source: "llm",
+        intent: routed.intent,
+      });
+    } catch {
+      return jsonResponse({
+        answer: routed.answer,
+        source: "faq",
+        intent: routed.intent,
+      });
+    }
   }
 
   if (routed.type === "fallback") {
@@ -185,14 +328,19 @@ export async function POST(request: Request) {
     });
   }
 
-  const prompt = buildOllamaPrompt(message, routed.context);
+  const canonicalAnswer = getSafeIntentAnswer(routed.intent.id);
 
   try {
-    const answer = await callOllama(prompt);
+    const answer = await rewriteGroundedAnswer({
+      message,
+      canonicalAnswer,
+      context: routed.context,
+      intent: routed.intent.id,
+    });
 
-    if (isUnsafeModelAnswer(answer)) {
+    if (isUnsafeModelAnswer(answer, canonicalAnswer, routed.intent.id)) {
       return jsonResponse({
-        answer: getSafeIntentAnswer(routed.intent.id),
+        answer: canonicalAnswer,
         source: "safety",
         intent: routed.intent.id,
       });
@@ -205,7 +353,7 @@ export async function POST(request: Request) {
     });
   } catch {
     return jsonResponse({
-      answer: getSafeIntentAnswer(routed.intent.id),
+      answer: canonicalAnswer,
       source: "error",
       intent: routed.intent.id,
     });

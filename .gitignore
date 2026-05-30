@@ -25,3 +25,5 @@ npm-debug.log*
 docker-compose.yml
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+.playwright-mcp/
+./memory

@@ -43,9 +43,16 @@ export function Hero() {
   const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
 
-  // Gate all animations on the intro overlay completing (first scroll)
+  // Gate all animations on the intro overlay completing.
+  // When the page loads mid-scroll (browser scroll restoration), IntroOverlay
+  // fires intro-exit synchronously in its own useEffect — before Hero's useEffect
+  // can attach a listener. Mirror the same scrollY check so we don't miss it.
   const [introReady, setIntroReady] = useState(false);
   useEffect(() => {
+    if (window.scrollY > window.innerHeight * 0.5) {
+      setIntroReady(true);
+      return;
+    }
     const handler = () => setIntroReady(true);
     window.addEventListener("intro-exit", handler, { once: true });
     return () => window.removeEventListener("intro-exit", handler);

@@ -40,7 +40,7 @@ export function Security() {
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
   return (
-    <div id="security" className="slide-section hex-bg" ref={ref} style={{ background: "transparent" }}>
+    <div id="security-reliability" className="slide-section hex-bg" ref={ref} style={{ background: "transparent" }}>
       <ScanLine />
 
       {/* Semi-transparent overlay â€” hex pattern + galaxy both show through */}
@@ -58,7 +58,7 @@ export function Security() {
               className="text-xs font-semibold tracking-[0.3em] uppercase mb-2"
               style={{ color: "var(--accent-cyan)" }}
             >
-              Security & Countermeasures
+              Security & Reliability
             </motion.p>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -67,8 +67,8 @@ export function Security() {
               className="font-black tracking-tight"
               style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", letterSpacing: "-0.03em" }}
             >
-              <span className="text-gradient-subtle">Defense </span>
-              <span className="text-gradient-indigo">as a default.</span>
+              <span className="text-gradient-subtle">Reliable </span>
+              <span className="text-gradient-indigo">by design.</span>
             </motion.h2>
           </div>
 

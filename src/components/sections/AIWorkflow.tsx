@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
@@ -32,7 +32,7 @@ export function AIWorkflow() {
         </span>
       </div>
 
-      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-5 max-w-[1400px] mx-auto w-full">
+      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-8 max-w-[1400px] mx-auto w-full">
 
         <div>
           <motion.p initial={{ opacity: 0, y: -10 }} animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -49,7 +49,7 @@ export function AIWorkflow() {
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 flex-1 my-6">
+        <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
           {aiWorkflow.map((item, i) => {
             const Icon = iconMap[item.icon] ?? Brain;
             return (
@@ -63,7 +63,7 @@ export function AIWorkflow() {
                   scale: { duration: 0.5, delay: 0.2 + i * 0.09 },
                   y: { type: "spring", stiffness: 600, damping: 30 },
                 }}
-                className="relative group p-5 rounded-2xl border overflow-hidden flex flex-col gap-3"
+                className="relative group p-2.5 sm:p-3 rounded-2xl border overflow-hidden flex flex-col gap-1.5"
                 style={{ background: "var(--bg-card)", borderColor: "rgba(255,255,255,0.07)" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(34,211,238,0.35)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.07)"; }}
@@ -74,18 +74,18 @@ export function AIWorkflow() {
                   style={{ background: "radial-gradient(ellipse 50% 40% at 50% 0%, rgba(34,211,238,0.08) 0%, transparent 70%)" }}
                   aria-hidden
                 />
-                <span className="absolute top-4 right-4 text-5xl font-black opacity-[0.04] select-none tabular-nums"
+                <span className="absolute top-3 right-3 sm:top-4 sm:right-4 text-3xl sm:text-5xl font-black opacity-[0.04] select-none tabular-nums"
                   style={{ color: "var(--accent-cyan)" }} aria-hidden>
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "var(--accent-cyan-dim)" }}>
-                  <Icon className="w-4.5 h-4.5" style={{ color: "var(--accent-cyan)" }} />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center" style={{ background: "var(--accent-cyan-dim)" }}>
+                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: "var(--accent-cyan)" }} />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-slate-100">{item.tool}</p>
-                  <p className="text-xs font-medium mt-0.5" style={{ color: "var(--accent-cyan)" }}>{item.role}</p>
+                  <p className="text-[11px] sm:text-sm font-bold leading-tight text-slate-100">{item.tool}</p>
+                  <p className="hidden sm:block text-xs font-medium mt-0.5" style={{ color: "var(--accent-cyan)" }}>{item.role}</p>
                 </div>
-                <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>{item.description}</p>
+                <p className="hidden sm:block text-[11px] leading-relaxed line-clamp-2" style={{ color: "var(--text-secondary)" }}>{item.description}</p>
               </motion.div>
             );
           })}
@@ -102,3 +102,4 @@ export function AIWorkflow() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
@@ -43,10 +43,10 @@ export function Security() {
     <div id="security" className="slide-section hex-bg" ref={ref} style={{ background: "transparent" }}>
       <ScanLine />
 
-      {/* Semi-transparent overlay — hex pattern + galaxy both show through */}
+      {/* Semi-transparent overlay â€” hex pattern + galaxy both show through */}
       <div className="absolute inset-0" style={{ background: "rgba(4,4,10,0.55)" }} aria-hidden />
 
-      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 py-5 max-w-[1400px] mx-auto w-full">
+      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 pt-8 pb-10 sm:pt-[134px] sm:pb-[91px] max-w-[1400px] mx-auto w-full">
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -77,7 +77,7 @@ export function Security() {
             initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
             animate={inView ? { opacity: 1, scale: 1, rotate: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.4, type: "spring" }}
-            className="shrink-0"
+            className="hidden sm:block shrink-0"
           >
             <Shield
               className="w-14 h-14 sm:w-16 sm:h-16 animate-glow-pulse"
@@ -86,8 +86,8 @@ export function Security() {
           </motion.div>
         </div>
 
-        {/* 3×3 grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 flex-1 my-4">
+        {/* 3Ã—3 grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 my-5">
           {securityMeasures.map((m, i) => {
             const Icon = iconMap[m.icon] ?? Shield;
             return (
@@ -101,7 +101,7 @@ export function Security() {
                   x: { duration: 0.4, delay: 0.25 + i * 0.06 },
                   y: { type: "spring", stiffness: 600, damping: 30 },
                 }}
-                className="relative flex items-start gap-3 p-4 rounded-xl border overflow-hidden group transition-colors duration-100"
+                className="relative flex items-start gap-2 sm:gap-3 p-3 rounded-xl border overflow-hidden group transition-colors duration-100"
                 style={{ background: "rgba(17,17,37,0.7)", borderColor: "rgba(255,255,255,0.07)" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(99,102,241,0.4)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.07)"; }}
@@ -122,15 +122,15 @@ export function Security() {
                 </span>
 
                 <div
-                  className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-0.5"
+                  className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center mt-0.5"
                   style={{ background: "var(--accent-indigo-dim)" }}
                 >
-                  <Icon className="w-4 h-4" style={{ color: "var(--accent-indigo)" }} />
+                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: "var(--accent-indigo)" }} />
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <p className="text-xs font-semibold text-slate-100 leading-snug">{m.title}</p>
+                    <p className="text-[11px] sm:text-xs font-semibold text-slate-100 leading-snug">{m.title}</p>
                   </div>
                   <span
                     className="inline-block text-[9px] font-semibold px-1.5 py-0.5 rounded-full mb-1.5"
@@ -142,7 +142,7 @@ export function Security() {
                   >
                     {m.tag}
                   </span>
-                  <p className="text-[11px] leading-relaxed hidden sm:block" style={{ color: "var(--text-secondary)" }}>
+                  <p className="text-[11px] leading-relaxed hidden sm:block line-clamp-2" style={{ color: "var(--text-secondary)" }}>
                     {m.description}
                   </p>
                 </div>
@@ -155,12 +155,13 @@ export function Security() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.9 }}
-          className="text-xs"
+          className="hidden sm:block text-xs sm:-translate-y-[35px]"
           style={{ color: "var(--text-muted)" }}
         >
-          Cybersecurity major — security is baked in, not bolted on.
+          Cybersecurity major â€” security is baked in, not bolted on.
         </motion.p>
       </div>
     </div>
   );
 }
+

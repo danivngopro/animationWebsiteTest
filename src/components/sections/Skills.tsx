@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView, LayoutGroup } from "motion/react";
@@ -44,7 +44,7 @@ export function Skills() {
       ref={ref}
       style={{ background: "rgba(5,5,12,0.52)" }}
     >
-      <div className="h-full flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-8 sm:py-10 max-w-[1400px] mx-auto w-full gap-7 sm:gap-8">
+      <div className="h-full flex flex-col justify-start px-8 sm:px-14 lg:px-20 pt-8 pb-10 sm:pt-[134px] sm:pb-14 max-w-[1400px] mx-auto w-full gap-7 sm:gap-8">
 
         {/* Header */}
         <div>
@@ -69,14 +69,14 @@ export function Skills() {
         </div>
 
         {/* Body: category sidebar + tech grid */}
-        <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 min-h-0">
+        <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 min-h-[46vh] sm:min-h-[59.4vh]">
 
-          {/* ── Left: category tabs ── */}
+          {/* â”€â”€ Left: category tabs â”€â”€ */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col gap-1 justify-start pt-1"
+            className="flex flex-col gap-1 pt-1"
           >
             <LayoutGroup>
               {skills.map((cat, i) => {
@@ -115,7 +115,7 @@ export function Skills() {
             </LayoutGroup>
           </motion.div>
 
-          {/* ── Right: tech grid + description ── */}
+          {/* â”€â”€ Right: tech grid + description â”€â”€ */}
           <div className="flex flex-col gap-4 min-h-0 overflow-hidden">
 
             {/* Category heading */}
@@ -133,7 +133,7 @@ export function Skills() {
               </motion.p>
             </AnimatePresence>
 
-            {/* Tech chips — stagger on category switch */}
+            {/* Tech chips â€” stagger on category switch */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeCategory}
@@ -167,7 +167,7 @@ export function Skills() {
                     >
                       {tech}
                       {!hasDesc && (
-                        <span className="ml-1 opacity-30 text-[9px]">·</span>
+                        <span className="ml-1 opacity-30 text-[9px]">Â·</span>
                       )}
                     </motion.button>
                   );
@@ -175,7 +175,7 @@ export function Skills() {
               </motion.div>
             </AnimatePresence>
 
-            {/* ── Description panel ── */}
+            {/* â”€â”€ Description panel â”€â”€ */}
             <AnimatePresence>
               {selectedTech && detail && (
                 <motion.div
@@ -244,3 +244,4 @@ export function Skills() {
     </div>
   );
 }
+

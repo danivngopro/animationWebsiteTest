@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,7 @@ import { contactSchema, type ContactFormData } from "@/lib/schemas";
 import { personal } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-// EmailJS setup — add these to .env.local:
+// EmailJS setup â€” add these to .env.local:
 //   NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_xxxxxxx
 //   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_xxxxxxx
 //   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=xxxxxxxxxxxxxxxxxxxx
@@ -55,7 +55,7 @@ export function Contact() {
       reset();
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      setSendError(`Failed to send (${msg}) — please email directly.`);
+      setSendError(`Failed to send (${msg}) â€” please email directly.`);
     }
   };
 
@@ -66,9 +66,9 @@ export function Contact() {
       ref={ref}
       style={{ background: "rgba(5,5,12,0.50)" }}
     >
-      <div className="h-full flex flex-col justify-center px-8 sm:px-14 lg:px-20 max-w-[1400px] mx-auto w-full">
+      <div className="h-full flex flex-col justify-start px-8 sm:px-14 lg:px-20 pt-8 pb-10 sm:pt-[124px] sm:pb-14 max-w-[1400px] mx-auto w-full">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left — big CTA + contact info */}
+          {/* Left â€” big CTA + contact info */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -166,7 +166,7 @@ export function Contact() {
             </div>
           </motion.div>
 
-          {/* Right — form */}
+          {/* Right â€” form */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -270,7 +270,7 @@ export function Contact() {
                   ) : (
                     <Send className="w-4 h-4" />
                   )}
-                  {isSubmitting ? "Sending…" : "Send Message"}
+                  {isSubmitting ? "Sendingâ€¦" : "Send Message"}
                 </motion.button>
 
                 {sendError && (
@@ -332,3 +332,4 @@ function inputCls(hasError: boolean) {
       : "border border-white/8 bg-white/4 text-slate-100 focus:border-indigo-500/50 focus:ring-indigo-500/20 focus:bg-white/6",
   );
 }
+

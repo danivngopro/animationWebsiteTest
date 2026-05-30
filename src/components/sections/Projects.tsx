@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView, useMotionValue, animate } from "motion/react";
@@ -63,7 +63,7 @@ export function Projects() {
         </span>
       </div>
 
-      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 pt-8 pb-9 sm:pt-10 sm:pb-10 max-w-[1400px] mx-auto w-full">
+      <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 pt-8 pb-10 sm:pt-[134px] sm:pb-[47px] max-w-[1400px] mx-auto w-full">
 
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -104,7 +104,7 @@ export function Projects() {
           </motion.div>
         </div>
 
-        {/* Main project display — drag left/right to navigate */}
+        {/* Main project display â€” drag left/right to navigate */}
         <motion.div
           className="flex-1 flex items-center"
           style={{ x: dragX, cursor: "grab" }}
@@ -219,3 +219,4 @@ export function Projects() {
     </div>
   );
 }
+

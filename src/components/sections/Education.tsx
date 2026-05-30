@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
@@ -15,7 +15,7 @@ export function Education() {
       ref={ref}
       style={{ background: "rgba(5,4,12,0.52)" }}
     >
-      <div className="h-full flex flex-col justify-center px-8 sm:px-14 lg:px-20 max-w-[1400px] mx-auto w-full gap-12">
+      <div className="h-full flex flex-col justify-start sm:justify-between px-8 sm:px-14 lg:px-20 pt-8 pb-10 sm:pt-[134px] sm:pb-[74px] max-w-[1400px] mx-auto w-full gap-8">
 
         {/* Header */}
         <div>
@@ -41,7 +41,7 @@ export function Education() {
         </div>
 
         {/* Degree cards */}
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
           {education.map((item, i) => (
             <motion.div
               key={item.id}
@@ -52,7 +52,7 @@ export function Education() {
                 opacity: { duration: 0.6, delay: 0.3 + i * 0.15 },
                 y: { type: "spring", stiffness: 600, damping: 30 },
               }}
-              className="relative p-8 rounded-2xl border overflow-hidden group transition-colors duration-100"
+              className="relative p-4 sm:p-8 rounded-2xl border overflow-hidden group transition-colors duration-100"
               style={{
                 background: "var(--bg-card)",
                 borderColor: "rgba(255,255,255,0.07)",
@@ -69,7 +69,7 @@ export function Education() {
 
               {/* Period badge */}
               <span
-                className="inline-block text-xs font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full mb-5"
+                className="inline-block text-[10px] sm:text-xs font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full mb-3 sm:mb-5"
                 style={{
                   background: "var(--accent-indigo-dim)",
                   color: "var(--accent-indigo)",
@@ -97,7 +97,7 @@ export function Education() {
 
               {/* Institution */}
               <p
-                className="mt-0.5 text-sm"
+                className="mt-0.5 text-xs sm:text-sm"
                 style={{ color: "var(--text-secondary)" }}
               >
                 {item.institution}
@@ -105,20 +105,32 @@ export function Education() {
 
               {/* Divider */}
               <div
-                className="my-4 h-px"
+                className="hidden sm:block my-4 h-px"
                 style={{
                   background: "linear-gradient(90deg, rgba(99,102,241,0.3), transparent)",
                 }}
               />
 
               {/* Description */}
-              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+              <p className="hidden sm:block text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 {item.description}
               </p>
             </motion.div>
           ))}
         </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.8 }}
+          className="hidden sm:block text-xs sm:-translate-y-[17px]"
+          style={{ color: "var(--text-muted)" }}
+        >
+          Computer science, cybersecurity, and economics as the foundation for
+          practical engineering leadership.
+        </motion.p>
       </div>
     </div>
   );
 }
+

@@ -10,6 +10,16 @@ export function IntroOverlay() {
     const overlay = overlayRef.current;
     if (!overlay) return;
 
+    // If the page was loaded while scrolled past the hero section (e.g. browser
+    // scroll-restoration after a refresh at "security"), skip the overlay and
+    // fire intro-exit immediately so the Hero animation is unblocked and scroll
+    // / the navbar work from the start.
+    if (window.scrollY > window.innerHeight * 0.5) {
+      window.dispatchEvent(new CustomEvent("intro-exit"));
+      setExited(true);
+      return;
+    }
+
     // Block page scroll until first scroll-down gesture
     document.documentElement.style.overflowY = "hidden";
 

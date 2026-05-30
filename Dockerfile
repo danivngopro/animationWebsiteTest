@@ -12,6 +12,16 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+
+# NEXT_PUBLIC_* vars are inlined into the client bundle at build time.
+# They must be present here, not just in the runtime `environment:` block.
+ARG NEXT_PUBLIC_EMAILJS_SERVICE_ID
+ARG NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+ARG NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+ENV NEXT_PUBLIC_EMAILJS_SERVICE_ID=$NEXT_PUBLIC_EMAILJS_SERVICE_ID
+ENV NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=$NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+ENV NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=$NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
 RUN npm run build
 
 # Stage 3 — Minimal runtime image

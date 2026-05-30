@@ -2,21 +2,19 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { Brain, Zap, Code, Network, Bug, TestTube, Server, Cpu, BarChart2 } from "lucide-react";
+import { Brain, Code, Network, Server, TestTube, Wrench, Zap } from "lucide-react";
 import { aiWorkflow } from "@/lib/data";
 
 type LucideIcon = React.FC<{ className?: string; style?: React.CSSProperties }>;
 
 const iconMap: Record<string, LucideIcon> = {
-  Brain:     Brain     as LucideIcon,
-  Zap:       Zap       as LucideIcon,
-  Code:      Code      as LucideIcon,
-  Network:   Network   as LucideIcon,
-  Bug:       Bug       as LucideIcon,
-  TestTube:  TestTube  as LucideIcon,
-  Server:    Server    as LucideIcon,
-  Cpu:       Cpu       as LucideIcon,
-  BarChart2: BarChart2 as LucideIcon,
+  Brain:    Brain    as LucideIcon,
+  Code:     Code     as LucideIcon,
+  Network:  Network  as LucideIcon,
+  Server:   Server   as LucideIcon,
+  TestTube: TestTube as LucideIcon,
+  Wrench:   Wrench   as LucideIcon,
+  Zap:      Zap      as LucideIcon,
 };
 
 export function AIWorkflow() {
@@ -54,7 +52,7 @@ export function AIWorkflow() {
             const Icon = iconMap[item.icon] ?? Brain;
             return (
               <motion.div
-                key={item.tool}
+                key={item.step}
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
                 whileHover={{ y: -4 }}
@@ -82,8 +80,7 @@ export function AIWorkflow() {
                   <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: "var(--accent-cyan)" }} />
                 </div>
                 <div>
-                  <p className="text-[11px] sm:text-sm font-bold leading-tight text-slate-100">{item.tool}</p>
-                  <p className="hidden sm:block text-xs font-medium mt-0.5" style={{ color: "var(--accent-cyan)" }}>{item.role}</p>
+                  <p className="text-[11px] sm:text-sm font-bold leading-tight text-slate-100">{item.title}</p>
                 </div>
                 <p className="hidden sm:block text-[11px] leading-relaxed line-clamp-2" style={{ color: "var(--text-secondary)" }}>{item.description}</p>
               </motion.div>
@@ -95,8 +92,8 @@ export function AIWorkflow() {
           transition={{ duration: 0.5, delay: 0.9 }}
           className="px-5 py-3 rounded-xl border text-sm text-center"
           style={{ background: "rgba(34,211,238,0.04)", borderColor: "rgba(34,211,238,0.15)", color: "var(--text-secondary)" }}>
-          <span className="font-semibold text-slate-200">AI accelerates.</span>{" "}
-          Engineering judgment decides. Every output reviewed before it ships.
+          <span className="font-semibold text-slate-200">I use AI to move faster,</span>{" "}
+          but architecture, review, and accountability remain mine.
         </motion.div>
       </div>
     </div>

@@ -280,14 +280,84 @@ export const securityMeasures = [
   },
 ] as const;
 
-export const projects = [
+export type ProjectStatus = "live" | "sanitized" | "internal" | "public" | "coming-soon";
+
+export type Project = {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly tags: readonly string[];
+  readonly status: ProjectStatus;
+  readonly badge?: string;
+  readonly year: string;
+};
+
+export type CaseStudy = {
+  readonly id: string;
+  readonly title: string;
+  readonly label: string;
+  readonly problem: string;
+  readonly approach: readonly string[];
+  readonly role: string;
+  readonly result: string;
+  readonly note: string;
+};
+
+export const caseStudies: readonly CaseStudy[] = [
+  {
+    id: "operational-dashboard",
+    title: "Real-Time Operational Dashboard",
+    label: "Sanitized Architecture",
+    problem: "Internal teams needed fast, reliable access to operational data.",
+    approach: [
+      "Security, reliability, role-based access, and no public exposure as hard constraints.",
+      "React/TypeScript frontend with a Node.js API layer and database-backed services.",
+      "Redis caching for low-latency reads and an event-driven real-time update layer.",
+      "Low-latency UI designed for operational usage under real load.",
+    ],
+    role: "Architecture, backend/API design, frontend integration, code reviews, and release validation.",
+    result: "Production-grade internal system used daily by operational users.",
+    note: "Sanitized summary — no classified details included.",
+  },
+  {
+    id: "ai-workflow",
+    title: "AI-Assisted Engineering Workflow",
+    label: "Modern Development",
+    problem: "Improve development speed without lowering code quality.",
+    approach: [
+      "Use Claude, GPT, Codex, Ollama, and MCP for architecture exploration, scaffolding, debugging, test generation, and refactoring.",
+      "Every AI output is reviewed, tested, and adjusted before shipping.",
+      "Human control stays at architecture, review, and production decisions.",
+    ],
+    role: "Engineering judgment, integration design, and workflow ownership.",
+    result: "Faster iteration with senior-level accountability.",
+    note: "AI accelerates the workflow; engineering judgment owns the result.",
+  },
+  {
+    id: "secure-delivery",
+    title: "Secure Full-Stack Delivery",
+    label: "Security & Reliability",
+    problem: "Ship full-stack systems that are maintainable, secure, and production-ready.",
+    approach: [
+      "Validation at system boundaries, RBAC mindset, and API error hygiene.",
+      "Docker-based deployment with health checks, logging, and release validation.",
+      "Security-minded code review as a standard part of the delivery process.",
+    ],
+    role: "Design, implementation, code reviews, and deployment readiness.",
+    result: "Safer delivery of production features.",
+    note: "Security decisions are described generically to avoid exposing internal implementation details.",
+  },
+];
+
+export const projects: readonly Project[] = [
   {
     id: "operational-dashboard",
     title: "Operational Command Dashboard",
     description:
       "Mission-critical real-time monitoring platform serving internal command teams at IDF. Full TypeScript stack with live WebSocket feeds, RBAC, and <1s latency requirements. Designed for high availability, low-latency operational usage, and safe release validation. Served 1,000+ operational users.",
-    tags: ["TypeScript", "Python", "React", "Node.js", "PostgreSQL", "MongoDB", "Redis", "RabbitMQ", "Docker", "Kubernetes", "AWS", "Linux"],
-    status: "live" as const,
+    tags: ["TypeScript", "Python", "React", "Node.js", "PostgreSQL", "MongoDB", "Redis", "RabbitMQ", "Docker", "Kubernetes", "AWS", "Linux"] as const,
+    status: "sanitized",
+    badge: "Sanitized Case Study",
     year: "2024–2026",
   },
   {
@@ -295,8 +365,8 @@ export const projects = [
     title: "AI-Augmented Dev Pipeline",
     description:
       "Internal developer tooling integrating Claude API + OpenAI for automated code review, test generation, and PR analysis. Reduced average review cycle time significantly and standardised quality gates across the engineering team.",
-    tags: ["Claude API", "OpenAI", "MCP", "TypeScript", "Node.js", "GitHub Actions"],
-    status: "live" as const,
+    tags: ["Claude API", "OpenAI", "MCP", "TypeScript", "Node.js", "GitHub Actions"] as const,
+    status: "internal",
     year: "2023–Present",
   },
   {
@@ -304,29 +374,21 @@ export const projects = [
     title: "Cloud-Native Microservices Platform",
     description:
       "Containerised Node.js microservices on AWS ECS with GitHub Actions CI/CD, blue-green deployments, centralised structured logging, and auto-scaling. Infrastructure-as-code via Terraform. Serves internal teams across multiple environments.",
-    tags: ["AWS ECS", "Docker", "Terraform", "GitHub Actions", "Node.js", "Redis"],
-    status: "live" as const,
+    tags: ["AWS ECS", "Docker", "Terraform", "GitHub Actions", "Node.js", "Redis"] as const,
+    status: "internal",
     year: "2021–2022",
   },
   {
     id: "client-platform",
     title: "B2B Client Engagement Platform",
     description:
-      "Full-stack SaaS platform built at Dynamic Web for B2B clients. React SPA, Express REST API, MySQL. Features include CRM integration, automated email workflows, real-time analytics, and a white-label white-label multi-tenant architecture.",
-    tags: ["React", "Node.js", "Express", "MySQL", "REST API", "AWS S3"],
-    status: "live" as const,
+      "Full-stack SaaS platform built at Dynamic Web for B2B clients. React SPA, Express REST API, MySQL. Features include CRM integration, automated email workflows, real-time analytics, and a white-label multi-tenant architecture.",
+    tags: ["React", "Node.js", "Express", "MySQL", "REST API", "AWS S3"] as const,
+    status: "sanitized",
+    badge: "Sanitized Case Study",
     year: "2021–2022",
   },
-] as const;
-
-export type Project = {
-  id: string;
-  title: string;
-  description: string;
-  tags: readonly string[];
-  status: "live" | "TODO";
-  year: string;
-};
+];
 
 export const education = [
   {

@@ -21,12 +21,13 @@ type ChatApiResponse = {
   intent?: string;
 };
 
-const STARTER_QUESTIONS = [
-  "What does Daniel do?",
-  "What is Ventura's AI?",
-  "What is Daniel's flagship project?",
-  "What technologies does Daniel use?",
-  "How does Daniel use AI tools?",
+const RECRUITER_PROMPTS = [
+  "Why should we hire Daniel?",
+  "What senior full-stack experience does Daniel have?",
+  "How does Daniel use AI in development?",
+  "Explain Daniel's architecture experience.",
+  "What can Daniel build in the first 30 days?",
+  "Why are there no live classified projects?",
 ] as const;
 
 const INITIAL_MESSAGE: ChatMessage = {
@@ -218,7 +219,7 @@ export function VenturaAIChat() {
         <div className="flex min-h-0 flex-1 flex-col">
           <div className="shrink-0 border-b border-white/10 px-4 py-3">
             <div className="flex gap-2 overflow-x-auto pb-1">
-              {STARTER_QUESTIONS.map((question) => (
+              {RECRUITER_PROMPTS.map((question) => (
                 <button
                   key={question}
                   type="button"
@@ -234,6 +235,15 @@ export function VenturaAIChat() {
           </div>
 
           <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite" aria-label="Ventura's AI conversation">
+            {messages.length === 1 && (
+              <p className="text-xs leading-relaxed text-slate-500 border-b border-white/6 pb-3 mb-1">
+                Ventura&apos;s AI is a lightweight portfolio assistant designed to answer questions
+                about Daniel&apos;s experience, technical background, projects, architecture
+                decisions, and AI-assisted workflow. It is resume-grounded, restricted to
+                portfolio-relevant topics, and built with fallback behavior for safe/offline
+                responses.
+              </p>
+            )}
             {messages.map((message) => {
               const isUser = message.role === "user";
               const label = sourceLabel(message.source);

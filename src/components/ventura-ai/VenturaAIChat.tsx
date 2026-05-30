@@ -108,6 +108,16 @@ export function VenturaAIChat() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
+  useEffect(() => {
+    function handleOpenEvent() {
+      setIsOpen(true);
+    }
+
+    window.addEventListener("ventura-ai:open", handleOpenEvent);
+
+    return () => window.removeEventListener("ventura-ai:open", handleOpenEvent);
+  }, []);
+
   async function sendMessage(messageText: string) {
     const message = messageText.trim().slice(0, MAX_MESSAGE_LENGTH);
 

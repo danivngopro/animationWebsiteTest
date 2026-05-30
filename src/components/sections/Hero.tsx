@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
-import { ArrowDown, Download } from "lucide-react";
+import { ArrowDown, Bot, Download } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/BrandIcons";
 import { useGlitchText } from "@/hooks/useGlitchText";
 import { personal } from "@/lib/data";
@@ -233,6 +233,14 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 1.0 }}
             className="flex items-center gap-3"
           >
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("ventura-ai:open"))}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 hover:border-white/20 hover:bg-white/8"
+              style={{ border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
+            >
+              <Bot className="w-3.5 h-3.5" />
+              Ask my AI assistant about my experience
+            </button>
             <button
               onClick={scrollContact}
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_28px_rgba(99,102,241,0.45)]"

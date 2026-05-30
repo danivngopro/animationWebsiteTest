@@ -6,12 +6,15 @@ import { motion, AnimatePresence } from "motion/react";
 export const SLIDE_IDS = [
   "hero",
   "about",
+  "classified-work",
   "experience",
+  "case-studies",
   "skills",
   "ai-workflow",
-  "security",
+  "security-reliability",
   "projects",
   "education",
+  "build-log",
   "contact",
 ] as const;
 
@@ -20,12 +23,15 @@ export type SlideId = (typeof SLIDE_IDS)[number];
 const SLIDE_LABELS: Record<SlideId, string> = {
   hero: "Home",
   about: "About",
+  "classified-work": "Classified Work",
   experience: "Experience",
+  "case-studies": "Case Studies",
   skills: "Skills",
   "ai-workflow": "AI Workflow",
-  security: "Security",
-  projects: "Projects",
+  "security-reliability": "Security & Reliability",
+  projects: "Public Proof",
   education: "Education",
+  "build-log": "Build Log",
   contact: "Contact",
 };
 

@@ -18,11 +18,11 @@ import { cn } from "@/lib/utils";
 // Template variables: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
 
 const EJS_SERVICE =
-  process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "service_8tdq6th";
+  process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "serviceId_placeholder";
 const EJS_TEMPLATE =
-  process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "template_66s53s7";
+  process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "templateId_placeholder";
 const EJS_KEY =
-  process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "g8dY4TxBVQ1sFIv7e";
+  process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "publicKey_placeholder";
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false);

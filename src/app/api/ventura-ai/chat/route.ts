@@ -3,6 +3,8 @@ import { z } from "zod";
 
 import {
   VENTURA_AI_CONFIG,
+  fallbackVariants,
+  greetingVariants,
   type VenturaIntent,
 } from "@/lib/ventura-ai/knowledge";
 import {
@@ -26,7 +28,7 @@ type ChatResponse = {
 const OLLAMA_TIMEOUT_MS = 15_000;
 const MAX_MODEL_ANSWER_CHARACTERS = 600;
 const OLLAMA_REWRITE_NUM_PREDICT = 180;
-const OLLAMA_REWRITE_TEMPERATURE = 0.42;
+const OLLAMA_REWRITE_TEMPERATURE = 0.65;
 
 const suspiciousModelClaims = [
   "azure functions",
@@ -80,10 +82,16 @@ const highPrecisionTerms = [
 ] as const;
 
 const rewriteStyleInstructions = [
-  "Answer directly, with warm but professional wording.",
-  "Use a slightly different sentence rhythm while staying concise.",
-  "Lead with the most relevant point, then add one grounded detail.",
-  "Sound natural and recruiter-friendly without adding extra claims.",
+  "Be warm and direct. Lead with the strongest point.",
+  "Sound like someone who genuinely knows this person's work well.",
+  "Open with a short confident statement, then back it up with one specific detail.",
+  "Mix sentence lengths — one short, punchy sentence followed by a fuller one.",
+  "Speak conversationally, like a knowledgeable colleague rather than a CV.",
+  "Lead with what makes this interesting or impressive, then give the grounded detail.",
+  "Use an active voice. No filler. Every word should earn its place.",
+  "Be slightly enthusiastic — you know this person's work and it's worth talking about.",
+  "Get to the point fast, but give it warmth.",
+  "Vary your opener — don't start with 'Daniel' every time.",
 ] as const;
 
 const safeIntentAnswers: Record<VenturaIntent, string> = {
@@ -117,6 +125,10 @@ const safeIntentAnswers: Record<VenturaIntent, string> = {
 
 function jsonResponse(body: ChatResponse, init?: ResponseInit) {
   return NextResponse.json(body, init);
+}
+
+function pickRandom<T>(arr: readonly T[] | T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function getOllamaConfig() {
@@ -175,9 +187,7 @@ function getSafeIntentAnswer(intentId: VenturaIntent): string {
 }
 
 function pickRewriteStyleInstruction(): string {
-  return rewriteStyleInstructions[
-    Math.floor(Math.random() * rewriteStyleInstructions.length)
-  ];
+  return pickRandom(rewriteStyleInstructions);
 }
 
 type OllamaCallOptions = {
@@ -291,6 +301,14 @@ export async function POST(request: Request) {
   const { message } = parsedRequest.data;
   const routed = routeVenturaQuestion(message);
 
+  if (routed.type === "faq" && routed.intent === "greeting") {
+    return jsonResponse({
+      answer: pickRandom(greetingVariants),
+      source: "faq",
+      intent: "greeting",
+    });
+  }
+
   if (routed.type === "faq") {
     try {
       const answer = await rewriteGroundedAnswer({
@@ -323,7 +341,7 @@ export async function POST(request: Request) {
 
   if (routed.type === "fallback") {
     return jsonResponse({
-      answer: routed.answer,
+      answer: pickRandom(fallbackVariants),
       source: "fallback",
     });
   }

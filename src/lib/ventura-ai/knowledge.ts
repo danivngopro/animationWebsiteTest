@@ -53,6 +53,25 @@ export const forbiddenClaims = [
   "pasta recipe",
 ] as const;
 
+export const fallbackVariants: string[] = [
+  "That's outside what I know — I'm focused on Daniel's portfolio, experience, projects, and skills. What would you like to know?",
+  "I can't help with that one, but ask me anything about Daniel's background, tech stack, or projects.",
+  "Not my area, I'm afraid. I'm Ventura's AI — ask me about Daniel's work and I'm all yours.",
+  "I'm only set up to talk about Daniel Ventura's portfolio. What would you like to know about him?",
+  "That one's out of my lane. Fire away with anything about Daniel's experience, skills, or projects though.",
+];
+
+export const greetingVariants: string[] = [
+  "Hey! I'm Ventura's AI — Daniel's portfolio assistant. What would you like to know?",
+  "Hi! Ask me anything about Daniel's experience, projects, or tech stack.",
+  "Hello! What can I tell you about Daniel Ventura?",
+  "Hey there! Curious about Daniel's background, skills, or projects?",
+  "Hi! I'm here to help. What would you like to know about Daniel?",
+  "Hello! I'm Ventura's AI. Ask me about Daniel's work, AI workflow, or how this was built.",
+  "Hey! What's on your mind? I can cover Daniel's experience, skills, flagship project, and more.",
+  "Hi there! Feel free to ask about Daniel's background, tech stack, or contact details.",
+];
+
 export const faq: FaqItem[] = [
   {
     id: "greeting",

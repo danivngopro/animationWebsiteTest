@@ -164,67 +164,53 @@ export type SkillCategory = (typeof skills)[number];
 
 export const aiWorkflow = [
   {
-    tool: "Claude",
-    role: "Architecture advisor, agentic code generation & deep reasoning",
+    step: 1,
+    title: "Understand requirements manually",
     description:
-      "Used for complex architectural decisions, agentic code generation via Claude Code, code review analysis, and reasoning through multi-layered system design problems.",
+      "Read the spec, ask questions, identify edge cases, and understand system boundaries before writing any code or prompting an AI.",
     icon: "Brain",
   },
   {
-    tool: "GPT-4 / OpenAI",
-    role: "Rapid prototyping & exploration",
+    step: 2,
+    title: "Break into architecture, data model, API, UI, and deployment tasks",
     description:
-      "Fast iteration on feature ideas, API designs, and exploratory coding sessions to validate concepts before committing to implementation.",
-    icon: "Zap",
-  },
-  {
-    tool: "GitHub Copilot",
-    role: "In-editor autocomplete & boilerplate",
-    description:
-      "Reduces friction on repetitive patterns, type signatures, test cases, and boilerplate — keeps focus on logic, not syntax.",
-    icon: "Code",
-  },
-  {
-    tool: "MCP Servers",
-    role: "Context-aware AI tooling",
-    description:
-      "Model Context Protocol servers give AI agents direct access to codebases, databases, and APIs — turning LLMs into embedded team members.",
+      "Decompose the work into implementation layers: data model, API contract, business logic, frontend integration, and deployment considerations.",
     icon: "Network",
   },
   {
-    tool: "AI-Assisted Debugging",
-    role: "Root-cause analysis",
+    step: 3,
+    title: "Use AI for alternatives, scaffolding, debugging, and test generation",
     description:
-      "Paste stack traces, error logs, and reproduction steps into AI context. Dramatically shortens time-to-diagnosis on hard bugs.",
-    icon: "Bug",
+      "Prompt AI with explicit context, constraints, and expected output format. Use it for architecture options, scaffolding, debugging assistance, and test scaffolds.",
+    icon: "Zap",
   },
   {
-    tool: "Test Generation",
-    role: "Coverage at speed",
+    step: 4,
+    title: "Review generated code manually",
     description:
-      "Generate unit and integration test scaffolds from implementation code. Human-reviewed and adjusted, then committed — not blindly accepted.",
+      "Every AI-generated output is read line by line. Logic, security assumptions, and edge cases are verified before the code reaches staging.",
+    icon: "Code",
+  },
+  {
+    step: 5,
+    title: "Add validation, edge cases, and tests",
+    description:
+      "Add Zod validation at system boundaries, write tests for edge cases, and ensure error paths are handled — AI scaffolds rarely cover these fully.",
     icon: "TestTube",
   },
   {
-    tool: "Ollama / Local LLM",
-    role: "Privacy-first local inference",
+    step: 6,
+    title: "Refactor for maintainability",
     description:
-      "Self-hosted Ollama with quantized open-source models integrated into the development platform. Enables AI-assisted analysis on platform data and logs without sending sensitive information to the cloud.",
+      "Improve naming, reduce duplication, split oversized functions, and ensure the code reads clearly to a future reviewer unfamiliar with the AI session.",
+    icon: "Wrench",
+  },
+  {
+    step: 7,
+    title: "Deploy, verify, and document",
+    description:
+      "Release with health checks, monitor logs, validate in production, and document architecture decisions and non-obvious tradeoffs.",
     icon: "Server",
-  },
-  {
-    tool: "Local LLM Integration",
-    role: "On-premise AI inference infrastructure",
-    description:
-      "Engineered the integration layer connecting on-premise LLM inference servers to the production platform. Built REST adapters, streaming endpoints, and model routing for multiple quantized models on internal hardware.",
-    icon: "Cpu",
-  },
-  {
-    tool: "Custom AI & Statistical Models",
-    role: "Domain-specific ML & data science",
-    description:
-      "Developed custom ML models and statistical analysis pipelines for operational data pattern recognition. Python stack: scikit-learn, pandas, and custom inference layers integrated into the TypeScript platform via REST.",
-    icon: "BarChart2",
   },
 ] as const;
 
@@ -299,7 +285,7 @@ export const projects = [
     id: "operational-dashboard",
     title: "Operational Command Dashboard",
     description:
-      "Mission-critical real-time monitoring platform serving internal command teams at IDF. Full TypeScript stack with live WebSocket feeds, RBAC, and <1s latency requirements. Handled 1,000+ concurrent users with zero downtime SLA.",
+      "Mission-critical real-time monitoring platform serving internal command teams at IDF. Full TypeScript stack with live WebSocket feeds, RBAC, and <1s latency requirements. Designed for high availability, low-latency operational usage, and safe release validation. Served 1,000+ operational users.",
     tags: ["TypeScript", "Python", "React", "Node.js", "PostgreSQL", "MongoDB", "Redis", "RabbitMQ", "Docker", "Kubernetes", "AWS", "Linux"],
     status: "live" as const,
     year: "2024–2026",
@@ -508,7 +494,7 @@ export const techDescriptions: Record<string, { what: string; experience: string
   },
   "Prompt Engineering": {
     what: "The craft of phrasing inputs to LLMs so they produce maximally useful outputs — combining chain-of-thought, role framing, output constraints, and careful reframing to get past model limitations.",
-    experience: "The ability to phrase prompts in a way that gets the most out of LLMs — clearer reasoning, more precise outputs, and navigating model guardrails through careful framing and reframing. Techniques include role+task+constraint structuring, chain-of-thought elicitation, and reformulating restricted subjects in ways that yield actionable responses without triggering refusals. Applied as a first-class engineering skill across all AI-assisted workflows.",
+    experience: "Using clear role/task/context structuring, constraints, examples, output schemas, and iterative refinement to produce accurate, reviewable engineering outputs. Techniques include chain-of-thought elicitation, few-shot examples, and explicit output format constraints. Applied as a first-class engineering skill across all AI-assisted workflows.",
   },
   "AI Code Review": {
     what: "Using LLMs to analyse pull requests for bugs, security issues, style violations, and architectural concerns — as a complement to human review, not a replacement.",

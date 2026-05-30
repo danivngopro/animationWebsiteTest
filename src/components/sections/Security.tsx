@@ -43,7 +43,7 @@ export function Security() {
     <div id="security-reliability" className="slide-section hex-bg" ref={ref} style={{ background: "transparent" }}>
       <ScanLine />
 
-      {/* Semi-transparent overlay â€” hex pattern + galaxy both show through */}
+      {/* Semi-transparent overlay — hex pattern + galaxy both show through */}
       <div className="absolute inset-0" style={{ background: "rgba(4,4,10,0.55)" }} aria-hidden />
 
       <div className="relative z-10 h-full flex flex-col justify-between px-8 sm:px-14 lg:px-20 pt-8 pb-10 sm:pt-[134px] sm:pb-[91px] max-w-[1400px] mx-auto w-full">
@@ -158,7 +158,7 @@ export function Security() {
           className="hidden sm:block text-xs sm:-translate-y-[35px]"
           style={{ color: "var(--text-muted)" }}
         >
-          Cybersecurity major â€” security is baked in, not bolted on.
+          Cybersecurity major — security is baked in, not bolted on.
         </motion.p>
       </div>
     </div>

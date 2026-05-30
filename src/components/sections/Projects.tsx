@@ -104,7 +104,7 @@ export function Projects() {
           </motion.div>
         </div>
 
-        {/* Main project display â€” drag left/right to navigate */}
+        {/* Main project display — drag left/right to navigate */}
         <motion.div
           className="flex-1 flex items-center"
           style={{ x: dragX, cursor: "grab" }}

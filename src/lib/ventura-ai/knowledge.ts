@@ -253,6 +253,7 @@ export const faq: FaqItem[] = [
     id: "classified-work-why",
     intent: "experience",
     questions: [
+      "why are there no live classified projects",
       "why can't you share your work",
       "why no source code",
       "why no live demos",
@@ -263,7 +264,7 @@ export const faq: FaqItem[] = [
       "why classified",
     ],
     answer:
-      "Most of Daniel's production work was built for internal military environments in the IDF. Source code, screenshots, infrastructure details, and live demos cannot be published. The portfolio demonstrates the same engineering ability through sanitized architecture decisions, system design thinking, AI-assisted workflow, and public reference implementations.",
+      "Most of Daniel's strongest production work was built for internal military environments in the IDF, so source code, screenshots, infrastructure details, and live demos cannot be published. That is intentional and responsible. Instead, the portfolio demonstrates the same engineering ability through sanitized architecture case studies, system design decisions, AI-assisted workflow, and the portfolio itself as a public full-stack product.",
   },
   {
     id: "case-studies-what",
@@ -326,7 +327,56 @@ export const faq: FaqItem[] = [
       "should we hire daniel",
     ],
     answer:
-      "Daniel brings 7+ years of production full-stack experience, including 4 years as a Full-Stack Engineer and 2 years as a Team Lead delivering mission-critical systems used by 1,000+ operational users. He combines TypeScript, Node.js, React, cloud-native infrastructure, and AI-assisted engineering into a senior-level delivery skillset. He codes, architects, reviews, and ships.",
+      "Daniel is a strong senior full-stack candidate because he combines hands-on engineering, architecture ownership, production delivery, and team leadership. He has 7+ years of full-stack experience across Node.js, TypeScript, React, databases, Docker/Kubernetes, and cloud-native systems. What makes him especially relevant for modern teams is that he does not treat AI as a shortcut — he uses AI tools to move faster, but keeps architecture, code review, validation, testing, and production accountability under human control.",
+  },
+  {
+    id: "senior-experience",
+    intent: "experience",
+    questions: [
+      "what senior full-stack experience does daniel have",
+      "what is daniel's senior experience",
+      "how senior is daniel",
+      "daniel's full-stack experience",
+    ],
+    answer:
+      "Daniel has 7+ years of production full-stack experience across backend architecture, frontend integration, database design, API contracts, deployment workflows, and production support. In the IDF, he built mission-critical internal systems used by 1,000+ operational users and later led a 6-developer team as Team Lead from 2024–2026. His core stack includes Node.js, TypeScript, React, REST APIs, SQL/MySQL, PostgreSQL, MongoDB, Redis, Docker, Kubernetes, AWS, and GitHub Actions.",
+  },
+  {
+    id: "ai-in-development",
+    intent: "aiWorkflow",
+    questions: [
+      "how does daniel use ai in development",
+      "how does daniel use ai",
+      "daniel ai development workflow",
+      "how does daniel work with ai",
+    ],
+    answer:
+      "Daniel uses AI as part of a controlled seven-step workflow: understand requirements manually, break work into architecture and implementation layers, use AI for alternatives/scaffolding/debugging/test generation, review all generated code manually, add validation and edge cases, refactor for maintainability, then deploy and verify. Tools include Claude, Claude Code, ChatGPT, Codex, GitHub Copilot, MCP servers, and a local Ollama integration. AI helps him move faster — but architecture, code review, security decisions, testing, and production accountability remain his.",
+  },
+  {
+    id: "architecture-experience",
+    intent: "experience",
+    questions: [
+      "explain daniel's architecture experience.",
+      "explain daniel's architecture experience",
+      "what is daniel's architecture experience",
+      "daniel architecture",
+      "daniel system design",
+    ],
+    answer:
+      "Daniel's architecture experience comes from building and leading production full-stack systems rather than only writing isolated features. He has designed API boundaries, validation flows, database access patterns, caching layers, real-time update flows, and deployment-ready service structures. Because most of the work was internal military work, the portfolio presents sanitized architecture case studies that describe decisions and tradeoffs without exposing classified infrastructure details.",
+  },
+  {
+    id: "first-30-days",
+    intent: "about",
+    questions: [
+      "what can daniel build in the first 30 days",
+      "what would daniel do in the first month",
+      "first 30 days daniel",
+      "how quickly can daniel contribute",
+    ],
+    answer:
+      "In the first 30 days, Daniel can ramp up on an existing product, map the architecture and delivery risks, and contribute production-ready TypeScript, Node.js, or React code. A realistic first-month impact includes shipping scoped features, improving API or database flows, strengthening validation and error handling, and helping the team adopt AI tools more effectively. He is comfortable with code reviews, technical planning, and working across the full stack from day one.",
   },
 ];
 
@@ -506,7 +556,7 @@ export const intents: IntentConfig[] = [
       "snap",
     ],
     context:
-      "Daniel's portfolio repository is https://github.com/danivngopro/animationWebsiteTest and the live domain is https://portfolio.emperordanivn.com. The portfolio is a premium cinematic personal website designed as a fullscreen snap-scroll experience, not a static CV page. It uses Next.js 15 App Router, TypeScript 5 strict mode, Tailwind CSS v4, shadcn/ui, Motion for React, React Three Fiber, Drei, Three.js, Zod, react-hook-form, Docker, and Nginx reverse proxy. It includes security headers, CSP, X-Frame-Options DENY, X-Content-Type-Options nosniff, HSTS, Referrer-Policy, Permissions-Policy, Zod validation, a honeypot field, no dangerouslySetInnerHTML, and no committed secrets.",
+      "Daniel's portfolio repository is https://github.com/danivngopro/Portfolio and the live domain is https://portfolio.emperordanivn.com. The portfolio is a premium cinematic personal website designed as a fullscreen snap-scroll experience, not a static CV page. It uses Next.js 15 App Router, TypeScript 5 strict mode, Tailwind CSS v4, shadcn/ui, Motion for React, React Three Fiber, Drei, Three.js, Zod, react-hook-form, Docker, and Nginx reverse proxy. It includes security headers, CSP, X-Frame-Options DENY, X-Content-Type-Options nosniff, HSTS, Referrer-Policy, Permissions-Policy, Zod validation, a honeypot field, no dangerouslySetInnerHTML, and no committed secrets.",
   },
   {
     id: "contact",

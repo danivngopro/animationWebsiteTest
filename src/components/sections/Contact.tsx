@@ -11,7 +11,7 @@ import { contactSchema, type ContactFormData } from "@/lib/schemas";
 import { personal } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-// EmailJS setup â€” add these to .env.local:
+// EmailJS setup — add these to .env.local:
 //   NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_xxxxxxx
 //   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_xxxxxxx
 //   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=xxxxxxxxxxxxxxxxxxxx
@@ -55,7 +55,7 @@ export function Contact() {
       reset();
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      setSendError(`Failed to send (${msg}) â€” please email directly.`);
+      setSendError(`Failed to send (${msg}) — please email directly.`);
     }
   };
 
@@ -68,7 +68,7 @@ export function Contact() {
     >
       <div className="h-full flex flex-col justify-start px-8 sm:px-14 lg:px-20 pt-8 pb-10 sm:pt-[124px] sm:pb-14 max-w-[1400px] mx-auto w-full">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left â€” big CTA + contact info */}
+          {/* Left — big CTA + contact info */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -166,7 +166,7 @@ export function Contact() {
             </div>
           </motion.div>
 
-          {/* Right â€” form */}
+          {/* Right — form */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -270,7 +270,7 @@ export function Contact() {
                   ) : (
                     <Send className="w-4 h-4" />
                   )}
-                  {isSubmitting ? "Sendingâ€¦" : "Send Message"}
+                  {isSubmitting ? "Sending…" : "Send Message"}
                 </motion.button>
 
                 {sendError && (

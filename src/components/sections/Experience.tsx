@@ -148,7 +148,7 @@ export function Experience() {
           </motion.div>
         </div>
 
-        {/* Centre â€” drag left/right to navigate */}
+        {/* Centre — drag left/right to navigate */}
         <motion.div
           className="flex-1 flex flex-col justify-center"
           style={{ x: dragX, cursor: "grab" }}
@@ -173,7 +173,7 @@ export function Experience() {
                 {job.period}
               </p>
 
-              {/* Title â€” last two words kept together */}
+              {/* Title — last two words kept together */}
               <h2
                 className="font-black leading-[1.0] tracking-tight text-gradient-subtle"
                 style={{

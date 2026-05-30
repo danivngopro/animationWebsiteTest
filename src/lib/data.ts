@@ -21,7 +21,7 @@ export const experience = [
     id: "idf-lead",
     role: "Full-Stack Team Lead",
     company: "IDF (Israel Defense Forces)",
-    period: "2022 – Present",
+    period: "2024 – 2026",
     type: "Full-time",
     description:
       "Led a cross-functional full-stack team building mission-critical operational platforms. Owned architecture, sprint planning, code quality, and AI integration strategy across the team.",
@@ -37,7 +37,7 @@ export const experience = [
     id: "idf-engineer",
     role: "Full-Stack Engineer",
     company: "IDF (Israel Defense Forces)",
-    period: "2020 – 2022",
+    period: "2020 – 2024",
     type: "Full-time",
     description:
       "Developed full-stack features on internal platforms handling real-time data at scale. Built APIs, queue-driven services, and containerized deployments on AWS infrastructure.",
@@ -53,7 +53,7 @@ export const experience = [
     id: "dynamic-web",
     role: "Full-Stack Developer",
     company: "Dynamic Web",
-    period: "2018 – 2020",
+    period: "2021 – 2022",
     type: "Full-time",
     description:
       "Delivered full-stack web solutions for commercial clients across multiple tech stacks including .NET/C#, Node.js, and multiple frontend frameworks.",
@@ -302,7 +302,7 @@ export const projects = [
       "Mission-critical real-time monitoring platform serving internal command teams at IDF. Full TypeScript stack with live WebSocket feeds, RBAC, and <1s latency requirements. Handled 1,000+ concurrent users with zero downtime SLA.",
     tags: ["TypeScript", "Python", "React", "Node.js", "PostgreSQL", "MongoDB", "Redis", "RabbitMQ", "Docker", "Kubernetes", "AWS", "Linux"],
     status: "live" as const,
-    year: "2022–2026",
+    year: "2024–2026",
   },
   {
     id: "ai-dev-pipeline",
@@ -329,7 +329,7 @@ export const projects = [
       "Full-stack SaaS platform built at Dynamic Web for B2B clients. React SPA, Express REST API, MySQL. Features include CRM integration, automated email workflows, real-time analytics, and a white-label white-label multi-tenant architecture.",
     tags: ["React", "Node.js", "Express", "MySQL", "REST API", "AWS S3"],
     status: "live" as const,
-    year: "2018–2020",
+    year: "2021–2022",
   },
 ] as const;
 

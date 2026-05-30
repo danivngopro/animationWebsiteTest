@@ -69,7 +69,7 @@ export function Skills() {
         </div>
 
         {/* Body: category sidebar + tech grid */}
-        <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 min-h-[30vh] sm:min-h-[44vh]">
+        <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 flex-1 min-h-0">
 
           {/* — Left: category tabs — */}
           <motion.div

@@ -12,6 +12,9 @@ import { Security } from "@/components/sections/Security";
 import { Projects } from "@/components/sections/Projects";
 import { Education } from "@/components/sections/Education";
 import { Contact } from "@/components/sections/Contact";
+import { ClassifiedWork } from "@/components/sections/ClassifiedWork";
+import { CaseStudies }    from "@/components/sections/CaseStudies";
+import { BuildLog }       from "@/components/sections/BuildLog";
 
 // SlideSidebar is a client component that manages:
 //   • Intersection Observer to track active section
@@ -35,12 +38,15 @@ export default function Home() {
       {/* All sections are .slide-section (height: 100dvh, scroll-snap-align: start) */}
       <Hero />
       <About />
+      <ClassifiedWork />
       <Experience />
+      <CaseStudies />
       <Skills />
       <AIWorkflow />
       <Security />
       <Projects />
       <Education />
+      <BuildLog />
       <Contact />
 
       {/* Footer sits below the last snap section, reachable by final scroll */}

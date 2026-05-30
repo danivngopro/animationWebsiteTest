@@ -19,7 +19,7 @@ Hero → About → Classified Work → Experience → Case Studies → Skills
 ```
 
 12 sections total (up from 9). New sections: **Classified Work**, **Case Studies**, **Build Log**.
-Renamed sections: **Security** → **Security & Reliability**, **Projects** → **Public Proof & Systems** (header/label only; DOM id stays `security` and `projects` unless noted).
+Renamed sections: **Security** → **Security & Reliability** (DOM id changes from `security` to `security-reliability`; update everywhere: DOM, `SLIDE_IDS`, `SLIDE_LABELS`, Intersection Observer, any anchor links), **Projects** → **Public Proof & Systems** (label/header rename only; DOM id stays `projects`).
 
 ---
 
@@ -122,7 +122,7 @@ Motion: content fade-in with slight x-slide on tab change.
 | Title | Content |
 |-------|---------|
 | Stack | Next.js 15 App Router, TypeScript 5 strict mode, Tailwind CSS v4, Motion for React, React Three Fiber / Three.js, Zod, react-hook-form |
-| AI | Ventura's AI assistant — local Ollama integration (qwen2.5:0.5b), deterministic FAQ router, intent detection, safety checks, grounded rewrite prompts, fallback behavior for safe/offline responses |
+| AI | Ventura's AI assistant — local Ollama integration (qwen2.5:0.5b, self-hosted), deterministic FAQ router, intent detection, safety checks, grounded rewrite prompts, fallback behavior for safe/offline responses |
 | Deployment | Docker, Nginx reverse proxy, production build, security headers, CSP |
 | Security | Security headers (CSP, X-Frame-Options, HSTS, Permissions-Policy), Zod validation at boundaries, no `dangerouslySetInnerHTML`, no secrets committed, honeypot anti-spam |
 | Future | Public OpsBoard Lite demo, analytics dashboard, contact API rate limiting (Upstash Redis), Turnstile/hCaptcha integration |
@@ -165,7 +165,7 @@ Update projects:
 - **Operational Command Dashboard:** `status: "sanitized"`, `badge: "Sanitized Case Study"`. Description change: remove "zero downtime SLA", replace with "Designed for high availability, low-latency operational usage, and safe release validation." Change "1,000+ concurrent users" → "1,000+ operational users".
 - **AI-Augmented Dev Pipeline:** `status: "internal"`.
 - **Cloud-Native Microservices Platform:** `status: "internal"`.
-- **B2B Client Engagement Platform:** Fix "white-label white-label" → "white-label". `status: "public"`.
+- **B2B Client Engagement Platform:** Fix "white-label white-label" → "white-label". `status: "sanitized"`, `badge: "Sanitized Case Study"` (built for a private client at Dynamic Web — no public repo or live demo available).
 
 ### 4c. Wording fixes
 - `data.ts` line ~511: Replace "navigating model guardrails through careful framing and reframing. Techniques include role+task+constraint structuring, chain-of-thought elicitation, and reformulating restricted subjects in ways that yield actionable responses without triggering refusals." with: "using clear role/task/context structuring, constraints, examples, output schemas, and iterative refinement to produce accurate, reviewable engineering outputs."
